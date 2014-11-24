@@ -8,6 +8,7 @@
 
 #import "ICGAppDelegate.h"
 #import "eleven_chatclient.h"
+#import <WebKit/WebKit.h>
 
 
 @interface ICGAppDelegate ()
@@ -22,6 +23,7 @@
 @property (weak) IBOutlet NSButton *logInButton;
 @property (weak) IBOutlet NSButton *quitButton;
 @property (weak) IBOutlet NSWindow *gameWindow;
+@property (weak) IBOutlet WebView *webView;
 
 @end
 
@@ -38,6 +40,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	[self.webView.mainFrame loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://the-interconnect.com"]]];
 	NSString	*	userName = [[NSUserDefaults standardUserDefaults] stringForKey: @"ICGUserName"];
 	[self.userNameField setStringValue: userName ?: @""];
 	[self.loginWindow makeKeyAndOrderFront: self];
@@ -55,15 +58,21 @@
 {
 	if( didWork.boolValue )
 	{
+		[self.progressSpinner setDoubleValue: 8.0];
 		[[NSUserDefaults standardUserDefaults] setObject: self.userNameField.stringValue forKey: @"ICGUserName"];
-		[self.loginWindow orderOut: self];
+		//[self.loginWindow orderOut: self];
 	}
-	[self.progressSpinner stopAnimation: self];
-	self.logInButton.enabled = YES;
 	
 	if( didWork.boolValue )
 	{
-		[self.gameWindow makeKeyAndOrderFront: self];
+		[self.progressSpinner setDoubleValue: 10.0];
+		mChatClient->current_session()->printf( "/last_room" );
+	}
+	else
+	{
+		[self.progressSpinner stopAnimation: self];
+		self.logInButton.enabled = YES;
+		[self.progressSpinner setDoubleValue: 0.0];
 	}
 }
 
@@ -86,6 +95,7 @@
 	
 	self.logInButton.enabled = NO;
 	[self.progressSpinner startAnimation: self];
+	[self.progressSpinner setDoubleValue: 2.0];
 
 	mChatClient = new eleven::chatclient( "127.0.0.1", 13762, [[NSBundle mainBundle] pathForResource: @"settings" ofType:@""].fileSystemRepresentation );
 	mChatClient->register_message_handler( "/logged_in", [=]( eleven::session_ptr inSession, std::string inLine, eleven::chatclient* inSender)
@@ -103,12 +113,14 @@
 	
 	if( mChatClient->connect() )
 	{
+		[self.progressSpinner setDoubleValue: 4.0];
 		mChatClient->listen_for_messages();
 		
 		mChatClient->current_session()->printf( "/login %s %s\r\n", self.userNameField.stringValue.lowercaseString.UTF8String, self.passwordField.stringValue.UTF8String );
 	}
 	else
 	{
+		[self.progressSpinner setDoubleValue: 0.0];
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
 	}

@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		55CD279F1A23D27700A46761 /* libressl */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 55CD27A21A23D27700A46761 /* Build configuration list for PBXAggregateTarget "libressl" */;
+			buildPhases = (
+				55CD27A31A23D28000A46761 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = libressl;
+			productName = libressl;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* ICGAppDelegate.mm */; };
 		55CD275C1A233EC800A46761 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD275B1A233EC800A46761 /* main.m */; };
@@ -26,6 +40,7 @@
 		55CD27991A23405E00A46761 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278D1A23405E00A46761 /* sha256.c */; };
 		55CD279A1A23405E00A46761 /* slowequals.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278F1A23405E00A46761 /* slowequals.c */; };
 		55CD279D1A234EF900A46761 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 55CD279C1A234EF900A46761 /* settings */; };
+		55CD27A51A23D4C100A46761 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CD27A41A23D4C100A46761 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +88,7 @@
 		55CD27901A23405E00A46761 /* slowequals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = slowequals.h; path = ../../eleven/libscrypt/slowequals.h; sourceTree = "<group>"; };
 		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
 		55CD279C1A234EF900A46761 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
+		55CD27A41A23D4C100A46761 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55CD27A51A23D4C100A46761 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +137,7 @@
 				55CD275F1A233EC800A46761 /* MainMenu.xib */,
 				55CD27561A233EC800A46761 /* Supporting Files */,
 				55CD27821A23402F00A46761 /* Networking */,
+				55CD27A61A23D4D400A46761 /* Libraries */,
 				55CD279E1A234F0000A46761 /* Resources */,
 			);
 			path = interconnectgame;
@@ -197,6 +215,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		55CD27A61A23D4D400A46761 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				55CD27A41A23D4C100A46761 /* WebKit.framework */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -251,6 +277,9 @@
 						CreatedOnToolsVersion = 6.1;
 						TestTargetID = 55CD27521A233EC800A46761;
 					};
+					55CD279F1A23D27700A46761 = {
+						CreatedOnToolsVersion = 6.1;
+					};
 				};
 			};
 			buildConfigurationList = 55CD274E1A233EC800A46761 /* Build configuration list for PBXProject "interconnectgame" */;
@@ -268,6 +297,7 @@
 			targets = (
 				55CD27521A233EC800A46761 /* The Interconnect */,
 				55CD27651A233EC800A46761 /* interconnectgameTests */,
+				55CD279F1A23D27700A46761 /* libressl */,
 			);
 		};
 /* End PBXProject section */
@@ -291,6 +321,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		55CD27A31A23D28000A46761 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=/usr/local/bin/:$PATH #pull in autoconf, automake and libtool from Brew\ncd \"${PROJECT_DIR}/eleven/libressl-portable/\"\n./autogen.sh\n./configure\nmake check\nmake install DESTDIR=\"${PROJECT_DIR}/eleven/libressl-portable/build/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55CD274F1A233EC800A46761 /* Sources */ = {
@@ -509,6 +555,20 @@
 			};
 			name = Release;
 		};
+		55CD27A01A23D27700A46761 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55CD27A11A23D27700A46761 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -535,6 +595,15 @@
 			buildConfigurations = (
 				55CD27741A233EC800A46761 /* Debug */,
 				55CD27751A233EC800A46761 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55CD27A21A23D27700A46761 /* Build configuration list for PBXAggregateTarget "libressl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55CD27A01A23D27700A46761 /* Debug */,
+				55CD27A11A23D27700A46761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
