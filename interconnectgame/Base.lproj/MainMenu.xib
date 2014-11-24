@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6233" systemVersion="14A329f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="14B25" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6233"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,9 +11,13 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="">
+        <customObject id="Voe-Tx-rLC" customClass="ICGAppDelegate">
             <connections>
-                <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
+                <outlet property="gameWindow" destination="5Rv-vp-BPc" id="91m-qE-dKn"/>
+                <outlet property="loginWindow" destination="QvC-M9-y7g" id="7Jn-uB-yAw"/>
+                <outlet property="passwordField" destination="jpG-ET-UVZ" id="aFt-tQ-rEJ"/>
+                <outlet property="progressSpinner" destination="SPp-cM-NU9" id="vH5-ZS-qdV"/>
+                <outlet property="userNameField" destination="VVA-hW-Vbn" id="nAM-K6-Pxq"/>
             </connections>
         </customObject>
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
@@ -666,15 +670,137 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="interconnectgame" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window title="Log Into The Interconnect" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGLogInWindow" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="contentRect" x="335" y="390" width="415" height="128"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="415" height="128"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BNS-Ic-tV5">
+                        <rect key="frame" x="41" y="91" width="48" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="E-Mail:" id="oaj-k5-hul">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="neS-ry-2E2">
+                        <rect key="frame" x="20" y="59" width="69" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Password:" id="p3p-Co-AGO">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <secureTextField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jpG-ET-UVZ">
+                        <rect key="frame" x="95" y="57" width="200" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="200" id="0V4-eJ-0J8"/>
+                        </constraints>
+                        <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" id="tSU-9r-9Tb">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <allowedInputSourceLocales>
+                                <string>NSAllRomanInputSourcesLocaleIdentifier</string>
+                            </allowedInputSourceLocales>
+                        </secureTextFieldCell>
+                    </secureTextField>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VVA-hW-Vbn">
+                        <rect key="frame" x="95" y="89" width="300" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="300" id="gQz-6J-hKm"/>
+                        </constraints>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="name@example.com" drawsBackground="YES" id="SzL-o0-q5Z">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VEm-LH-Mv6">
+                        <rect key="frame" x="319" y="13" width="79" height="32"/>
+                        <buttonCell key="cell" type="push" title="Log In" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vhQ-CR-XPX">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="doLogIn:" target="Voe-Tx-rLC" id="Xxg-cb-8My"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-I7-Kgh">
+                        <rect key="frame" x="241" y="13" width="79" height="32"/>
+                        <buttonCell key="cell" type="push" title="Quit" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="W4j-yf-EG9">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="terminate:" target="-1" id="YBj-s3-uZW"/>
+                        </connections>
+                    </button>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="SPp-cM-NU9">
+                        <rect key="frame" x="20" y="20" width="16" height="16"/>
+                    </progressIndicator>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="VEm-LH-Mv6" firstAttribute="leading" secondItem="p8r-I7-Kgh" secondAttribute="trailing" constant="11" id="2lk-nx-SyE"/>
+                    <constraint firstItem="BNS-Ic-tV5" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" symbolic="YES" id="4Tv-M6-Rci"/>
+                    <constraint firstItem="VVA-hW-Vbn" firstAttribute="baseline" secondItem="BNS-Ic-tV5" secondAttribute="baseline" id="63T-UM-e1W"/>
+                    <constraint firstItem="p8r-I7-Kgh" firstAttribute="baseline" secondItem="VEm-LH-Mv6" secondAttribute="baseline" id="9mS-D3-Bfw"/>
+                    <constraint firstAttribute="trailing" secondItem="VEm-LH-Mv6" secondAttribute="trailing" constant="23" id="Akw-ZE-B5R"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="jpG-ET-UVZ" secondAttribute="trailing" constant="20" id="C6K-LO-SZI"/>
+                    <constraint firstItem="jpG-ET-UVZ" firstAttribute="top" secondItem="VVA-hW-Vbn" secondAttribute="bottom" constant="10" symbolic="YES" id="NHM-Ef-c5R"/>
+                    <constraint firstItem="SPp-cM-NU9" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="VXT-VJ-OLd"/>
+                    <constraint firstAttribute="trailing" secondItem="VVA-hW-Vbn" secondAttribute="trailing" constant="20" symbolic="YES" id="ZdH-Vb-e5f"/>
+                    <constraint firstItem="neS-ry-2E2" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="22" id="aFf-i8-gwg"/>
+                    <constraint firstItem="neS-ry-2E2" firstAttribute="trailing" secondItem="BNS-Ic-tV5" secondAttribute="trailing" id="bSn-XS-2at"/>
+                    <constraint firstItem="p8r-I7-Kgh" firstAttribute="top" secondItem="jpG-ET-UVZ" secondAttribute="bottom" constant="16" id="ecf-cL-62T"/>
+                    <constraint firstItem="p8r-I7-Kgh" firstAttribute="width" secondItem="VEm-LH-Mv6" secondAttribute="width" id="ica-I9-etw"/>
+                    <constraint firstItem="VVA-hW-Vbn" firstAttribute="leading" secondItem="BNS-Ic-tV5" secondAttribute="trailing" constant="8" symbolic="YES" id="oCg-nR-RMG"/>
+                    <constraint firstAttribute="bottom" secondItem="SPp-cM-NU9" secondAttribute="bottom" constant="20" id="sGS-hK-ypg"/>
+                    <constraint firstItem="BNS-Ic-tV5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="22" id="taE-2m-yEb"/>
+                    <constraint firstItem="jpG-ET-UVZ" firstAttribute="baseline" secondItem="neS-ry-2E2" secondAttribute="baseline" id="v62-nU-5VO"/>
+                    <constraint firstAttribute="bottom" secondItem="VEm-LH-Mv6" secondAttribute="bottom" constant="20" id="xbo-vt-ngu"/>
+                    <constraint firstItem="jpG-ET-UVZ" firstAttribute="leading" secondItem="neS-ry-2E2" secondAttribute="trailing" constant="8" symbolic="YES" id="zeg-g6-rro"/>
+                </constraints>
             </view>
+            <point key="canvasLocation" x="363.5" y="231"/>
+        </window>
+        <window title="The Interconnect" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGGameWindow" animationBehavior="default" id="5Rv-vp-BPc">
+            <windowStyleMask key="styleMask" resizable="YES" texturedBackground="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="121" y="123" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
+            <view key="contentView" id="0bL-kT-vju">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <box autoresizesSubviews="NO" title="Box" boxType="custom" borderType="none" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="m6u-oa-ja7">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <view key="contentView">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </box>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="m6u-oa-ja7" firstAttribute="top" secondItem="0bL-kT-vju" secondAttribute="top" id="Ne7-st-Edp"/>
+                    <constraint firstAttribute="bottom" secondItem="m6u-oa-ja7" secondAttribute="bottom" id="S2S-lL-3CT"/>
+                    <constraint firstItem="m6u-oa-ja7" firstAttribute="leading" secondItem="0bL-kT-vju" secondAttribute="leading" id="crS-Ms-oJA"/>
+                    <constraint firstAttribute="trailing" secondItem="m6u-oa-ja7" secondAttribute="trailing" id="lF7-PF-C87"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="396" y="396"/>
         </window>
     </objects>
 </document>

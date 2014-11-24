@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  ICGAppDelegate.h
 //  interconnectgame
 //
 //  Created by Uli Kusterer on 2014-11-24.
@@ -8,8 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface ICGAppDelegate : NSObject <NSApplicationDelegate>
 
+-(IBAction)	doLogIn: (id)sender;
 
 @end
 

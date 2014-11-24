@@ -7,11 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55CD275A1A233EC800A46761 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* AppDelegate.m */; };
+		55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* ICGAppDelegate.mm */; };
 		55CD275C1A233EC800A46761 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD275B1A233EC800A46761 /* main.m */; };
 		55CD275E1A233EC800A46761 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275D1A233EC800A46761 /* Images.xcassets */; };
 		55CD27611A233EC800A46761 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275F1A233EC800A46761 /* MainMenu.xib */; };
 		55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD276C1A233EC800A46761 /* interconnectgameTests.m */; };
+		55CD277C1A23401500A46761 /* eleven_ini_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27761A23401500A46761 /* eleven_ini_file.cpp */; };
+		55CD277D1A23401500A46761 /* eleven_log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27781A23401500A46761 /* eleven_log.cpp */; };
+		55CD277E1A23401500A46761 /* eleven_session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD277A1A23401500A46761 /* eleven_session.cpp */; };
+		55CD27811A23402400A46761 /* eleven_chatclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD277F1A23402400A46761 /* eleven_chatclient.cpp */; };
+		55CD27921A23405E00A46761 /* b64.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27831A23405E00A46761 /* b64.c */; };
+		55CD27931A23405E00A46761 /* crypto_scrypt-check.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27851A23405E00A46761 /* crypto_scrypt-check.c */; };
+		55CD27941A23405E00A46761 /* crypto_scrypt-hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */; };
+		55CD27951A23405E00A46761 /* crypto_scrypt-hexconvert.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27871A23405E00A46761 /* crypto_scrypt-hexconvert.c */; };
+		55CD27961A23405E00A46761 /* crypto_scrypt-nosse.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27891A23405E00A46761 /* crypto_scrypt-nosse.c */; };
+		55CD27971A23405E00A46761 /* crypto-mcf.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278A1A23405E00A46761 /* crypto-mcf.c */; };
+		55CD27981A23405E00A46761 /* crypto-scrypt-saltgen.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278B1A23405E00A46761 /* crypto-scrypt-saltgen.c */; };
+		55CD27991A23405E00A46761 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278D1A23405E00A46761 /* sha256.c */; };
+		55CD279A1A23405E00A46761 /* slowequals.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278F1A23405E00A46761 /* slowequals.c */; };
+		55CD279D1A234EF900A46761 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 55CD279C1A234EF900A46761 /* settings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,16 +39,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		55CD27531A233EC800A46761 /* interconnectgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = interconnectgame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CD27531A233EC800A46761 /* The Interconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Interconnect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD27571A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55CD27581A233EC800A46761 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		55CD27591A233EC800A46761 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		55CD27581A233EC800A46761 /* ICGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICGAppDelegate.h; sourceTree = "<group>"; };
+		55CD27591A233EC800A46761 /* ICGAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ICGAppDelegate.mm; sourceTree = "<group>"; };
 		55CD275B1A233EC800A46761 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		55CD275D1A233EC800A46761 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		55CD27601A233EC800A46761 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		55CD27661A233EC800A46761 /* interconnectgameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = interconnectgameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD276B1A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55CD276C1A233EC800A46761 /* interconnectgameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = interconnectgameTests.m; sourceTree = "<group>"; };
+		55CD27761A23401500A46761 /* eleven_ini_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_ini_file.cpp; path = ../../eleven/eleven_ini_file.cpp; sourceTree = "<group>"; };
+		55CD27771A23401500A46761 /* eleven_ini_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_ini_file.h; path = ../../eleven/eleven_ini_file.h; sourceTree = "<group>"; };
+		55CD27781A23401500A46761 /* eleven_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_log.cpp; path = ../../eleven/eleven_log.cpp; sourceTree = "<group>"; };
+		55CD27791A23401500A46761 /* eleven_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_log.h; path = ../../eleven/eleven_log.h; sourceTree = "<group>"; };
+		55CD277A1A23401500A46761 /* eleven_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_session.cpp; path = ../../eleven/eleven_session.cpp; sourceTree = "<group>"; };
+		55CD277B1A23401500A46761 /* eleven_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_session.h; path = ../../eleven/eleven_session.h; sourceTree = "<group>"; };
+		55CD277F1A23402400A46761 /* eleven_chatclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_chatclient.cpp; path = ../../eleven/eleven_chatclient/eleven_chatclient.cpp; sourceTree = "<group>"; };
+		55CD27801A23402400A46761 /* eleven_chatclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_chatclient.h; path = ../../eleven/eleven_chatclient/eleven_chatclient.h; sourceTree = "<group>"; };
+		55CD27831A23405E00A46761 /* b64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b64.c; path = ../../eleven/libscrypt/b64.c; sourceTree = "<group>"; };
+		55CD27841A23405E00A46761 /* b64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = b64.h; path = ../../eleven/libscrypt/b64.h; sourceTree = "<group>"; };
+		55CD27851A23405E00A46761 /* crypto_scrypt-check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-check.c"; path = "../../eleven/libscrypt/crypto_scrypt-check.c"; sourceTree = "<group>"; };
+		55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hash.c"; path = "../../eleven/libscrypt/crypto_scrypt-hash.c"; sourceTree = "<group>"; };
+		55CD27871A23405E00A46761 /* crypto_scrypt-hexconvert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hexconvert.c"; path = "../../eleven/libscrypt/crypto_scrypt-hexconvert.c"; sourceTree = "<group>"; };
+		55CD27881A23405E00A46761 /* crypto_scrypt-hexconvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "crypto_scrypt-hexconvert.h"; path = "../../eleven/libscrypt/crypto_scrypt-hexconvert.h"; sourceTree = "<group>"; };
+		55CD27891A23405E00A46761 /* crypto_scrypt-nosse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-nosse.c"; path = "../../eleven/libscrypt/crypto_scrypt-nosse.c"; sourceTree = "<group>"; };
+		55CD278A1A23405E00A46761 /* crypto-mcf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-mcf.c"; path = "../../eleven/libscrypt/crypto-mcf.c"; sourceTree = "<group>"; };
+		55CD278B1A23405E00A46761 /* crypto-scrypt-saltgen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-scrypt-saltgen.c"; path = "../../eleven/libscrypt/crypto-scrypt-saltgen.c"; sourceTree = "<group>"; };
+		55CD278C1A23405E00A46761 /* libscrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libscrypt.h; path = ../../eleven/libscrypt/libscrypt.h; sourceTree = "<group>"; };
+		55CD278D1A23405E00A46761 /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha256.c; path = ../../eleven/libscrypt/sha256.c; sourceTree = "<group>"; };
+		55CD278E1A23405E00A46761 /* sha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha256.h; path = ../../eleven/libscrypt/sha256.h; sourceTree = "<group>"; };
+		55CD278F1A23405E00A46761 /* slowequals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = slowequals.c; path = ../../eleven/libscrypt/slowequals.c; sourceTree = "<group>"; };
+		55CD27901A23405E00A46761 /* slowequals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = slowequals.h; path = ../../eleven/libscrypt/slowequals.h; sourceTree = "<group>"; };
+		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
+		55CD279C1A234EF900A46761 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,7 +105,7 @@
 		55CD27541A233EC800A46761 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55CD27531A233EC800A46761 /* interconnectgame.app */,
+				55CD27531A233EC800A46761 /* The Interconnect.app */,
 				55CD27661A233EC800A46761 /* interconnectgameTests.xctest */,
 			);
 			name = Products;
@@ -76,11 +114,13 @@
 		55CD27551A233EC800A46761 /* interconnectgame */ = {
 			isa = PBXGroup;
 			children = (
-				55CD27581A233EC800A46761 /* AppDelegate.h */,
-				55CD27591A233EC800A46761 /* AppDelegate.m */,
+				55CD27581A233EC800A46761 /* ICGAppDelegate.h */,
+				55CD27591A233EC800A46761 /* ICGAppDelegate.mm */,
 				55CD275D1A233EC800A46761 /* Images.xcassets */,
 				55CD275F1A233EC800A46761 /* MainMenu.xib */,
 				55CD27561A233EC800A46761 /* Supporting Files */,
+				55CD27821A23402F00A46761 /* Networking */,
+				55CD279E1A234F0000A46761 /* Resources */,
 			);
 			path = interconnectgame;
 			sourceTree = "<group>";
@@ -111,12 +151,58 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		55CD27821A23402F00A46761 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				55CD277F1A23402400A46761 /* eleven_chatclient.cpp */,
+				55CD27801A23402400A46761 /* eleven_chatclient.h */,
+				55CD27761A23401500A46761 /* eleven_ini_file.cpp */,
+				55CD27771A23401500A46761 /* eleven_ini_file.h */,
+				55CD27781A23401500A46761 /* eleven_log.cpp */,
+				55CD27791A23401500A46761 /* eleven_log.h */,
+				55CD277A1A23401500A46761 /* eleven_session.cpp */,
+				55CD277B1A23401500A46761 /* eleven_session.h */,
+				55CD279B1A23406700A46761 /* libscrypt */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
+		55CD279B1A23406700A46761 /* libscrypt */ = {
+			isa = PBXGroup;
+			children = (
+				55CD27831A23405E00A46761 /* b64.c */,
+				55CD27841A23405E00A46761 /* b64.h */,
+				55CD27851A23405E00A46761 /* crypto_scrypt-check.c */,
+				55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */,
+				55CD27871A23405E00A46761 /* crypto_scrypt-hexconvert.c */,
+				55CD27881A23405E00A46761 /* crypto_scrypt-hexconvert.h */,
+				55CD27891A23405E00A46761 /* crypto_scrypt-nosse.c */,
+				55CD278A1A23405E00A46761 /* crypto-mcf.c */,
+				55CD278B1A23405E00A46761 /* crypto-scrypt-saltgen.c */,
+				55CD278C1A23405E00A46761 /* libscrypt.h */,
+				55CD278D1A23405E00A46761 /* sha256.c */,
+				55CD278E1A23405E00A46761 /* sha256.h */,
+				55CD278F1A23405E00A46761 /* slowequals.c */,
+				55CD27901A23405E00A46761 /* slowequals.h */,
+				55CD27911A23405E00A46761 /* sysendian.h */,
+			);
+			name = libscrypt;
+			sourceTree = "<group>";
+		};
+		55CD279E1A234F0000A46761 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				55CD279C1A234EF900A46761 /* settings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		55CD27521A233EC800A46761 /* interconnectgame */ = {
+		55CD27521A233EC800A46761 /* The Interconnect */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgame" */;
+			buildConfigurationList = 55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "The Interconnect" */;
 			buildPhases = (
 				55CD274F1A233EC800A46761 /* Sources */,
 				55CD27501A233EC800A46761 /* Frameworks */,
@@ -126,9 +212,9 @@
 			);
 			dependencies = (
 			);
-			name = interconnectgame;
+			name = "The Interconnect";
 			productName = interconnectgame;
-			productReference = 55CD27531A233EC800A46761 /* interconnectgame.app */;
+			productReference = 55CD27531A233EC800A46761 /* The Interconnect.app */;
 			productType = "com.apple.product-type.application";
 		};
 		55CD27651A233EC800A46761 /* interconnectgameTests */ = {
@@ -180,7 +266,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				55CD27521A233EC800A46761 /* interconnectgame */,
+				55CD27521A233EC800A46761 /* The Interconnect */,
 				55CD27651A233EC800A46761 /* interconnectgameTests */,
 			);
 		};
@@ -193,6 +279,7 @@
 			files = (
 				55CD275E1A233EC800A46761 /* Images.xcassets in Resources */,
 				55CD27611A233EC800A46761 /* MainMenu.xib in Resources */,
+				55CD279D1A234EF900A46761 /* settings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,8 +297,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55CD27961A23405E00A46761 /* crypto_scrypt-nosse.c in Sources */,
 				55CD275C1A233EC800A46761 /* main.m in Sources */,
-				55CD275A1A233EC800A46761 /* AppDelegate.m in Sources */,
+				55CD277C1A23401500A46761 /* eleven_ini_file.cpp in Sources */,
+				55CD27921A23405E00A46761 /* b64.c in Sources */,
+				55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */,
+				55CD27971A23405E00A46761 /* crypto-mcf.c in Sources */,
+				55CD279A1A23405E00A46761 /* slowequals.c in Sources */,
+				55CD27941A23405E00A46761 /* crypto_scrypt-hash.c in Sources */,
+				55CD27981A23405E00A46761 /* crypto-scrypt-saltgen.c in Sources */,
+				55CD27951A23405E00A46761 /* crypto_scrypt-hexconvert.c in Sources */,
+				55CD277E1A23401500A46761 /* eleven_session.cpp in Sources */,
+				55CD27991A23405E00A46761 /* sha256.c in Sources */,
+				55CD277D1A23401500A46761 /* eleven_log.cpp in Sources */,
+				55CD27931A23405E00A46761 /* crypto_scrypt-check.c in Sources */,
+				55CD27811A23402400A46761 /* eleven_chatclient.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,7 +328,7 @@
 /* Begin PBXTargetDependency section */
 		55CD27681A233EC800A46761 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 55CD27521A233EC800A46761 /* interconnectgame */;
+			target = 55CD27521A233EC800A46761 /* The Interconnect */;
 			targetProxy = 55CD27671A233EC800A46761 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -326,8 +426,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include",
+				);
 				INFOPLIST_FILE = interconnectgame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/eleven/libressl-portable/build/usr/local/lib";
+				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -337,8 +447,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include",
+				);
 				INFOPLIST_FILE = interconnectgame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/eleven/libressl-portable/build/usr/local/lib";
+				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -358,8 +478,13 @@
 				);
 				INFOPLIST_FILE = interconnectgameTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/interconnectgame.app/Contents/MacOS/interconnectgame";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Interconnect.app/Contents/MacOS/The Interconnect";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include";
 			};
 			name = Debug;
 		};
@@ -374,8 +499,13 @@
 				);
 				INFOPLIST_FILE = interconnectgameTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
+					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/interconnectgame.app/Contents/MacOS/interconnectgame";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Interconnect.app/Contents/MacOS/The Interconnect";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include";
 			};
 			name = Release;
 		};
@@ -391,13 +521,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgame" */ = {
+		55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "The Interconnect" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55CD27711A233EC800A46761 /* Debug */,
 				55CD27721A233EC800A46761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55CD27731A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgameTests" */ = {
 			isa = XCConfigurationList;
@@ -406,6 +537,7 @@
 				55CD27751A233EC800A46761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
