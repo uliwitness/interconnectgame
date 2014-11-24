@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		55CD275A1A233EC800A46761 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* AppDelegate.m */; };
+		55CD275C1A233EC800A46761 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD275B1A233EC800A46761 /* main.m */; };
+		55CD275E1A233EC800A46761 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275D1A233EC800A46761 /* Images.xcassets */; };
+		55CD27611A233EC800A46761 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275F1A233EC800A46761 /* MainMenu.xib */; };
+		55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD276C1A233EC800A46761 /* interconnectgameTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		55CD27671A233EC800A46761 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55CD274B1A233EC800A46761 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55CD27521A233EC800A46761;
+			remoteInfo = interconnectgame;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		55CD27531A233EC800A46761 /* interconnectgame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = interconnectgame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CD27571A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55CD27581A233EC800A46761 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		55CD27591A233EC800A46761 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		55CD275B1A233EC800A46761 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		55CD275D1A233EC800A46761 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		55CD27601A233EC800A46761 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		55CD27661A233EC800A46761 /* interconnectgameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = interconnectgameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55CD276B1A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55CD276C1A233EC800A46761 /* interconnectgameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = interconnectgameTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		55CD27501A233EC800A46761 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55CD27631A233EC800A46761 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		55CD274A1A233EC800A46761 = {
+			isa = PBXGroup;
+			children = (
+				55CD27551A233EC800A46761 /* interconnectgame */,
+				55CD27691A233EC800A46761 /* interconnectgameTests */,
+				55CD27541A233EC800A46761 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		55CD27541A233EC800A46761 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				55CD27531A233EC800A46761 /* interconnectgame.app */,
+				55CD27661A233EC800A46761 /* interconnectgameTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55CD27551A233EC800A46761 /* interconnectgame */ = {
+			isa = PBXGroup;
+			children = (
+				55CD27581A233EC800A46761 /* AppDelegate.h */,
+				55CD27591A233EC800A46761 /* AppDelegate.m */,
+				55CD275D1A233EC800A46761 /* Images.xcassets */,
+				55CD275F1A233EC800A46761 /* MainMenu.xib */,
+				55CD27561A233EC800A46761 /* Supporting Files */,
+			);
+			path = interconnectgame;
+			sourceTree = "<group>";
+		};
+		55CD27561A233EC800A46761 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				55CD27571A233EC800A46761 /* Info.plist */,
+				55CD275B1A233EC800A46761 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		55CD27691A233EC800A46761 /* interconnectgameTests */ = {
+			isa = PBXGroup;
+			children = (
+				55CD276C1A233EC800A46761 /* interconnectgameTests.m */,
+				55CD276A1A233EC800A46761 /* Supporting Files */,
+			);
+			path = interconnectgameTests;
+			sourceTree = "<group>";
+		};
+		55CD276A1A233EC800A46761 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				55CD276B1A233EC800A46761 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		55CD27521A233EC800A46761 /* interconnectgame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgame" */;
+			buildPhases = (
+				55CD274F1A233EC800A46761 /* Sources */,
+				55CD27501A233EC800A46761 /* Frameworks */,
+				55CD27511A233EC800A46761 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = interconnectgame;
+			productName = interconnectgame;
+			productReference = 55CD27531A233EC800A46761 /* interconnectgame.app */;
+			productType = "com.apple.product-type.application";
+		};
+		55CD27651A233EC800A46761 /* interconnectgameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55CD27731A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgameTests" */;
+			buildPhases = (
+				55CD27621A233EC800A46761 /* Sources */,
+				55CD27631A233EC800A46761 /* Frameworks */,
+				55CD27641A233EC800A46761 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55CD27681A233EC800A46761 /* PBXTargetDependency */,
+			);
+			name = interconnectgameTests;
+			productName = interconnectgameTests;
+			productReference = 55CD27661A233EC800A46761 /* interconnectgameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55CD274B1A233EC800A46761 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Uli Kusterer";
+				TargetAttributes = {
+					55CD27521A233EC800A46761 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					55CD27651A233EC800A46761 = {
+						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 55CD27521A233EC800A46761;
+					};
+				};
+			};
+			buildConfigurationList = 55CD274E1A233EC800A46761 /* Build configuration list for PBXProject "interconnectgame" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 55CD274A1A233EC800A46761;
+			productRefGroup = 55CD27541A233EC800A46761 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55CD27521A233EC800A46761 /* interconnectgame */,
+				55CD27651A233EC800A46761 /* interconnectgameTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55CD27511A233EC800A46761 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55CD275E1A233EC800A46761 /* Images.xcassets in Resources */,
+				55CD27611A233EC800A46761 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55CD27641A233EC800A46761 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		55CD274F1A233EC800A46761 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55CD275C1A233EC800A46761 /* main.m in Sources */,
+				55CD275A1A233EC800A46761 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55CD27621A233EC800A46761 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		55CD27681A233EC800A46761 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55CD27521A233EC800A46761 /* interconnectgame */;
+			targetProxy = 55CD27671A233EC800A46761 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		55CD275F1A233EC800A46761 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				55CD27601A233EC800A46761 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		55CD276E1A233EC800A46761 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		55CD276F1A233EC800A46761 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		55CD27711A233EC800A46761 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = interconnectgame/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		55CD27721A233EC800A46761 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = interconnectgame/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		55CD27741A233EC800A46761 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = interconnectgameTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/interconnectgame.app/Contents/MacOS/interconnectgame";
+			};
+			name = Debug;
+		};
+		55CD27751A233EC800A46761 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = interconnectgameTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/interconnectgame.app/Contents/MacOS/interconnectgame";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		55CD274E1A233EC800A46761 /* Build configuration list for PBXProject "interconnectgame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55CD276E1A233EC800A46761 /* Debug */,
+				55CD276F1A233EC800A46761 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55CD27701A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55CD27711A233EC800A46761 /* Debug */,
+				55CD27721A233EC800A46761 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		55CD27731A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55CD27741A233EC800A46761 /* Debug */,
+				55CD27751A233EC800A46761 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55CD274B1A233EC800A46761 /* Project object */;
+}
