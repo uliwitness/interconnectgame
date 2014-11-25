@@ -66,7 +66,7 @@
 	if( didWork.boolValue )
 	{
 		[self.progressSpinner setDoubleValue: 10.0];
-		mChatClient->current_session()->printf( "/last_room" );
+		mChatClient->current_session()->printf( "/last_room\r\n" );
 	}
 	else
 	{

@@ -49,6 +49,12 @@ int	main( int arc, const char** argv )
 		
 		session->disconnect();
 	} );
+	server.register_command_handler( "/last_room", []( session_ptr session, std::string currRequest, chatserver* server )
+	{
+		session->printf( "/last_room_was startroom\n" );
+		
+		session->disconnect();
+	} );
 	// /howdy
 	server.register_command_handler( "/version", []( session_ptr session, std::string currRequest, chatserver* server )
 	{
