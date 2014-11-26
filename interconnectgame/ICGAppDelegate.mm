@@ -11,9 +11,12 @@
 #import <WebKit/WebKit.h>
 
 
+using namespace eleven;
+
+
 @interface ICGAppDelegate ()
 {
-	eleven::chatclient*		mChatClient;
+	chatclient*		mChatClient;
 }
 
 @property (weak) IBOutlet NSWindow *loginWindow;
@@ -50,7 +53,11 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
 	if( mChatClient )
-		mChatClient->current_session()->printf("/logout\r\n");
+	{
+		session_ptr	session = mChatClient->current_session();
+		if( session )
+			session->printf("/logout\r\n");
+	}
 }
 
 
@@ -97,16 +104,16 @@
 	[self.progressSpinner startAnimation: self];
 	[self.progressSpinner setDoubleValue: 2.0];
 
-	mChatClient = new eleven::chatclient( "127.0.0.1", 13762, [[NSBundle mainBundle] pathForResource: @"settings" ofType:@""].fileSystemRepresentation );
-	mChatClient->register_message_handler( "/logged_in", [=]( eleven::session_ptr inSession, std::string inLine, eleven::chatclient* inSender)
+	mChatClient = new chatclient( "127.0.0.1", 13762, [[NSBundle mainBundle] pathForResource: @"settings" ofType:@""].fileSystemRepresentation );
+	mChatClient->register_message_handler( "/logged_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		[self performSelectorOnMainThread: @selector(loginDidWork:) withObject: @YES waitUntilDone: NO];
 	} );
-	mChatClient->register_message_handler( "/!could_not_log_in", [=]( eleven::session_ptr inSession, std::string inLine, eleven::chatclient* inSender)
+	mChatClient->register_message_handler( "/!could_not_log_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		[self performSelectorOnMainThread: @selector(loginDidWork:) withObject: @NO waitUntilDone: NO];
 	} );
-	mChatClient->register_message_handler( "*", []( eleven::session_ptr inSession, std::string inLine, eleven::chatclient* inSender)
+	mChatClient->register_message_handler( "*", []( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		NSLog( @"%s", inLine.c_str() );
 	} );

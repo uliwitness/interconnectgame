@@ -10,6 +10,7 @@
 #include "eleven_users.h"
 #include "eleven_channel.h"
 #include "eleven_log.h"
+#include "eleven_database_mysql.h"
 
 
 using namespace eleven;
@@ -17,6 +18,9 @@ using namespace eleven;
 
 int	main( int arc, const char** argv )
 {
+	database_mysql	theDB("serversettings");
+	user theUser = theDB.user_from_id(1);
+	
 	chatserver		server( "serversettings", 13762 );
 	
 	if( !server.valid() )
