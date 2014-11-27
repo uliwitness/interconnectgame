@@ -61,46 +61,46 @@
 
 /* Begin PBXFileReference section */
 		550EF6471A245A2E00994474 /* libmysqlcppconn-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libmysqlcppconn-static.a"; path = "../../../../../usr/local/lib/libmysqlcppconn-static.a"; sourceTree = "<group>"; };
-		550EF67C1A24804D00994474 /* eleven_database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database.h; path = ../../eleven/eleven_chatserver/eleven_database.h; sourceTree = "<group>"; };
+		550EF67C1A24804D00994474 /* eleven_database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database.h; path = ../eleven/eleven_chatserver/eleven_database.h; sourceTree = "<group>"; };
 		550EF67E1A24854200994474 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = ../../../../../usr/local/lib/libmysqlclient.a; sourceTree = "<group>"; };
-		550EF6801A25BFBC00994474 /* eleven_database_mysql.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database_mysql.cpp; path = ../../eleven/eleven_chatserver/eleven_database_mysql.cpp; sourceTree = "<group>"; };
-		550EF6811A25BFBC00994474 /* eleven_database_mysql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database_mysql.h; path = ../../eleven/eleven_chatserver/eleven_database_mysql.h; sourceTree = "<group>"; };
-		550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database_flatfile.cpp; path = ../../eleven/eleven_chatserver/eleven_database_flatfile.cpp; sourceTree = "<group>"; };
-		550EF6841A25C07F00994474 /* eleven_database_flatfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database_flatfile.h; path = ../../eleven/eleven_chatserver/eleven_database_flatfile.h; sourceTree = "<group>"; };
-		550EF6861A25C75500994474 /* eleven_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database.cpp; path = ../../eleven/eleven_chatserver/eleven_database.cpp; sourceTree = "<group>"; };
+		550EF6801A25BFBC00994474 /* eleven_database_mysql.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database_mysql.cpp; path = ../eleven/eleven_chatserver/eleven_database_mysql.cpp; sourceTree = "<group>"; };
+		550EF6811A25BFBC00994474 /* eleven_database_mysql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database_mysql.h; path = ../eleven/eleven_chatserver/eleven_database_mysql.h; sourceTree = "<group>"; };
+		550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database_flatfile.cpp; path = ../eleven/eleven_chatserver/eleven_database_flatfile.cpp; sourceTree = "<group>"; };
+		550EF6841A25C07F00994474 /* eleven_database_flatfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database_flatfile.h; path = ../eleven/eleven_chatserver/eleven_database_flatfile.h; sourceTree = "<group>"; };
+		550EF6861A25C75500994474 /* eleven_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database.cpp; path = ../eleven/eleven_chatserver/eleven_database.cpp; sourceTree = "<group>"; };
 		55CD27661A233EC800A46761 /* interconnectgameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = interconnectgameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD276B1A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55CD276C1A233EC800A46761 /* interconnectgameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = interconnectgameTests.m; sourceTree = "<group>"; };
-		55CD27761A23401500A46761 /* eleven_ini_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_ini_file.cpp; path = ../../eleven/eleven_ini_file.cpp; sourceTree = "<group>"; };
-		55CD27771A23401500A46761 /* eleven_ini_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_ini_file.h; path = ../../eleven/eleven_ini_file.h; sourceTree = "<group>"; };
-		55CD27781A23401500A46761 /* eleven_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_log.cpp; path = ../../eleven/eleven_log.cpp; sourceTree = "<group>"; };
-		55CD27791A23401500A46761 /* eleven_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_log.h; path = ../../eleven/eleven_log.h; sourceTree = "<group>"; };
-		55CD277A1A23401500A46761 /* eleven_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_session.cpp; path = ../../eleven/eleven_session.cpp; sourceTree = "<group>"; };
-		55CD277B1A23401500A46761 /* eleven_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_session.h; path = ../../eleven/eleven_session.h; sourceTree = "<group>"; };
-		55CD27831A23405E00A46761 /* b64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b64.c; path = ../../eleven/libscrypt/b64.c; sourceTree = "<group>"; };
-		55CD27841A23405E00A46761 /* b64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = b64.h; path = ../../eleven/libscrypt/b64.h; sourceTree = "<group>"; };
-		55CD27851A23405E00A46761 /* crypto_scrypt-check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-check.c"; path = "../../eleven/libscrypt/crypto_scrypt-check.c"; sourceTree = "<group>"; };
-		55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hash.c"; path = "../../eleven/libscrypt/crypto_scrypt-hash.c"; sourceTree = "<group>"; };
-		55CD27871A23405E00A46761 /* crypto_scrypt-hexconvert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hexconvert.c"; path = "../../eleven/libscrypt/crypto_scrypt-hexconvert.c"; sourceTree = "<group>"; };
-		55CD27881A23405E00A46761 /* crypto_scrypt-hexconvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "crypto_scrypt-hexconvert.h"; path = "../../eleven/libscrypt/crypto_scrypt-hexconvert.h"; sourceTree = "<group>"; };
-		55CD27891A23405E00A46761 /* crypto_scrypt-nosse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-nosse.c"; path = "../../eleven/libscrypt/crypto_scrypt-nosse.c"; sourceTree = "<group>"; };
-		55CD278A1A23405E00A46761 /* crypto-mcf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-mcf.c"; path = "../../eleven/libscrypt/crypto-mcf.c"; sourceTree = "<group>"; };
-		55CD278B1A23405E00A46761 /* crypto-scrypt-saltgen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-scrypt-saltgen.c"; path = "../../eleven/libscrypt/crypto-scrypt-saltgen.c"; sourceTree = "<group>"; };
-		55CD278C1A23405E00A46761 /* libscrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libscrypt.h; path = ../../eleven/libscrypt/libscrypt.h; sourceTree = "<group>"; };
-		55CD278D1A23405E00A46761 /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha256.c; path = ../../eleven/libscrypt/sha256.c; sourceTree = "<group>"; };
-		55CD278E1A23405E00A46761 /* sha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha256.h; path = ../../eleven/libscrypt/sha256.h; sourceTree = "<group>"; };
-		55CD278F1A23405E00A46761 /* slowequals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = slowequals.c; path = ../../eleven/libscrypt/slowequals.c; sourceTree = "<group>"; };
-		55CD27901A23405E00A46761 /* slowequals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = slowequals.h; path = ../../eleven/libscrypt/slowequals.h; sourceTree = "<group>"; };
-		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
+		55CD27761A23401500A46761 /* eleven_ini_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_ini_file.cpp; path = ../eleven/eleven_ini_file.cpp; sourceTree = "<group>"; };
+		55CD27771A23401500A46761 /* eleven_ini_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_ini_file.h; path = ../eleven/eleven_ini_file.h; sourceTree = "<group>"; };
+		55CD27781A23401500A46761 /* eleven_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_log.cpp; path = ../eleven/eleven_log.cpp; sourceTree = "<group>"; };
+		55CD27791A23401500A46761 /* eleven_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_log.h; path = ../eleven/eleven_log.h; sourceTree = "<group>"; };
+		55CD277A1A23401500A46761 /* eleven_session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_session.cpp; path = ../eleven/eleven_session.cpp; sourceTree = "<group>"; };
+		55CD277B1A23401500A46761 /* eleven_session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_session.h; path = ../eleven/eleven_session.h; sourceTree = "<group>"; };
+		55CD27831A23405E00A46761 /* b64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b64.c; path = ../eleven/libscrypt/b64.c; sourceTree = "<group>"; };
+		55CD27841A23405E00A46761 /* b64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = b64.h; path = ../eleven/libscrypt/b64.h; sourceTree = "<group>"; };
+		55CD27851A23405E00A46761 /* crypto_scrypt-check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-check.c"; path = "../eleven/libscrypt/crypto_scrypt-check.c"; sourceTree = "<group>"; };
+		55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hash.c"; path = "../eleven/libscrypt/crypto_scrypt-hash.c"; sourceTree = "<group>"; };
+		55CD27871A23405E00A46761 /* crypto_scrypt-hexconvert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-hexconvert.c"; path = "../eleven/libscrypt/crypto_scrypt-hexconvert.c"; sourceTree = "<group>"; };
+		55CD27881A23405E00A46761 /* crypto_scrypt-hexconvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "crypto_scrypt-hexconvert.h"; path = "../eleven/libscrypt/crypto_scrypt-hexconvert.h"; sourceTree = "<group>"; };
+		55CD27891A23405E00A46761 /* crypto_scrypt-nosse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_scrypt-nosse.c"; path = "../eleven/libscrypt/crypto_scrypt-nosse.c"; sourceTree = "<group>"; };
+		55CD278A1A23405E00A46761 /* crypto-mcf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-mcf.c"; path = "../eleven/libscrypt/crypto-mcf.c"; sourceTree = "<group>"; };
+		55CD278B1A23405E00A46761 /* crypto-scrypt-saltgen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto-scrypt-saltgen.c"; path = "../eleven/libscrypt/crypto-scrypt-saltgen.c"; sourceTree = "<group>"; };
+		55CD278C1A23405E00A46761 /* libscrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libscrypt.h; path = ../eleven/libscrypt/libscrypt.h; sourceTree = "<group>"; };
+		55CD278D1A23405E00A46761 /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sha256.c; path = ../eleven/libscrypt/sha256.c; sourceTree = "<group>"; };
+		55CD278E1A23405E00A46761 /* sha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha256.h; path = ../eleven/libscrypt/sha256.h; sourceTree = "<group>"; };
+		55CD278F1A23405E00A46761 /* slowequals.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = slowequals.c; path = ../eleven/libscrypt/slowequals.c; sourceTree = "<group>"; };
+		55CD27901A23405E00A46761 /* slowequals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = slowequals.h; path = ../eleven/libscrypt/slowequals.h; sourceTree = "<group>"; };
+		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
 		55CD27A71A23E16100A46761 /* serversettings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = serversettings; sourceTree = SOURCE_ROOT; };
 		55CD27AD1A23E19200A46761 /* interconnectserver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = interconnectserver; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD27B51A23E29900A46761 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		55CD27B71A23E30B00A46761 /* eleven_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_channel.cpp; path = ../../eleven/eleven_chatserver/eleven_channel.cpp; sourceTree = "<group>"; };
-		55CD27B81A23E30B00A46761 /* eleven_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_channel.h; path = ../../eleven/eleven_chatserver/eleven_channel.h; sourceTree = "<group>"; };
-		55CD27B91A23E30B00A46761 /* eleven_chatserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_chatserver.cpp; path = ../../eleven/eleven_chatserver/eleven_chatserver.cpp; sourceTree = "<group>"; };
-		55CD27BA1A23E30B00A46761 /* eleven_chatserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_chatserver.h; path = ../../eleven/eleven_chatserver/eleven_chatserver.h; sourceTree = "<group>"; };
-		55CD27BB1A23E30B00A46761 /* eleven_users.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_users.cpp; path = ../../eleven/eleven_chatserver/eleven_users.cpp; sourceTree = "<group>"; };
-		55CD27BC1A23E30B00A46761 /* eleven_users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_users.h; path = ../../eleven/eleven_chatserver/eleven_users.h; sourceTree = "<group>"; };
+		55CD27B71A23E30B00A46761 /* eleven_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_channel.cpp; path = ../eleven/eleven_chatserver/eleven_channel.cpp; sourceTree = "<group>"; };
+		55CD27B81A23E30B00A46761 /* eleven_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_channel.h; path = ../eleven/eleven_chatserver/eleven_channel.h; sourceTree = "<group>"; };
+		55CD27B91A23E30B00A46761 /* eleven_chatserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_chatserver.cpp; path = ../eleven/eleven_chatserver/eleven_chatserver.cpp; sourceTree = "<group>"; };
+		55CD27BA1A23E30B00A46761 /* eleven_chatserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_chatserver.h; path = ../eleven/eleven_chatserver/eleven_chatserver.h; sourceTree = "<group>"; };
+		55CD27BB1A23E30B00A46761 /* eleven_users.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_users.cpp; path = ../eleven/eleven_chatserver/eleven_users.cpp; sourceTree = "<group>"; };
+		55CD27BC1A23E30B00A46761 /* eleven_users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_users.h; path = ../eleven/eleven_chatserver/eleven_users.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +128,6 @@
 			children = (
 				55CD27551A233EC800A46761 /* interconnectserver */,
 				55CD27691A233EC800A46761 /* interconnectgameTests */,
-				55CD27AE1A23E19200A46761 /* interconnectserver */,
 				55CD27541A233EC800A46761 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -226,13 +225,6 @@
 				55CD27A71A23E16100A46761 /* serversettings */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		55CD27AE1A23E19200A46761 /* interconnectserver */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = interconnectserver;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
