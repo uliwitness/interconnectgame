@@ -26,12 +26,8 @@ int	main( int arc, const char** argv )
 	if( !server.valid() )
 		return 110;
 	
-	if( !user_session::load_users( "serversettings" ) )
-	{
-		fprintf(stderr, "Can't find account database file accounts.txt.\n");
-		return 100;
-	}
-		
+	user_session::set_user_database(&theDB);
+	
 	// /login <userName> <password>
 	server.register_command_handler( "/login", user_session::login_handler );
 	// /adduser <userName> <password> <confirmPassword> [moderator] [owner]
