@@ -327,7 +327,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin/:$PATH #pull in autoconf, automake and libtool from Brew\ncd \"${PROJECT_DIR}/eleven/libressl-portable/\"\n./autogen.sh\n./configure\nmake check\nmake install DESTDIR=\"${PROJECT_DIR}/eleven/libressl-portable/build/\"\n";
+			shellScript = "export PATH=/usr/local/bin/:$PATH #pull in autoconf, automake and libtool from Brew\ncd \"${PROJECT_DIR}/eleven/libressl-portable/\"\necho \"note: building libressl from ${PROJECT_DIR}/eleven/libressl-portable/\"\n./autogen.sh\n./configure\nmake check\nmake install DESTDIR=\"${PROJECT_DIR}/eleven/libressl-portable/build/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
