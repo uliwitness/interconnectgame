@@ -9,6 +9,7 @@
 #import "ICGAppDelegate.h"
 #import "eleven_chatclient.h"
 #import <WebKit/WebKit.h>
+#import "ICGKeychainWrapper.h"
 
 
 using namespace eleven;
@@ -43,9 +44,24 @@ using namespace eleven;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-	[self.webView.mainFrame loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: @"http://the-interconnect.com"]]];
+	ini_file	theIniFile;
+	if( !theIniFile.open( [[NSBundle mainBundle] pathForResource: @"settings/settings.ini" ofType:@""].fileSystemRepresentation ) )
+	{
+		NSRunAlertPanel( @"Application Damaged", @"The settings file could not be found. Please re-download this application.", @"Quit", @"", @"" );
+		[NSApplication.sharedApplication terminate: self];
+		return;
+	}
+	NSString	*	urlString = [NSString stringWithUTF8String: theIniFile.setting("welcomeurl").c_str()];
+	[self.webView.mainFrame loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: urlString]]];
 	NSString	*	userName = [[NSUserDefaults standardUserDefaults] stringForKey: @"ICGUserName"];
 	[self.userNameField setStringValue: userName ?: @""];
+	
+	NSString*	password = @"";
+	password = [ICGKeychainWrapper keychainStringFromMatchingIdentifier: @"interconnectGamePassword"];
+	if( !password )
+		password = @"";
+	[self.passwordField setStringValue: password];
+	
 	[self.loginWindow makeKeyAndOrderFront: self];
 }
 
@@ -72,6 +88,9 @@ using namespace eleven;
 	
 	if( didWork.boolValue )
 	{
+		if( ![ICGKeychainWrapper updateKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"] )
+			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
+		
 		[self.progressSpinner setDoubleValue: 10.0];
 		mChatClient->current_session()->printf( "/last_room\r\n" );
 	}
@@ -80,6 +99,8 @@ using namespace eleven;
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
 		[self.progressSpinner setDoubleValue: 0.0];
+		[self.userNameField setEnabled: YES];
+		[self.passwordField setEnabled: YES];
 	}
 }
 
@@ -103,6 +124,8 @@ using namespace eleven;
 	self.logInButton.enabled = NO;
 	[self.progressSpinner startAnimation: self];
 	[self.progressSpinner setDoubleValue: 2.0];
+	[self.userNameField setEnabled: NO];
+	[self.passwordField setEnabled: NO];
 
 	mChatClient = new chatclient( "127.0.0.1", 13762, [[NSBundle mainBundle] pathForResource: @"settings" ofType:@""].fileSystemRepresentation );
 	mChatClient->register_message_handler( "/logged_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
@@ -130,6 +153,8 @@ using namespace eleven;
 		[self.progressSpinner setDoubleValue: 0.0];
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
+		[self.userNameField setEnabled: YES];
+		[self.passwordField setEnabled: YES];
 	}
 }
 

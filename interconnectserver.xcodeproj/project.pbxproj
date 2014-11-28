@@ -26,7 +26,6 @@
 		550EF6821A25BFBC00994474 /* eleven_database_mysql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550EF6801A25BFBC00994474 /* eleven_database_mysql.cpp */; };
 		550EF6851A25C07F00994474 /* eleven_database_flatfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */; };
 		550EF6871A25C75500994474 /* eleven_database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550EF6861A25C75500994474 /* eleven_database.cpp */; };
-		55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD276C1A233EC800A46761 /* interconnectgameTests.m */; };
 		55CD27B41A23E26100A46761 /* serversettings in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55CD27A71A23E16100A46761 /* serversettings */; };
 		55CD27B61A23E29900A46761 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27B51A23E29900A46761 /* main.cpp */; };
 		55CD27BD1A23E30B00A46761 /* eleven_channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27B71A23E30B00A46761 /* eleven_channel.cpp */; };
@@ -68,9 +67,6 @@
 		550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database_flatfile.cpp; path = ../eleven/eleven_chatserver/eleven_database_flatfile.cpp; sourceTree = "<group>"; };
 		550EF6841A25C07F00994474 /* eleven_database_flatfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_database_flatfile.h; path = ../eleven/eleven_chatserver/eleven_database_flatfile.h; sourceTree = "<group>"; };
 		550EF6861A25C75500994474 /* eleven_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database.cpp; path = ../eleven/eleven_chatserver/eleven_database.cpp; sourceTree = "<group>"; };
-		55CD27661A233EC800A46761 /* interconnectgameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = interconnectgameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55CD276B1A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		55CD276C1A233EC800A46761 /* interconnectgameTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = interconnectgameTests.m; sourceTree = "<group>"; };
 		55CD27761A23401500A46761 /* eleven_ini_file.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_ini_file.cpp; path = ../eleven/eleven_ini_file.cpp; sourceTree = "<group>"; };
 		55CD27771A23401500A46761 /* eleven_ini_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_ini_file.h; path = ../eleven/eleven_ini_file.h; sourceTree = "<group>"; };
 		55CD27781A23401500A46761 /* eleven_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_log.cpp; path = ../eleven/eleven_log.cpp; sourceTree = "<group>"; };
@@ -104,13 +100,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		55CD27631A233EC800A46761 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55CD27AA1A23E19200A46761 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,7 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				55CD27551A233EC800A46761 /* interconnectserver */,
-				55CD27691A233EC800A46761 /* interconnectgameTests */,
 				55CD27541A233EC800A46761 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -135,7 +123,6 @@
 		55CD27541A233EC800A46761 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55CD27661A233EC800A46761 /* interconnectgameTests.xctest */,
 				55CD27AD1A23E19200A46761 /* interconnectserver */,
 			);
 			name = Products;
@@ -156,23 +143,6 @@
 			);
 			name = interconnectserver;
 			path = interconnectgame;
-			sourceTree = "<group>";
-		};
-		55CD27691A233EC800A46761 /* interconnectgameTests */ = {
-			isa = PBXGroup;
-			children = (
-				55CD276C1A233EC800A46761 /* interconnectgameTests.m */,
-				55CD276A1A233EC800A46761 /* Supporting Files */,
-			);
-			path = interconnectgameTests;
-			sourceTree = "<group>";
-		};
-		55CD276A1A233EC800A46761 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				55CD276B1A233EC800A46761 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		55CD27821A23402F00A46761 /* Networking */ = {
@@ -230,23 +200,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		55CD27651A233EC800A46761 /* interconnectgameTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55CD27731A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgameTests" */;
-			buildPhases = (
-				55CD27621A233EC800A46761 /* Sources */,
-				55CD27631A233EC800A46761 /* Frameworks */,
-				55CD27641A233EC800A46761 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = interconnectgameTests;
-			productName = interconnectgameTests;
-			productReference = 55CD27661A233EC800A46761 /* interconnectgameTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		55CD27AC1A23E19200A46761 /* interconnectserver */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55CD27B11A23E19200A46761 /* Build configuration list for PBXNativeTarget "interconnectserver" */;
@@ -273,10 +226,6 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Uli Kusterer";
 				TargetAttributes = {
-					55CD27651A233EC800A46761 = {
-						CreatedOnToolsVersion = 6.1;
-						TestTargetID = 55CD27521A233EC800A46761;
-					};
 					55CD279F1A23D27700A46761 = {
 						CreatedOnToolsVersion = 6.1;
 					};
@@ -299,21 +248,10 @@
 			projectRoot = "";
 			targets = (
 				55CD27AC1A23E19200A46761 /* interconnectserver */,
-				55CD27651A233EC800A46761 /* interconnectgameTests */,
 				55CD279F1A23D27700A46761 /* libressl */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		55CD27641A233EC800A46761 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		55CD27A31A23D28000A46761 /* ShellScript */ = {
@@ -332,14 +270,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		55CD27621A233EC800A46761 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55CD27A91A23E19200A46761 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -445,52 +375,6 @@
 			};
 			name = Release;
 		};
-		55CD27741A233EC800A46761 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = interconnectgameTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				OTHER_LDFLAGS = (
-					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
-					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Interconnect.app/Contents/MacOS/The Interconnect";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include";
-			};
-			name = Debug;
-		};
-		55CD27751A233EC800A46761 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = interconnectgameTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				OTHER_LDFLAGS = (
-					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libcrypto.a",
-					"${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/lib/libssl.a",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/The Interconnect.app/Contents/MacOS/The Interconnect";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/eleven/libressl-portable/build/usr/local/include";
-			};
-			name = Release;
-		};
 		55CD27A01A23D27700A46761 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -559,15 +443,6 @@
 			buildConfigurations = (
 				55CD276E1A233EC800A46761 /* Debug */,
 				55CD276F1A233EC800A46761 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55CD27731A233EC800A46761 /* Build configuration list for PBXNativeTarget "interconnectgameTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55CD27741A233EC800A46761 /* Debug */,
-				55CD27751A233EC800A46761 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
