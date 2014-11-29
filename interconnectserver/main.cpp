@@ -10,16 +10,35 @@
 #include "eleven_users.h"
 #include "eleven_channel.h"
 #include "eleven_log.h"
-#include "eleven_database_mysql.h"
+#include "interconnect_database.h"
 
 
 using namespace eleven;
+using namespace interconnect;
 
 
 int	main( int arc, const char** argv )
 {
-	database_mysql	theDB("serversettings");
-	user theUser = theDB.user_from_id(1);
+	interconnect::database	theDB("serversettings");
+	
+	theDB.set_user_state_callback( [](const user_state & inUserState, eleven::user_id inUserID )
+	{
+		session_ptr	session = user_session::session_for_user( inUserID );
+		session->printf( "/currentroom %s\r\n", inUserState.mCurrentRoom.c_str() );
+		session->printf( "/primarymission %d\r\n", inUserState.mPrimaryMission );
+	});
+	theDB.set_missions_callback( [](const mission & inTargetMission, eleven::user_id inUserID )
+	{
+		session_ptr	session = user_session::session_for_user( inUserID );
+		session->printf( "/mission %d %s\r\n", inTargetMission.mID, inTargetMission.mCurrentRoomName.c_str() );
+		session->printf( "/mission_display_name %d %s\r\n", inTargetMission.mID, inTargetMission.mDisplayName.c_str() );
+	});
+	theDB.set_objectives_callback( [](const mission_objective & inObjective, mission_id inMission, eleven::user_id inUserID )
+	{
+		session_ptr	session = user_session::session_for_user( inUserID );
+		session->printf( "/mission_objective %d %d %d %d %d\r\n", inObjective.mID, inMission, inObjective.mCurrentCount, inObjective.mMaxCount, inObjective.mPhysicalLocation );
+		session->printf( "/mission_objective_display_name %d %d %s\r\n", inObjective.mID, inMission, inObjective.mDisplayName.c_str() );
+	});
 	
 	chatserver		server( "serversettings", 13762 );
 	
@@ -49,11 +68,24 @@ int	main( int arc, const char** argv )
 		
 		session->disconnect();
 	} );
-	server.register_command_handler( "/last_room", []( session_ptr session, std::string currRequest, chatserver* server )
+	server.register_command_handler( "/last_room", [&theDB]( session_ptr session, std::string currRequest, chatserver* server )
 	{
-		session->printf( "/last_room_was startroom\n" );
+		user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);
+		if( !loginInfo )
+		{
+			session->sendln( "/!not_logged_in You must log in first." );
+			return;
+		}
 		
-		session->disconnect();
+		theDB.request_current_state( loginInfo->current_user() );
+	} );
+	server.register_command_handler( "/test", [&theDB]( session_ptr session, std::string currRequest, chatserver* server )
+	{
+		user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);		
+		theDB.add_mission_for_user( 1, "Welcome to Montreal!", "hub_back_alley", loginInfo->current_user() );
+		theDB.set_user_state( 1, "hub", loginInfo->current_user() );
+		theDB.add_objective_to_mission_for_user( 1, "Talk to other applicants", 3, 0, 1, loginInfo->current_user() );
+		theDB.add_count_to_objective_of_mission_for_user( 2, 1, 1, loginInfo->current_user() );
 	} );
 	// /howdy
 	server.register_command_handler( "/version", []( session_ptr session, std::string currRequest, chatserver* server )

@@ -21,6 +21,16 @@ namespace interconnect
 	
 	typedef uint32_t	map_object_id;
 	
+	class user_state
+	{
+	public:
+		user_state() : mPrimaryMission(0)	{};
+		user_state( std::string inCurrentRoomName, mission_id inPrimaryMission ) : mCurrentRoom(inCurrentRoomName), mPrimaryMission(inPrimaryMission)	{};
+		
+		std::string		mCurrentRoom;
+		mission_id		mPrimaryMission;
+	};
+	
 	class mission_objective
 	{
 	public:
@@ -48,8 +58,13 @@ namespace interconnect
 	class database : public eleven::database_mysql
 	{
 	public:
-		void	request_current_missions( eleven::user_id currentUser );
+		database( std::string inSettingsFolderPath ) : database_mysql( inSettingsFolderPath ) {};
+	
+		/*! Retrieve complete current client state for this user and
+			inform the missions, objectives and user state callback of it. */
+		void	request_current_state( eleven::user_id currentUser );
 		
+		void	set_user_state( mission_id inPrimaryMissionID, std::string inCurrentRoomName, eleven::user_id currentUser );
 		void	add_mission_for_user( mission_id inMissionID, std::string inDisplayName, std::string inRoomName, eleven::user_id currentUser );
 		void	add_objective_to_mission_for_user( mission_objective_id inID, std::string inDisplayName, uint32_t mMaxCount, map_object_id inPhysicalLocation, mission_id inMissionID, eleven::user_id currentUser );
 		void	add_count_to_objective_of_mission_for_user( int32_t inCount, mission_objective_id inID, mission_id inMissionID, eleven::user_id currentUser );
@@ -57,11 +72,13 @@ namespace interconnect
 		void	delete_mission_for_user( mission_id inMissionID, eleven::user_id currentUser );
 		
 		void	set_missions_callback( std::function<void(const mission&,eleven::user_id)> inMissionsCallback )	{ mMissionsCallback = inMissionsCallback; };	// When you receive a mission, Caller should throw away any objectives she may have cached for it. The objectives callback will be called soon with its objectives.
-		void	set_objectives_callback( std::function<void(const mission_objective&,mission_id,eleven::user_id)> inObjectivesCallback )	{ mObjectivesCallback = inObjectivesCallback; };	// Add this objective to the list of mission objectives for the specified user.
+		void	set_objectives_callback( std::function<void(const mission_objective&,mission_id,eleven::user_id)> inObjectivesCallback )	{ mObjectivesCallback = inObjectivesCallback; };	// Client should add this objective to the list of mission objectives for the specified user.
+		void	set_user_state_callback( std::function<void(const user_state&,eleven::user_id)> inUserStateCallback )	{ mUserStateCallback = inUserStateCallback; };	// Client should use this state to find out what room to display and what mission to show at top of mission log.
 		
 	protected:
 		std::function<void(const mission&,eleven::user_id)>	mMissionsCallback;
 		std::function<void(const mission_objective&,mission_id,eleven::user_id)>	mObjectivesCallback;
+		std::function<void(const user_state&,eleven::user_id)>	mUserStateCallback;
 	};
 
 }

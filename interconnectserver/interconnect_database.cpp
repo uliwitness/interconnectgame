@@ -19,11 +19,48 @@
 using namespace interconnect;
 
 
-void	database::request_current_missions( eleven::user_id currentUser )
+void	database::request_current_state( eleven::user_id currentUser )
 {
 	sql::PreparedStatement	*stmt = NULL;
 	sql::ResultSet			*res = NULL;
-	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
+	user_state				currUserState;
+	bool					foundUserState = false;
+	
+	try
+	{
+		stmt = mConnection->prepareStatement( "SELECT * FROM user_state WHERE userid=?" );
+		stmt->setInt( 1, currentUser );
+		res = stmt->executeQuery();
+		while( res->next() )
+		{
+			currUserState.mPrimaryMission = res->getInt("primarymissionid");
+			currUserState.mCurrentRoom = res->getString("currentroom");
+			
+			mUserStateCallback( currUserState, currentUser );
+			foundUserState = true;
+			break;
+		}
+		delete res;
+		delete stmt;
+		
+		if( !foundUserState )	// User had no state yet.
+		{
+			mUserStateCallback( currUserState, currentUser );
+		}
+	}
+	catch (sql::SQLException &e)
+	{
+		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions yet.
+		{
+			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME ), currentUser );
+		}
+		else
+		{
+			eleven::log( "Error finding missions: %s (code=%d state=%s)\n", e.what(), e.getErrorCode(), e.getSQLState().c_str() );
+		}
+	}
+
+	mission		currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
 	
 	try
 	{
@@ -121,7 +158,7 @@ void	database::add_mission_for_user( mission_id inMissionID, std::string inDispl
 								"id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
 								"name CHAR(255),\n"
 								"currentroom CHAR(255) NOT NULL,\n"
-								"userid INT FOREIGN KEY,\n"
+								"userid INT\n"
 								");\n");
 				delete stmt2;
 				
@@ -181,9 +218,9 @@ void	database::add_objective_to_mission_for_user( mission_objective_id inID, std
 								"name CHAR(255) NOT NULL,\n"
 								"maxcount INT,\n"
 								"currentcount INT,\n"
-								"missionid INT FOREIGN KEY,\n"
+								"missionid INT,\n"
 								"physicallocation INT,\n"
-								"userid INT FOREIGN KEY\n"
+								"userid INT\n"
 								");\n");
 				delete stmt2;
 				
@@ -218,7 +255,7 @@ void	database::add_count_to_objective_of_mission_for_user( int32_t inCount, miss
 	/*
 		!!! ASSUMPTION!
 		
-		This code only works if there is only ever one session per user. As soon as 2 sessions call this from different threads.
+		This code only works if there is only ever one session per user. As soon as 2 sessions call this from different threads, we'll lose increments and we'd need a lock on the database.
 	*/
 	
 	sql::PreparedStatement	*stmt = NULL;
@@ -229,7 +266,7 @@ void	database::add_count_to_objective_of_mission_for_user( int32_t inCount, miss
 	{
 		int		currAmount = 0;
 		
-		stmt = mConnection->prepareStatement( "SELECT * FROM mission_objectives WHERE userid=? AND id=? AND missionid=?" );
+		stmt = mConnection->prepareStatement( "SELECT * FROM mission_objectives WHERE userid=? AND id=? AND missionid=?;" );
 		stmt->setInt( 1, currentUser );
 		stmt->setInt( 2, inID );
 		stmt->setInt( 3, inMissionID );
@@ -242,7 +279,7 @@ void	database::add_count_to_objective_of_mission_for_user( int32_t inCount, miss
 		delete res;
 		delete stmt;
 		
-		stmt = mConnection->prepareStatement( "UPDATE TABLE mission_objectives SET currentcount=? WHERE userid=? AND id=? AND missionid=?" );
+		stmt = mConnection->prepareStatement( "UPDATE mission_objectives SET currentcount=? WHERE userid=? AND id=? AND missionid=?;" );
 		stmt->setInt( 1, currAmount +inCount );
 		stmt->setInt( 2, currentUser );
 		stmt->setInt( 3, inID );
@@ -302,4 +339,80 @@ void	database::delete_mission_for_user( mission_id inMissionID, eleven::user_id 
 		eleven::log( "Error deleting mission: %s (code=%d state=%s)\n", e.what(), e.getErrorCode(), e.getSQLState().c_str() );
 	}
 }
+
+
+void	database::set_user_state( mission_id inPrimaryMissionID, std::string inCurrentRoomName, eleven::user_id currentUser )
+{
+	sql::PreparedStatement	*stmt = NULL;
+	sql::ResultSet			*res = NULL;
+	user_state				currUserState( inCurrentRoomName, inPrimaryMissionID );
+	
+	try
+	{
+		bool	exists = false;
+		stmt = mConnection->prepareStatement( "SELECT userid FROM user_state WHERE userid=?;" );
+		stmt->setInt( 1, currentUser );
+		res = stmt->executeQuery();
+		while( res->next() )
+		{
+			exists = true;
+			break;
+		}
+		delete res;
+		delete stmt;
+
+		if( exists )
+		{
+			stmt = mConnection->prepareStatement( "UPDATE user_state SET primarymissionid=?, currentroom=? WHERE userid=?;" );
+		}
+		else	// First time this user logged in, but not first user ever!
+		{
+			stmt = mConnection->prepareStatement( "INSERT INTO user_state ( primarymissionid, currentroom, userid ) VALUES ( ?, ?, ? );" );
+		}
+		stmt->setInt( 1, inPrimaryMissionID );
+		stmt->setString( 2, inCurrentRoomName );
+		stmt->setInt( 3, currentUser );
+		stmt->execute();
+		delete stmt;
+		
+		mUserStateCallback( currUserState, currentUser );
+	}
+	catch (sql::SQLException &e)
+	{
+		if( e.getErrorCode() == 1146 )	// No such table? Create it! First user ever!
+		{
+			try
+			{
+				sql::Statement *stmt2 = mConnection->createStatement();
+				stmt2->execute(	"CREATE TABLE user_state\n"
+								"(\n"
+								"userid INT NOT NULL PRIMARY KEY,\n"
+								"currentroom CHAR(255) NOT NULL,\n"
+								"primarymissionid INT\n"
+								");\n");
+				delete stmt2;
+				
+				stmt = mConnection->prepareStatement( "INSERT INTO user_state ( primarymissionid, currentroom, userid ) VALUES ( ?, ?, ? );" );
+				stmt->setInt( 1, inPrimaryMissionID );
+				stmt->setString( 2, inCurrentRoomName );
+				stmt->setInt( 3, currentUser );
+				stmt->execute();
+				delete stmt;
+				
+				mUserStateCallback( currUserState, currentUser );
+			}
+			catch (sql::SQLException &e2)
+			{
+				eleven::log( "Error adding user state: %s (code=%d state=%s)\n", e2.what(), e2.getErrorCode(), e2.getSQLState().c_str() );
+			}
+		}
+		else
+		{
+			eleven::log( "Error changing user state: %s (code=%d state=%s)\n", e.what(), e.getErrorCode(), e.getSQLState().c_str() );
+		}
+	}
+}
+
+
+
 

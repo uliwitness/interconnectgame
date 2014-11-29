@@ -93,6 +93,7 @@ using namespace eleven;
 		
 		[self.progressSpinner setDoubleValue: 10.0];
 		mChatClient->current_session()->printf( "/last_room\r\n" );
+//		mChatClient->current_session()->printf( "/test\r\n" );
 	}
 	else
 	{
