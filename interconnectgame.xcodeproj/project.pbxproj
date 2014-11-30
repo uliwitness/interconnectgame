@@ -41,6 +41,7 @@
 		55CD279A1A23405E00A46761 /* slowequals.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278F1A23405E00A46761 /* slowequals.c */; };
 		55CD279D1A234EF900A46761 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 55CD279C1A234EF900A46761 /* settings */; };
 		55CD27A51A23D4C100A46761 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CD27A41A23D4C100A46761 /* WebKit.framework */; };
+		55DBCBF11A2BCCE2005242F6 /* eleven_asset_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DBCBEF1A2BCCE2005242F6 /* eleven_asset_client.cpp */; };
 		55F13EF41A293177007194D0 /* ICGKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F13EF31A293177007194D0 /* ICGKeychainWrapper.m */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,8 @@
 		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
 		55CD279C1A234EF900A46761 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
 		55CD27A41A23D4C100A46761 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		55DBCBEF1A2BCCE2005242F6 /* eleven_asset_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_asset_client.cpp; path = eleven/eleven_chatclient/eleven_asset_client.cpp; sourceTree = SOURCE_ROOT; };
+		55DBCBF01A2BCCE2005242F6 /* eleven_asset_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_asset_client.h; path = eleven/eleven_chatclient/eleven_asset_client.h; sourceTree = SOURCE_ROOT; };
 		55F13EF31A293177007194D0 /* ICGKeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ICGKeychainWrapper.m; sourceTree = "<group>"; };
 		55F13EF51A293192007194D0 /* ICGKeychainWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICGKeychainWrapper.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -185,6 +188,8 @@
 				55CD27791A23401500A46761 /* eleven_log.h */,
 				55CD277A1A23401500A46761 /* eleven_session.cpp */,
 				55CD277B1A23401500A46761 /* eleven_session.h */,
+				55DBCBEF1A2BCCE2005242F6 /* eleven_asset_client.cpp */,
+				55DBCBF01A2BCCE2005242F6 /* eleven_asset_client.h */,
 				55CD279B1A23406700A46761 /* libscrypt */,
 			);
 			name = Networking;
@@ -349,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55CD27961A23405E00A46761 /* crypto_scrypt-nosse.c in Sources */,
+				55DBCBF11A2BCCE2005242F6 /* eleven_asset_client.cpp in Sources */,
 				55CD275C1A233EC800A46761 /* main.m in Sources */,
 				55CD277C1A23401500A46761 /* eleven_ini_file.cpp in Sources */,
 				55CD27921A23405E00A46761 /* b64.c in Sources */,
