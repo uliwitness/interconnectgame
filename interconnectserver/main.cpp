@@ -10,6 +10,7 @@
 #include "eleven_users.h"
 #include "eleven_channel.h"
 #include "eleven_log.h"
+#include "eleven_asset_server.h"
 #include "interconnect_database.h"
 
 
@@ -20,6 +21,8 @@ using namespace interconnect;
 int	main( int arc, const char** argv )
 {
 	interconnect::database	theDB("serversettings");
+	
+	new asset_server("serversettings");
 	
 	theDB.set_user_state_callback( [](const user_state & inUserState, eleven::user_id inUserID )
 	{
@@ -101,6 +104,9 @@ int	main( int arc, const char** argv )
 	server.register_command_handler( "/kick", channel::kick_handler );
 	// <anything that's not a recognized command>
 	server.register_command_handler( "*", channel::chat_handler );
+
+	server.register_command_handler( "/asset_info", asset_server::asset_info );
+	server.register_command_handler( "/get_asset", asset_server::get_asset );
 	
 	log( "Listening on port %d\n", server.port_number() );
 	

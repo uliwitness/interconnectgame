@@ -43,6 +43,7 @@
 		55CD27C91A23E69E00A46761 /* slowequals.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278F1A23405E00A46761 /* slowequals.c */; };
 		55CD27CA1A23E6C100A46761 /* eleven_ini_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27761A23401500A46761 /* eleven_ini_file.cpp */; };
 		55CD27CB1A23E6CC00A46761 /* crypto_scrypt-hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27861A23405E00A46761 /* crypto_scrypt-hash.c */; };
+		55DBCBEE1A2B2723005242F6 /* eleven_asset_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DBCBEC1A2B2723005242F6 /* eleven_asset_server.cpp */; };
 		55F13EFE1A29AF69007194D0 /* interconnect_database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55F13EFC1A29AF69007194D0 /* interconnect_database.cpp */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,8 @@
 		55CD27BA1A23E30B00A46761 /* eleven_chatserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_chatserver.h; path = eleven_chatserver/eleven_chatserver.h; sourceTree = "<group>"; };
 		55CD27BB1A23E30B00A46761 /* eleven_users.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_users.cpp; path = eleven_chatserver/eleven_users.cpp; sourceTree = "<group>"; };
 		55CD27BC1A23E30B00A46761 /* eleven_users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_users.h; path = eleven_chatserver/eleven_users.h; sourceTree = "<group>"; };
+		55DBCBEC1A2B2723005242F6 /* eleven_asset_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_asset_server.cpp; path = eleven_chatserver/eleven_asset_server.cpp; sourceTree = "<group>"; };
+		55DBCBED1A2B2723005242F6 /* eleven_asset_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_asset_server.h; path = eleven_chatserver/eleven_asset_server.h; sourceTree = "<group>"; };
 		55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_semaphore.h; path = eleven_chatserver/eleven_semaphore.h; sourceTree = "<group>"; };
 		55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_concurrent_queue.h; path = eleven_chatserver/eleven_concurrent_queue.h; sourceTree = "<group>"; };
 		55F13EFC1A29AF69007194D0 /* interconnect_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interconnect_database.cpp; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				550EF6841A25C07F00994474 /* eleven_database_flatfile.h */,
 				55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */,
 				55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */,
+				55DBCBEC1A2B2723005242F6 /* eleven_asset_server.cpp */,
+				55DBCBED1A2B2723005242F6 /* eleven_asset_server.h */,
 				55CD279B1A23406700A46761 /* libscrypt */,
 				550EF6471A245A2E00994474 /* libmysqlcppconn-static.a */,
 				550EF67E1A24854200994474 /* libmysqlclient.a */,
@@ -298,6 +303,7 @@
 				550EF6821A25BFBC00994474 /* eleven_database_mysql.cpp in Sources */,
 				55CD27C71A23E69E00A46761 /* crypto-scrypt-saltgen.c in Sources */,
 				55CD27C41A23E69E00A46761 /* crypto_scrypt-hexconvert.c in Sources */,
+				55DBCBEE1A2B2723005242F6 /* eleven_asset_server.cpp in Sources */,
 				55CD27C11A23E69100A46761 /* eleven_log.cpp in Sources */,
 				55CD27C81A23E69E00A46761 /* sha256.c in Sources */,
 				55F13EFE1A29AF69007194D0 /* interconnect_database.cpp in Sources */,

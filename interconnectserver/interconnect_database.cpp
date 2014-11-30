@@ -71,7 +71,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 		{
 			currMission.mID = res->getInt("id");
 			currMission.mDisplayName = res->getString("name");	// +++ LOCALIZE!
-			currMission.mCurrentRoomName = res->getString("currentroom");
+			currMission.mCurrentRoomName = res->getString("roomname");
 			
 			mMissionsCallback( currMission, currentUser );
 		}
@@ -136,7 +136,7 @@ void	database::add_mission_for_user( mission_id inMissionID, std::string inDispl
 	
 	try
 	{
-		stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, currentroom, userid ) VALUES ( ?, ?, ?, ? )" );
+		stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, userid ) VALUES ( ?, ?, ?, ? )" );
 		stmt->setInt( 1, inMissionID );
 		stmt->setString( 2, inDisplayName );
 		stmt->setString( 3, inRoomName );
@@ -157,12 +157,12 @@ void	database::add_mission_for_user( mission_id inMissionID, std::string inDispl
 								"(\n"
 								"id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
 								"name CHAR(255),\n"
-								"currentroom CHAR(255) NOT NULL,\n"
+								"roomname CHAR(255) NOT NULL,\n"
 								"userid INT\n"
 								");\n");
 				delete stmt2;
 				
-				stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, currentroom, userid ) VALUES ( ?, ?, ?, ? )" );
+				stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, userid ) VALUES ( ?, ?, ?, ? )" );
 				stmt->setInt( 1, inMissionID );
 				stmt->setString( 2, inDisplayName );
 				stmt->setString( 3, inRoomName );

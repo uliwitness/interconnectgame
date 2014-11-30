@@ -92,8 +92,9 @@ using namespace eleven;
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
 		[self.progressSpinner setDoubleValue: 10.0];
-		mChatClient->current_session()->printf( "/last_room\r\n" );
+//		mChatClient->current_session()->printf( "/last_room\r\n" );
 //		mChatClient->current_session()->printf( "/test\r\n" );
+		mChatClient->current_session()->printf( "/asset_info %s\r\n", "Photo on 2014-05-25 at 23.17.jpg" );
 	}
 	else
 	{
@@ -136,6 +137,47 @@ using namespace eleven;
 	mChatClient->register_message_handler( "/!could_not_log_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		[self performSelectorOnMainThread: @selector(loginDidWork:) withObject: @NO waitUntilDone: NO];
+	} );
+	mChatClient->register_message_handler( "/asset_info", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word( inLine, currOffset );
+		std::string	chunkCountStr = session::next_word( inLine, currOffset );
+		std::string	changeTimeStr = session::next_word( inLine, currOffset );
+		std::string	filename = inLine.substr( currOffset );
+		
+		NSLog( @"/get_asset %lu %s", 0UL, filename.c_str() );
+		inSession->printf( "/get_asset %d %s\r\n", 0, filename.c_str() );
+	} );
+	mChatClient->register_message_handler( "/asset_chunk", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word( inLine, currOffset );
+		std::string	dataSizeStr = session::next_word( inLine, currOffset );
+		std::string	chunkNumStr = session::next_word( inLine, currOffset );
+		std::string	filename = inLine.substr( currOffset );
+		size_t	chunkNum = strtoul( chunkNumStr.c_str(), NULL, 10 );
+		size_t	dataSize = strtoul( dataSizeStr.c_str(), NULL, 10 );
+		uint8_t buf[4096] = {0};
+		inSession->read( buf, 1 );	// Skip the \n.
+		
+		NSString		*assetsFolderPath = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES)[0];
+		assetsFolderPath = [assetsFolderPath stringByAppendingPathComponent: @"/com.thevoidsoftware.interconnectgame/assets/"];
+		[[NSFileManager defaultManager] createDirectoryAtPath: assetsFolderPath withIntermediateDirectories: YES attributes:@{} error: NULL];
+		std::string	filePath( assetsFolderPath.UTF8String );
+		filePath.append( 1, '/' );
+		filePath.append( filename );
+		FILE* theFile = fopen( filePath.c_str(), "r+" );
+		if( theFile == NULL )
+			theFile = fopen( filePath.c_str(), "w" );
+		fseek( theFile, chunkNum * 4096, SEEK_SET );
+		if( inSession->read( buf, dataSize ) != dataSize )
+			NSLog( @"Couldn't read chunk from the network." );
+		fwrite( buf, 1, dataSize, theFile );
+		fclose( theFile );
+		
+		NSLog( @"/get_asset %lu %s", chunkNum +1, filename.c_str() );
+		inSession->printf( "/get_asset %lu %s\r\n", chunkNum +1, filename.c_str() );
 	} );
 	mChatClient->register_message_handler( "*", []( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
