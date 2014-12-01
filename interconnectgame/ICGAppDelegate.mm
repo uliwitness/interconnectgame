@@ -48,7 +48,11 @@ using namespace eleven;
 	NSString		*assetsFolderPath = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES)[0];
 	assetsFolderPath = [assetsFolderPath stringByAppendingPathComponent: @"/com.thevoidsoftware.interconnectgame/assets/"];
 
-	new asset_client( assetsFolderPath.UTF8String );
+	asset_client*	assetClient = new asset_client( assetsFolderPath.UTF8String );
+	assetClient->set_file_finished_callback( [](std::string inFilename, bool inSuccess)
+	{
+		printf("File %s %s.\n", inFilename.c_str(), (inSuccess?"finished successfully":"failed to download"));
+	} );
 	
 	ini_file	theIniFile;
 	if( !theIniFile.open( [[NSBundle mainBundle] pathForResource: @"settings/settings.ini" ofType:@""].fileSystemRepresentation ) )
