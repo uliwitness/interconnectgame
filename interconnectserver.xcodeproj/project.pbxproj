@@ -101,8 +101,8 @@
 		55CD27BC1A23E30B00A46761 /* eleven_users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_users.h; path = eleven_chatserver/eleven_users.h; sourceTree = "<group>"; };
 		55DBCBEC1A2B2723005242F6 /* eleven_asset_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_asset_server.cpp; path = eleven_chatserver/eleven_asset_server.cpp; sourceTree = "<group>"; };
 		55DBCBED1A2B2723005242F6 /* eleven_asset_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_asset_server.h; path = eleven_chatserver/eleven_asset_server.h; sourceTree = "<group>"; };
-		55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_semaphore.h; path = eleven_chatserver/eleven_semaphore.h; sourceTree = "<group>"; };
-		55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_concurrent_queue.h; path = eleven_chatserver/eleven_concurrent_queue.h; sourceTree = "<group>"; };
+		55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eleven_semaphore.h; sourceTree = "<group>"; };
+		55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eleven_concurrent_queue.h; sourceTree = "<group>"; };
 		55F13EFC1A29AF69007194D0 /* interconnect_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interconnect_database.cpp; sourceTree = "<group>"; };
 		55F13EFD1A29AF69007194D0 /* interconnect_database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interconnect_database.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,10 +169,10 @@
 				550EF6811A25BFBC00994474 /* eleven_database_mysql.h */,
 				550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */,
 				550EF6841A25C07F00994474 /* eleven_database_flatfile.h */,
-				55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */,
-				55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */,
 				55DBCBEC1A2B2723005242F6 /* eleven_asset_server.cpp */,
 				55DBCBED1A2B2723005242F6 /* eleven_asset_server.h */,
+				55F13EF71A29A3A1007194D0 /* eleven_semaphore.h */,
+				55F13EFA1A29A830007194D0 /* eleven_concurrent_queue.h */,
 				55CD279B1A23406700A46761 /* libscrypt */,
 				550EF6471A245A2E00994474 /* libmysqlcppconn-static.a */,
 				550EF67E1A24854200994474 /* libmysqlclient.a */,

@@ -22,7 +22,8 @@ int	main( int arc, const char** argv )
 {
 	interconnect::database	theDB("serversettings");
 	
-	new asset_server("serversettings");
+	asset_server*	assetServer = new asset_server("serversettings");
+	assetServer->wait_for_assets();	// Spawns off new thread that waits.
 	
 	theDB.set_user_state_callback( [](const user_state & inUserState, eleven::user_id inUserID )
 	{
