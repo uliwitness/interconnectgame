@@ -14,11 +14,15 @@
 
 
 using namespace eleven;
+using namespace interconnect;
 
 
 @interface ICGAppDelegate ()
 {
-	chatclient*		mChatClient;
+	chatclient*							mChatClient;
+	std::string							mCurrentRoomName;
+	uint32_t							mPrimaryMissionID;
+	std::map<uint32_t,mission_entry>	mMissions;
 }
 
 @property (weak) IBOutlet NSWindow *loginWindow;
@@ -87,6 +91,21 @@ using namespace eleven;
 }
 
 
+-(void)	updateObjectivesDisplay
+{
+	NSLog(@"==== Missions: ====");
+	for( auto currMission : mMissions )
+	{
+		NSLog( @"%@ (in %s/%d)", [NSString stringWithUTF8String: currMission.second.mDisplayName.c_str()], currMission.second.mRoomName.c_str(), currMission.second.mPhysicalLocation );
+		for( auto currObjective : currMission.second.mObjectives )
+		{
+			NSLog( @"\t%@ (%d/%d) in %s/%d", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation );
+		}
+	}
+	NSLog(@" ");
+}
+
+
 -(void)	loginDidWork: (NSNumber*)didWork
 {
 	if( didWork.boolValue )
@@ -102,9 +121,9 @@ using namespace eleven;
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
 		[self.progressSpinner setDoubleValue: 10.0];
-//		mChatClient->current_session()->printf( "/last_room\r\n" );
 //		mChatClient->current_session()->printf( "/test\r\n" );
-		mChatClient->current_session()->printf( "/asset_info %s\r\n", "Photo on 2014-05-25 at 23.17.jpg" );
+		mChatClient->current_session()->printf( "/last_room\r\n" );
+//		mChatClient->current_session()->printf( "/asset_info %s\r\n", "Photo on 2014-05-25 at 23.17.jpg" );
 	}
 	else
 	{
@@ -140,16 +159,93 @@ using namespace eleven;
 	[self.passwordField setEnabled: NO];
 
 	mChatClient = new chatclient( "127.0.0.1", 13762, [[NSBundle mainBundle] pathForResource: @"settings" ofType:@""].fileSystemRepresentation );
-	mChatClient->register_message_handler( "/logged_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	mChatClient->register_message_handler( "/logged_in", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		[self performSelectorOnMainThread: @selector(loginDidWork:) withObject: @YES waitUntilDone: NO];
 	} );
-	mChatClient->register_message_handler( "/!could_not_log_in", [=]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	mChatClient->register_message_handler( "/!could_not_log_in", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		[self performSelectorOnMainThread: @selector(loginDidWork:) withObject: @NO waitUntilDone: NO];
 	} );
 	mChatClient->register_message_handler( "/asset_info", asset_client::asset_info );
 	mChatClient->register_message_handler( "/asset_chunk", asset_client::asset_chunk );
+	mChatClient->register_message_handler( "/currentroom", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		mCurrentRoomName = session::next_word(inLine, currOffset);
+	} );
+	mChatClient->register_message_handler( "/primarymission", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		mPrimaryMissionID = atoi( session::next_word(inLine, currOffset).c_str() );
+	} );
+	mChatClient->register_message_handler( "/mission", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		uint32_t missionID = atoi( session::next_word(inLine, currOffset).c_str() );
+		if( missionID == 0 )
+			mMissions.clear();
+		else
+		{
+			mission_entry&	missionEntry = mMissions[missionID];
+			std::string		missionRoomName = session::next_word(inLine, currOffset);
+			missionEntry.mRoomName = missionRoomName;
+			missionEntry.mPhysicalLocation = atoi( session::next_word(inLine, currOffset).c_str() );
+		}
+		
+		[self updateObjectivesDisplay];
+	} );
+	mChatClient->register_message_handler( "/mission_display_name", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		uint32_t 		missionID = atoi( session::next_word(inLine, currOffset).c_str() );
+		if( missionID == 0 )
+			mMissions.clear();
+		else
+		{
+			std::string		missionName = session::remainder_of_string( inLine, currOffset );
+			mission_entry&	missionEntry = mMissions[missionID];
+			missionEntry.mDisplayName = missionName;
+		}
+		
+		[self updateObjectivesDisplay];
+	} );
+	mChatClient->register_message_handler( "/mission_objective", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		uint32_t missionObjectiveID = atoi( session::next_word(inLine, currOffset).c_str() );
+		uint32_t missionID = atoi( session::next_word(inLine, currOffset).c_str() );
+		uint32_t currCount = atoi( session::next_word(inLine, currOffset).c_str() );
+		uint32_t maxCount = atoi( session::next_word(inLine, currOffset).c_str() );
+		std::string roomName = session::next_word(inLine, currOffset);
+		uint32_t physicalLocationID = atoi( session::next_word(inLine, currOffset).c_str() );
+		mission_entry&	missionEntry = mMissions[missionID];
+		mission_objective_entry&	objectiveEntry = missionEntry.mObjectives[missionObjectiveID];
+		objectiveEntry.mCurrentCount = currCount;
+		objectiveEntry.mMaxCount = maxCount;
+		objectiveEntry.mRoomName = roomName;
+		objectiveEntry.mPhysicalLocation = physicalLocationID;
+		
+		[self updateObjectivesDisplay];
+	} );
+	mChatClient->register_message_handler( "/mission_objective_display_name", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		size_t	currOffset = 0;
+		session::next_word(inLine, currOffset);
+		uint32_t missionObjectiveID = atoi( session::next_word(inLine, currOffset).c_str() );
+		uint32_t missionID = atoi( session::next_word(inLine, currOffset).c_str() );
+		std::string		missionName = session::remainder_of_string( inLine, currOffset );
+		mission_entry&	missionEntry = mMissions[missionID];
+		mission_objective_entry&	objectiveEntry = missionEntry.mObjectives[missionObjectiveID];
+		objectiveEntry.mDisplayName = missionName;
+		
+		[self updateObjectivesDisplay];
+	} );
 	mChatClient->register_message_handler( "*", []( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
 		NSLog( @"%s", inLine.c_str() );

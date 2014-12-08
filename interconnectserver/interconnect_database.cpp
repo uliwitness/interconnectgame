@@ -11,9 +11,10 @@
 #include <cppconn/prepared_statement.h>
 
 
-#define NO_MISSIONS_ID				0
-#define NO_MISSIONS_ROOM_NAME		"hub"
-#define NO_MISSIONS_MISSION_NAME	""
+#define NO_MISSIONS_ID						0
+#define NO_MISSIONS_ROOM_NAME				"hub"
+#define NO_MISSIONS_MISSION_NAME			""
+#define NO_MISSIONS_PHYSICAL_LOCATION_ID	0
 
 
 using namespace interconnect;
@@ -52,7 +53,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 	{
 		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions yet.
 		{
-			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME ), currentUser );
+			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
 		}
 		else
 		{
@@ -60,7 +61,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 		}
 	}
 
-	mission		currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
+	mission		currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID );
 	
 	try
 	{
@@ -72,6 +73,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 			currMission.mID = res->getInt("id");
 			currMission.mDisplayName = res->getString("name");	// +++ LOCALIZE!
 			currMission.mCurrentRoomName = res->getString("roomname");
+			currMission.mPhysicalLocation = res->getInt("physicallocation");
 			
 			mMissionsCallback( currMission, currentUser );
 		}
@@ -87,7 +89,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 	{
 		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions yet.
 		{
-			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME ), currentUser );
+			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
 		}
 		else
 		{
@@ -105,6 +107,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 		{
 			currObjective.mID = res->getInt("id");
 			currObjective.mPhysicalLocation = res->getInt("physicallocation");
+			currObjective.mRoomName = res->getString("roomname");
 			currObjective.mDisplayName = res->getString("name");	// +++ LOCALIZE!
 			currObjective.mMaxCount = res->getInt("maxcount");
 			currObjective.mCurrentCount = res->getInt("currentcount");
@@ -129,18 +132,19 @@ void	database::request_current_state( eleven::user_id currentUser )
 }
 
 
-void	database::add_mission_for_user( mission_id inMissionID, std::string inDisplayName, std::string inRoomName, eleven::user_id currentUser )
+void	database::add_mission_for_user( mission_id inMissionID, std::string inDisplayName, std::string inRoomName, map_object_id inPhysicalLocation, eleven::user_id currentUser )
 {
 	sql::PreparedStatement	*stmt = NULL;
-	mission					currMission( inMissionID, inDisplayName, inRoomName );
+	mission					currMission( inMissionID, inDisplayName, inRoomName, inPhysicalLocation );
 	
 	try
 	{
-		stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, userid ) VALUES ( ?, ?, ?, ? )" );
+		stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ? )" );
 		stmt->setInt( 1, inMissionID );
 		stmt->setString( 2, inDisplayName );
 		stmt->setString( 3, inRoomName );
-		stmt->setInt( 4, currentUser );
+		stmt->setInt( 4, inPhysicalLocation );
+		stmt->setInt( 5, currentUser );
 		stmt->execute();
 		delete stmt;
 		
@@ -158,15 +162,17 @@ void	database::add_mission_for_user( mission_id inMissionID, std::string inDispl
 								"id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
 								"name CHAR(255),\n"
 								"roomname CHAR(255) NOT NULL,\n"
+								"physicallocation INT,\n"
 								"userid INT\n"
 								");\n");
 				delete stmt2;
 				
-				stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, userid ) VALUES ( ?, ?, ?, ? )" );
+				stmt = mConnection->prepareStatement( "INSERT INTO missions ( id, name, roomname, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ? )" );
 				stmt->setInt( 1, inMissionID );
 				stmt->setString( 2, inDisplayName );
 				stmt->setString( 3, inRoomName );
-				stmt->setInt( 4, currentUser );
+				stmt->setInt( 4, inPhysicalLocation );
+				stmt->setInt( 5, currentUser );
 				stmt->execute();
 				delete stmt;
 				
@@ -185,21 +191,22 @@ void	database::add_mission_for_user( mission_id inMissionID, std::string inDispl
 }
 
 
-void	database::add_objective_to_mission_for_user( mission_objective_id inID, std::string inDisplayName, uint32_t inMaxCount, map_object_id inPhysicalLocation, mission_id inMissionID, eleven::user_id currentUser )
+void	database::add_objective_to_mission_for_user( mission_objective_id inID, std::string inDisplayName, uint32_t inMaxCount, std::string inRoomName, map_object_id inPhysicalLocation, mission_id inMissionID, eleven::user_id currentUser )
 {
 	sql::PreparedStatement	*stmt = NULL;
-	mission_objective		currObjective( inID, inDisplayName, inMaxCount, 0, inPhysicalLocation );
+	mission_objective		currObjective( inID, inDisplayName, inMaxCount, 0, inRoomName, inPhysicalLocation );
 	
 	try
 	{
-		stmt = mConnection->prepareStatement( "INSERT INTO mission_objectives ( id, name, maxcount, currentcount, missionid, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ?, ?, ? )" );
+		stmt = mConnection->prepareStatement( "INSERT INTO mission_objectives ( id, name, maxcount, currentcount, missionid, roomname, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )" );
 		stmt->setInt( 1, inID );
 		stmt->setString( 2, inDisplayName );
 		stmt->setInt( 3, inMaxCount );
 		stmt->setInt( 4, 0 );
 		stmt->setInt( 5, inMissionID );
-		stmt->setInt( 6, inPhysicalLocation );
-		stmt->setInt( 7, currentUser );
+		stmt->setString( 6, inRoomName );
+		stmt->setInt( 7, inPhysicalLocation );
+		stmt->setInt( 8, currentUser );
 		stmt->execute();
 		delete stmt;
 		
@@ -219,19 +226,21 @@ void	database::add_objective_to_mission_for_user( mission_objective_id inID, std
 								"maxcount INT,\n"
 								"currentcount INT,\n"
 								"missionid INT,\n"
+								"roomname CHAR(255),\n"
 								"physicallocation INT,\n"
 								"userid INT\n"
 								");\n");
 				delete stmt2;
 				
-				stmt = mConnection->prepareStatement( "INSERT INTO mission_objectives ( id, name, maxcount, currentcount, missionid, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ?, ?, ? )" );
+				stmt = mConnection->prepareStatement( "INSERT INTO mission_objectives ( id, name, maxcount, currentcount, missionid, roomname, physicallocation, userid ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? )" );
 				stmt->setInt( 1, inID );
 				stmt->setString( 2, inDisplayName );
 				stmt->setInt( 3, inMaxCount );
 				stmt->setInt( 4, 0 );
 				stmt->setInt( 5, inMissionID );
-				stmt->setInt( 6, inPhysicalLocation );
-				stmt->setInt( 7, currentUser );
+				stmt->setString( 6, inRoomName );
+				stmt->setInt( 7, inPhysicalLocation );
+				stmt->setInt( 8, currentUser );
 				stmt->execute();
 				delete stmt;
 				
@@ -260,7 +269,7 @@ void	database::add_count_to_objective_of_mission_for_user( int32_t inCount, miss
 	
 	sql::PreparedStatement	*stmt = NULL;
 	sql::ResultSet			*res = NULL;
-	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
+	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID );
 	
 	try
 	{
@@ -297,7 +306,7 @@ void	database::add_count_to_objective_of_mission_for_user( int32_t inCount, miss
 void	database::delete_objective_of_mission_for_user( mission_objective_id inID, mission_id inMissionID, eleven::user_id currentUser )
 {
 	sql::PreparedStatement	*stmt = NULL;
-	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
+	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID );
 	
 	try
 	{
@@ -318,7 +327,7 @@ void	database::delete_objective_of_mission_for_user( mission_objective_id inID, 
 void	database::delete_mission_for_user( mission_id inMissionID, eleven::user_id currentUser )
 {
 	sql::PreparedStatement	*stmt = NULL;
-	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME );
+	mission					currMission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID );
 	
 	try
 	{

@@ -35,12 +35,13 @@ namespace interconnect
 	{
 	public:
 		mission_objective() : mID(0), mMaxCount(1), mCurrentCount(0), mPhysicalLocation(0)	{};
-		mission_objective( mission_objective_id inID, std::string inName, uint32_t inMaxCount, uint32_t inCount, map_object_id inLocation ) : mID(inID), mDisplayName(inName), mMaxCount(inMaxCount), mCurrentCount(inCount), mPhysicalLocation(inLocation)	{};
+		mission_objective( mission_objective_id inID, std::string inName, uint32_t inMaxCount, uint32_t inCount, std::string inRoomName, map_object_id inLocation ) : mID(inID), mDisplayName(inName), mMaxCount(inMaxCount), mCurrentCount(inCount), mRoomName(inRoomName), mPhysicalLocation(inLocation)	{};
 		
 		mission_objective_id	mID;
 		std::string				mDisplayName;
 		uint32_t				mMaxCount;			// 1 means nothing countable about this objective.
 		uint32_t				mCurrentCount;		// mCurrentCount == mMaxCount means objective complete.
+		std::string				mRoomName;			// Room in which mPhysicalLocation resides.
 		map_object_id			mPhysicalLocation;	// Location to mark on map while this objective is in progress.
 	};
 	
@@ -48,11 +49,12 @@ namespace interconnect
 	{
 	public:
 		mission() : mID(0)	{};
-		mission( mission_id inID, std::string inName, std::string inRoomName ) : mID(inID), mDisplayName(inName), mCurrentRoomName(inRoomName)	{};
+		mission( mission_id inID, std::string inName, std::string inRoomName, map_object_id inPhysicalLocation ) : mID(inID), mDisplayName(inName), mCurrentRoomName(inRoomName), mPhysicalLocation(inPhysicalLocation)	{};
 		
-		mission_id						mID;
-		std::string						mDisplayName;
-		std::string						mCurrentRoomName;
+		mission_id				mID;
+		std::string				mDisplayName;
+		std::string				mCurrentRoomName;
+		map_object_id			mPhysicalLocation;
 	};
 	
 	class database : public eleven::database_mysql
@@ -65,8 +67,8 @@ namespace interconnect
 		void	request_current_state( eleven::user_id currentUser );
 		
 		void	set_user_state( mission_id inPrimaryMissionID, std::string inCurrentRoomName, eleven::user_id currentUser );
-		void	add_mission_for_user( mission_id inMissionID, std::string inDisplayName, std::string inRoomName, eleven::user_id currentUser );
-		void	add_objective_to_mission_for_user( mission_objective_id inID, std::string inDisplayName, uint32_t mMaxCount, map_object_id inPhysicalLocation, mission_id inMissionID, eleven::user_id currentUser );
+		void	add_mission_for_user( mission_id inMissionID, std::string inDisplayName, std::string inRoomName, map_object_id inPhysicalLocation, eleven::user_id currentUser );
+		void	add_objective_to_mission_for_user( mission_objective_id inID, std::string inDisplayName, uint32_t mMaxCount, std::string inRoomName, map_object_id inPhysicalLocation, mission_id inMissionID, eleven::user_id currentUser );
 		void	add_count_to_objective_of_mission_for_user( int32_t inCount, mission_objective_id inID, mission_id inMissionID, eleven::user_id currentUser );
 		void	delete_objective_of_mission_for_user( mission_objective_id inID, mission_id inMissionID, eleven::user_id currentUser );
 		void	delete_mission_for_user( mission_id inMissionID, eleven::user_id currentUser );

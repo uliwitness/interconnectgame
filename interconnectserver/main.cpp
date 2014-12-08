@@ -21,8 +21,12 @@ using namespace interconnect;
 int	main( int arc, const char** argv )
 {
 	interconnect::database	theDB("serversettings");
+	if( !theDB.valid() )
+		return 16;
 	
 	asset_server*	assetServer = new asset_server("serversettings");
+	if( !assetServer->valid() )
+		return 17;
 	assetServer->wait_for_assets();	// Spawns off new thread that waits.
 	
 	theDB.set_user_state_callback( [](const user_state & inUserState, eleven::user_id inUserID )
@@ -34,13 +38,13 @@ int	main( int arc, const char** argv )
 	theDB.set_missions_callback( [](const mission & inTargetMission, eleven::user_id inUserID )
 	{
 		session_ptr	session = user_session::session_for_user( inUserID );
-		session->printf( "/mission %d %s\r\n", inTargetMission.mID, inTargetMission.mCurrentRoomName.c_str() );
+		session->printf( "/mission %d %s %d\r\n", inTargetMission.mID, inTargetMission.mCurrentRoomName.c_str(), inTargetMission.mPhysicalLocation );
 		session->printf( "/mission_display_name %d %s\r\n", inTargetMission.mID, inTargetMission.mDisplayName.c_str() );
 	});
 	theDB.set_objectives_callback( [](const mission_objective & inObjective, mission_id inMission, eleven::user_id inUserID )
 	{
 		session_ptr	session = user_session::session_for_user( inUserID );
-		session->printf( "/mission_objective %d %d %d %d %d\r\n", inObjective.mID, inMission, inObjective.mCurrentCount, inObjective.mMaxCount, inObjective.mPhysicalLocation );
+		session->printf( "/mission_objective %d %d %d %d %s %d\r\n", inObjective.mID, inMission, inObjective.mCurrentCount, inObjective.mMaxCount, inObjective.mRoomName.c_str(), inObjective.mPhysicalLocation );
 		session->printf( "/mission_objective_display_name %d %d %s\r\n", inObjective.mID, inMission, inObjective.mDisplayName.c_str() );
 	});
 	
@@ -86,9 +90,9 @@ int	main( int arc, const char** argv )
 	server.register_command_handler( "/test", [&theDB]( session_ptr session, std::string currRequest, chatserver* server )
 	{
 		user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);		
-		theDB.add_mission_for_user( 1, "Welcome to Montreal!", "hub_back_alley", loginInfo->current_user() );
+		theDB.add_mission_for_user( 1, "Welcome to Montreal!", "hub_back_alley", 0, loginInfo->current_user() );
 		theDB.set_user_state( 1, "hub", loginInfo->current_user() );
-		theDB.add_objective_to_mission_for_user( 1, "Talk to other applicants", 3, 0, 1, loginInfo->current_user() );
+		theDB.add_objective_to_mission_for_user( 1, "Talk to other applicants", 3, "hub_back_alley", 0, 1, loginInfo->current_user() );
 		theDB.add_count_to_objective_of_mission_for_user( 2, 1, 1, loginInfo->current_user() );
 	} );
 	// /howdy
