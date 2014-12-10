@@ -12,12 +12,8 @@
 #include "eleven_log.h"
 #include "eleven_asset_server.h"
 #include "interconnect_database.h"
+#include "interconnect_scripts.h"
 
-extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
 
 using namespace eleven;
 using namespace interconnect;
@@ -118,48 +114,8 @@ int	main( int arc, const char** argv )
 		
 		session->printf( "/version 1.0 interconnectserver\n" );
 	} );
-	server.register_command_handler( "/runscript", []( session_ptr session, std::string currRequest, chatserver* server )
-	{
-		user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);		
-		if( !loginInfo || (loginInfo->my_user_flags() & USER_FLAG_SERVER_OWNER) == 0 )
-		{
-			session->printf( "/!not_permitted\r\n" );
-			return;
-		}
-		
-		size_t	currOffset = 0;
-		session::next_word(currRequest, currOffset);
-		std::string	fileName( session::next_word(currRequest, currOffset) );
-		if( fileName.size() == 0 || fileName.find("..") != std::string::npos )
-		{
-			session->printf( "/!no_such_file\r\n" );
-			return;
-		}
-		std::string	filePath( "serversettings/scripts/" );
-		filePath.append( fileName );
-		filePath.append( ".lua" );
-		
-		lua_State *L = luaL_newstate();
-
-		luaL_openlibs(L);
-
-		int s = luaL_loadfile( L, filePath.c_str() );
-
-		if( s == 0 )
-		{
-			// execute Lua program
-			s = lua_pcall(L, 0, LUA_MULTRET, 0);
-		}
-
-		if( s != 0 )
-		{
-			session->printf( "/!script_error %s\r\n", lua_tostring(L, -1) );
-			lua_pop(L, 1); // remove error message
-		}
-		else
-			session->printf( "/ran_script\r\n" );
-		lua_close(L);
-	} );
+	init_scripts( "serversettings" );
+	server.register_command_handler( "/runscript", runscript );
 	server.register_command_handler( "/shutdown", user_session::shutdown_handler );
 	// /join <channelName>
 	server.register_command_handler( "/join", channel::join_channel_handler );
