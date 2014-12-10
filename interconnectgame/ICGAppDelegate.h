@@ -14,6 +14,7 @@
 @interface ICGAppDelegate : NSObject <NSApplicationDelegate>
 
 -(IBAction)	doLogIn: (id)sender;
+-(IBAction)	doSendConsoleCommand: (id)sender;
 
 @end
 

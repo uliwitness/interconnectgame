@@ -25,14 +25,17 @@ using namespace interconnect;
 	std::map<uint32_t,mission_entry>	mMissions;
 }
 
-@property (weak) IBOutlet NSWindow *loginWindow;
-@property (weak) IBOutlet NSTextField *userNameField;
-@property (weak) IBOutlet NSTextField *passwordField;
-@property (weak) IBOutlet NSProgressIndicator *progressSpinner;
-@property (weak) IBOutlet NSButton *logInButton;
-@property (weak) IBOutlet NSButton *quitButton;
-@property (weak) IBOutlet NSWindow *gameWindow;
-@property (weak) IBOutlet WebView *webView;
+@property (strong) IBOutlet NSWindow *loginWindow;
+@property (strong) IBOutlet NSTextField *userNameField;
+@property (strong) IBOutlet NSTextField *passwordField;
+@property (strong) IBOutlet NSProgressIndicator *progressSpinner;
+@property (strong) IBOutlet NSButton *logInButton;
+@property (strong) IBOutlet NSButton *quitButton;
+@property (strong) IBOutlet NSWindow *gameWindow;
+@property (strong) IBOutlet WebView *webView;
+@property (strong) IBOutlet NSWindow	*consoleWindow;
+@property (strong) IBOutlet NSTextView	*consoleLog;
+@property (strong) IBOutlet NSTextField	*consoleEntry;
 
 @end
 
@@ -53,16 +56,15 @@ using namespace interconnect;
 	assetsFolderPath = [assetsFolderPath stringByAppendingPathComponent: @"/com.thevoidsoftware.interconnectgame/assets/"];
 
 	asset_client*	assetClient = new asset_client( assetsFolderPath.UTF8String );
-	assetClient->set_file_finished_callback( [](std::string inFilename, bool inSuccess)
+	assetClient->set_file_finished_callback( [self](std::string inFilename, bool inSuccess)
 	{
-		printf("File %s %s.\n", inFilename.c_str(), (inSuccess?"finished successfully":"failed to download"));
+		[self logFormat: @"File %s %s.\n" color: NSColor.lightGrayColor, inFilename.c_str(), (inSuccess?"finished successfully":"failed to download")];
 	} );
 	
 	ini_file	theIniFile;
 	if( !theIniFile.open( [[NSBundle mainBundle] pathForResource: @"settings/settings.ini" ofType:@""].fileSystemRepresentation ) )
 	{
-		NSRunAlertPanel( @"Application Damaged", @"The settings file could not be found. Please re-download this application.", @"Quit", @"", @"" );
-		[NSApplication.sharedApplication terminate: self];
+		[self logString: @"The settings file could not be found. Please re-download this application." color: NSColor.redColor];
 		return;
 	}
 	NSString	*	urlString = [NSString stringWithUTF8String: theIniFile.setting("welcomeurl").c_str()];
@@ -93,16 +95,16 @@ using namespace interconnect;
 
 -(void)	updateObjectivesDisplay
 {
-	NSLog(@"==== Missions: ====");
+	NSMutableString	*	missionsString = [[NSMutableString alloc] initWithString: @"==== Missions: ====\n"];
 	for( auto currMission : mMissions )
 	{
-		NSLog( @"%@ (in %s/%d)", [NSString stringWithUTF8String: currMission.second.mDisplayName.c_str()], currMission.second.mRoomName.c_str(), currMission.second.mPhysicalLocation );
+		[missionsString appendFormat: @"%@ (in %s/%d)\n", [NSString stringWithUTF8String: currMission.second.mDisplayName.c_str()], currMission.second.mRoomName.c_str(), currMission.second.mPhysicalLocation];
 		for( auto currObjective : currMission.second.mObjectives )
 		{
-			NSLog( @"\t%@ (%d/%d) in %s/%d", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation );
+			[missionsString appendFormat: @"\t%@ (%d/%d) in %s/%d\n", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation];
 		}
 	}
-	NSLog(@" ");
+	[self logString: missionsString color: NSColor.blueColor];
 }
 
 
@@ -117,6 +119,7 @@ using namespace interconnect;
 	
 	if( didWork.boolValue )
 	{
+		[self logString: @"Logged in.\n" color: NSColor.whiteColor];
 		if( ![ICGKeychainWrapper updateKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"] )
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
@@ -127,12 +130,40 @@ using namespace interconnect;
 	}
 	else
 	{
+		[self logString: @"Error logging in.\n" color: NSColor.redColor];
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
 		[self.progressSpinner setDoubleValue: 0.0];
 		[self.userNameField setEnabled: YES];
 		[self.passwordField setEnabled: YES];
 	}
+	
+	[self.consoleWindow makeKeyAndOrderFront: nil];
+}
+
+
+-(void)	logString: (NSString*)inString color: (NSColor*)theColor
+{
+	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: inString attributes:@{ NSFontAttributeName: [NSFont fontWithName: @"Menlo" size: 10], NSForegroundColorAttributeName: theColor }];
+	[self.consoleLog.textStorage performSelectorOnMainThread: @selector(appendAttributedString:) withObject: attrStr waitUntilDone: NO];
+}
+
+
+-(void)	logFormat: (NSString*)inString color: (NSColor*)theColor, ...
+{
+	va_list		vargs;
+	va_start(vargs, theColor);
+	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc] initWithFormat: inString arguments: vargs] attributes:@{ NSFontAttributeName: [NSFont fontWithName: @"Menlo" size: 10], NSForegroundColorAttributeName: theColor }];
+	va_end(vargs);
+	[self performSelectorOnMainThread: @selector(doLoggingMainThread:) withObject: attrStr waitUntilDone: NO];
+}
+
+
+-(void)	doLoggingMainThread: (NSAttributedString*)attrStr
+{
+	[self.consoleLog.textStorage beginEditing];
+	[self.consoleLog.textStorage appendAttributedString: attrStr];
+	[self.consoleLog.textStorage endEditing];
 }
 
 
@@ -196,7 +227,7 @@ using namespace interconnect;
 			missionEntry.mPhysicalLocation = atoi( session::next_word(inLine, currOffset).c_str() );
 		}
 		
-		[self updateObjectivesDisplay];
+		[self performSelectorOnMainThread: @selector(updateObjectivesDisplay) withObject: nil waitUntilDone: NO];
 	} );
 	mChatClient->register_message_handler( "/mission_display_name", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
@@ -212,7 +243,7 @@ using namespace interconnect;
 			missionEntry.mDisplayName = missionName;
 		}
 		
-		[self updateObjectivesDisplay];
+		[self performSelectorOnMainThread: @selector(updateObjectivesDisplay) withObject: nil waitUntilDone: NO];
 	} );
 	mChatClient->register_message_handler( "/mission_objective", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
@@ -231,7 +262,7 @@ using namespace interconnect;
 		objectiveEntry.mRoomName = roomName;
 		objectiveEntry.mPhysicalLocation = physicalLocationID;
 		
-		[self updateObjectivesDisplay];
+		[self performSelectorOnMainThread: @selector(updateObjectivesDisplay) withObject: nil waitUntilDone: NO];
 	} );
 	mChatClient->register_message_handler( "/mission_objective_display_name", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
@@ -244,11 +275,11 @@ using namespace interconnect;
 		mission_objective_entry&	objectiveEntry = missionEntry.mObjectives[missionObjectiveID];
 		objectiveEntry.mDisplayName = missionName;
 		
-		[self updateObjectivesDisplay];
+		[self performSelectorOnMainThread: @selector(updateObjectivesDisplay) withObject: nil waitUntilDone: NO];
 	} );
-	mChatClient->register_message_handler( "*", []( session_ptr inSession, std::string inLine, chatclient* inSender)
+	mChatClient->register_message_handler( "*", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
-		NSLog( @"%s", inLine.c_str() );
+		[self logString: [[NSString stringWithUTF8String: inLine.c_str()] stringByAppendingString: @"\n"] color: NSColor.whiteColor];
 	} );
 	
 	if( mChatClient->connect() )
@@ -260,12 +291,22 @@ using namespace interconnect;
 	}
 	else
 	{
+		[self logString: @"Couldn't connect to server.\n" color: NSColor.redColor];
+
 		[self.progressSpinner setDoubleValue: 0.0];
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
 		[self.userNameField setEnabled: YES];
 		[self.passwordField setEnabled: YES];
 	}
+}
+
+-(IBAction)	doSendConsoleCommand: (id)sender
+{
+	NSString	*	commandStr = [sender stringValue];
+	
+	mChatClient->current_session()->sendln( commandStr.UTF8String );
+	[self logString: [commandStr stringByAppendingString: @"\n"] color: NSColor.lightGrayColor];
 }
 
 @end

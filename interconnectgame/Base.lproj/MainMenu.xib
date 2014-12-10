@@ -14,6 +14,9 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="ICGAppDelegate">
             <connections>
+                <outlet property="consoleEntry" destination="e0b-XJ-p1P" id="nVp-up-dtU"/>
+                <outlet property="consoleLog" destination="Gbx-WA-AV0" id="NfO-1l-vLl"/>
+                <outlet property="consoleWindow" destination="u7T-U9-QPJ" id="8x4-6Q-5fi"/>
                 <outlet property="gameWindow" destination="0Qs-BN-qo4" id="Luh-Pf-kRV"/>
                 <outlet property="logInButton" destination="VEm-LH-Mv6" id="qIo-xc-bzd"/>
                 <outlet property="loginWindow" destination="QvC-M9-y7g" id="7Jn-uB-yAw"/>
@@ -650,6 +653,13 @@
                                     <action selector="performZoom:" target="-1" id="DIl-cC-cCs"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="THs-xo-chA"/>
+                            <menuItem title="Console" id="uL5-kY-wWy">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="makeKeyAndOrderFront:" target="u7T-U9-QPJ" id="Ow4-xn-Chy"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="eu3-7i-yIM"/>
                             <menuItem title="Bring All to Front" id="LE2-aR-0XJ">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -799,6 +809,89 @@ Gw
                 <autoresizingMask key="autoresizingMask"/>
             </view>
             <point key="canvasLocation" x="410" y="704"/>
+        </window>
+        <window title="Console" allowsToolTipsWhenApplicationIsInactive="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGConsoleWindow" animationBehavior="default" id="u7T-U9-QPJ" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES" HUD="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="83" y="97" width="473" height="157"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
+            <view key="contentView" id="4s9-Tl-u42">
+                <rect key="frame" x="0.0" y="0.0" width="473" height="157"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="tq4-1R-SZy">
+                        <rect key="frame" x="0.0" y="17" width="473" height="140"/>
+                        <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="1d5-Ee-7cV">
+                            <rect key="frame" x="1" y="1" width="223" height="133"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" findStyle="bar" incrementalSearchingEnabled="YES" allowsDocumentBackgroundColorChange="YES" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="Gbx-WA-AV0">
+                                    <rect key="frame" x="0.0" y="0.0" width="223" height="133"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <size key="minSize" width="473" height="140"/>
+                                    <size key="maxSize" width="473" height="10000000"/>
+                                    <attributedString key="textStorage">
+                                        <fragment>
+                                            <string key="content">Started up.
+</string>
+                                            <attributes>
+                                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <font key="NSFont" size="11" name="Menlo-Regular"/>
+                                                <font key="NSOriginalFont" size="12" name="Menlo-Regular"/>
+                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                            </attributes>
+                                        </fragment>
+                                    </attributedString>
+                                    <color key="insertionPointColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <size key="minSize" width="473" height="140"/>
+                                    <size key="maxSize" width="473" height="10000000"/>
+                                </textView>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </clipView>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="uqb-IL-eU4">
+                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="UsK-Xq-oVf">
+                            <rect key="frame" x="224" y="1" width="15" height="133"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </scroller>
+                    </scrollView>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e0b-XJ-p1P">
+                        <rect key="frame" x="-2" y="0.0" width="477" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" usesSingleLineMode="YES" id="du7-AR-0Fa">
+                            <font key="font" size="11" name="Menlo-Regular"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </textFieldCell>
+                        <connections>
+                            <action selector="doSendConsoleCommand:" target="Voe-Tx-rLC" id="aCk-XL-V7B"/>
+                        </connections>
+                    </textField>
+                    <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="aZd-Ls-LTJ">
+                        <rect key="frame" x="0.0" y="15" width="473" height="5"/>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <font key="titleFont" metaFont="system"/>
+                    </box>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aZd-Ls-LTJ" firstAttribute="leading" secondItem="4s9-Tl-u42" secondAttribute="leading" id="0Ud-67-6F4"/>
+                    <constraint firstItem="e0b-XJ-p1P" firstAttribute="top" secondItem="tq4-1R-SZy" secondAttribute="bottom" id="6fu-SK-Vv1"/>
+                    <constraint firstAttribute="trailing" secondItem="aZd-Ls-LTJ" secondAttribute="trailing" id="DE0-qO-KAN"/>
+                    <constraint firstAttribute="trailing" secondItem="tq4-1R-SZy" secondAttribute="trailing" id="Eec-Kt-SBw"/>
+                    <constraint firstAttribute="trailing" secondItem="e0b-XJ-p1P" secondAttribute="trailing" id="Suk-Vq-P6Y"/>
+                    <constraint firstItem="e0b-XJ-p1P" firstAttribute="leading" secondItem="4s9-Tl-u42" secondAttribute="leading" id="WEb-ut-aDS"/>
+                    <constraint firstItem="tq4-1R-SZy" firstAttribute="leading" secondItem="4s9-Tl-u42" secondAttribute="leading" id="XIN-zP-6Jt"/>
+                    <constraint firstItem="tq4-1R-SZy" firstAttribute="top" secondItem="4s9-Tl-u42" secondAttribute="top" id="gp1-in-m1b"/>
+                    <constraint firstAttribute="bottom" secondItem="e0b-XJ-p1P" secondAttribute="bottom" id="lg7-42-7ID"/>
+                    <constraint firstItem="e0b-XJ-p1P" firstAttribute="top" secondItem="aZd-Ls-LTJ" secondAttribute="bottom" id="wkY-8v-Ac8"/>
+                </constraints>
+            </view>
+            <point key="canvasLocation" x="347.5" y="403.5"/>
         </window>
     </objects>
 </document>
