@@ -70,6 +70,13 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	
 	luaL_openlibs(L);
 	
+	lua_newtable( L );
+	lua_setglobal( L, "eleven_obj" );
+	lua_getglobal( L, "eleven_obj" );
+	lua_pushcfunction( L, foo );
+	lua_setfield( L, -2, "durchschnitt" );
+	lua_pop( L, 1 );
+	
 	lua_register( L, "myavg", foo );
 
 	int s = luaL_loadfile( L, filePath.c_str() );
