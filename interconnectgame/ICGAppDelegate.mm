@@ -304,9 +304,14 @@ using namespace interconnect;
 -(IBAction)	doSendConsoleCommand: (id)sender
 {
 	NSString	*	commandStr = [sender stringValue];
-	
-	mChatClient->current_session()->sendln( commandStr.UTF8String );
-	[self logString: [commandStr stringByAppendingString: @"\n"] color: NSColor.lightGrayColor];
+	session_ptr		theSession = mChatClient->current_session();
+	if( theSession )
+	{
+		theSession->sendln( commandStr.UTF8String );
+		[self logString: [commandStr stringByAppendingString: @"\n"] color: NSColor.lightGrayColor];
+	}
+	else
+		[self logString: @"Connection lost\n" color: NSColor.redColor];
 }
 
 @end
