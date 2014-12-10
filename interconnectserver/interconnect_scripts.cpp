@@ -90,19 +90,21 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	
 	luaL_openlibs(L);	// Load Lua standard library.
 	
-	// CREATE A C-backed Lua object:
+	// Create a C-backed Lua object:
 	lua_newtable( L );	// Create a new object & push it on the stack.
 	
+	// Define session.durchschnitt() for averaging numbers:
 	lua_pushcfunction( L, foo );	// Create an (unnamed) function with C function "foo" as the implementation.
 	lua_setfield( L, -2, "durchschnitt" );	// Pop the function off the back of the stack and into the object (-2 == penultimate object on stack) using the key "durchschnitt" (i.e. method name).
 	
+	// Define session.write() for sending a reply back to the client:
 	lua_pushlightuserdata( L, &session );	// Create a value wrapping a pointer to a C++ object (this would be dangerous if we let the script run longer than the object was around).
 	lua_pushcclosure( L, session_write, 1 );// Create an (unnamed) function with C function "session_write" as the implementation and one associated value (think "captured variable", our userdata on the back of the stack).
 	lua_setfield( L, -2, "write" );	// Pop the function value off the back of the stack and into the object (-2 == penultimate object on stack) using the key "write" (i.e. method name).
 	
 	lua_setglobal( L, "session" );	// Pop the object off the stack into a global named "session".
 	
-	// CREATE A C-BACKED LUA FUNCTION:
+	// Create a C-backed Lua function, myavg():
 	lua_register( L, "myavg", foo );	// Create a global named "myavg" and stash an unnamed function with C function "foo" as its implementation in it.
 
 	// Load the file:
