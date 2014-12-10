@@ -46,6 +46,22 @@ static int foo (lua_State *L)
 }
 
 
+static int	session_write( lua_State *L )
+{
+	session_ptr*	sessionPtrPtr = (session_ptr*) lua_touserdata( L, lua_upvalueindex(1) );
+	int				numParams = lua_gettop(L);
+	
+	for( int x = 1; x <= numParams; x++ )
+	{
+		size_t		len = 0;
+		const char*	str = lua_tolstring( L, x, &len );
+		(*sessionPtrPtr)->send( (const uint8_t*) str, len );
+	}
+	
+	return 0;
+}
+
+
 // C++ closure (lambda, block, whatever) that we register with our server that runs a Lua script:
 eleven::handler		runscript = []( session_ptr session, std::string currRequest, chatserver* server )
 {
@@ -76,9 +92,15 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	
 	// CREATE A C-backed Lua object:
 	lua_newtable( L );	// Create a new object & push it on the stack.
+	
 	lua_pushcfunction( L, foo );	// Create an (unnamed) function with C function "foo" as the implementation.
 	lua_setfield( L, -2, "durchschnitt" );	// Pop the function off the back of the stack and into the object (-2 == penultimate object on stack) using the key "durchschnitt" (i.e. method name).
-	lua_setglobal( L, "eleven_obj" );	// Pop the object off the stack into a global named "eleven_obj".
+	
+	lua_pushlightuserdata( L, &session );	// Create a value wrapping a pointer to a C++ object (this would be dangerous if we let the script run longer than the object was around).
+	lua_pushcclosure( L, session_write, 1 );// Create an (unnamed) function with C function "session_write" as the implementation and one associated value (think "captured variable").
+	lua_setfield( L, -2, "write" );	// Pop the function value off the back of the stack and into the object (-2 == penultimate object on stack) using the key "session_ptr" (i.e. ivar name).
+	
+	lua_setglobal( L, "session" );	// Pop the object off the stack into a global named "eleven_obj".
 	
 	// CREATE A C-BACKED LUA FUNCTION:
 	lua_register( L, "myavg", foo );	// Create a global named "myavg" and stash an unnamed function with C function "foo" as its implementation in it.
