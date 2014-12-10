@@ -104,7 +104,7 @@ using namespace interconnect;
 			[missionsString appendFormat: @"\t%@ (%d/%d) in %s/%d\n", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation];
 		}
 	}
-	[self logString: missionsString color: NSColor.blueColor];
+	[self logString: missionsString color: NSColor.cyanColor];
 }
 
 
@@ -124,9 +124,7 @@ using namespace interconnect;
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
 		[self.progressSpinner setDoubleValue: 10.0];
-//		mChatClient->current_session()->printf( "/test\r\n" );
 		mChatClient->current_session()->printf( "/last_room\r\n" );
-//		mChatClient->current_session()->printf( "/asset_info %s\r\n", "Photo on 2014-05-25 at 23.17.jpg" );
 	}
 	else
 	{
@@ -276,6 +274,10 @@ using namespace interconnect;
 		objectiveEntry.mDisplayName = missionName;
 		
 		[self performSelectorOnMainThread: @selector(updateObjectivesDisplay) withObject: nil waitUntilDone: NO];
+	} );
+	mChatClient->register_message_handler( "/log", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
+	{
+		[self logString: [[NSString stringWithUTF8String: inLine.c_str() +5] stringByAppendingString: @"\n"] color: NSColor.grayColor];
 	} );
 	mChatClient->register_message_handler( "*", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{

@@ -55,6 +55,8 @@ int	main( int arc, const char** argv )
 		return 110;
 	
 	user_session::set_user_database(&theDB);
+	set_log_callback( []( const char* inMsg ){ fwrite( inMsg, sizeof(char), strlen(inMsg), stdout );
+ user_session::owner_printf("/log %s",inMsg); } );
 	
 	// /login <userName> <password>
 	server.register_command_handler( "/login", user_session::login_handler );
@@ -70,12 +72,33 @@ int	main( int arc, const char** argv )
 	server.register_command_handler( "/makemoderator", user_session::makemoderator_handler );
 	// /makeowner <userName>
 	server.register_command_handler( "/makeowner", user_session::makeowner_handler );
-	// /bye
+	// /logout
 	server.register_command_handler( "/logout", []( session_ptr session, std::string currRequest, chatserver* server )
 	{
 		session->printf( "/logged-out Logging you out.\n" );
 		
 		session->disconnect();
+	} );
+	server.register_command_handler( "/help", []( session_ptr session, std::string currRequest, chatserver* server )
+	{
+		user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);
+		bool				isOwner = false,
+							isModerator = false;
+		if( loginInfo )
+		{
+			isOwner = loginInfo->my_user_flags() & USER_FLAG_SERVER_OWNER;
+			isModerator = loginInfo->my_user_flags() & USER_FLAG_MODERATOR;
+		}
+		
+		session->printf( "Available commands are:\n\t/login <username> <password>\n\t/logout\n\t/join <channelname>\n\t/leave [<channelname>]\n\t/asset_info <filename>\n\t/get_asset <chunkIndex> <filename>\n" );
+		if( isOwner )
+		{
+			session->printf("\t/adduser <username> <password> <confirmPassword> [moderator] [owner]\n\t/deleteuser <username> <confirmUsername>\n\t/blockuser <username> <confirmUsername>\n\t/retireuser <username> <confirmUsername>\n\t/makemoderator <username>\n\tmakeowner <username>\n\t/last_room\n\t/version\n\t/shutdown\n" );
+		}
+		if( isOwner || isModerator )
+		{
+			session->printf( "\t/kick [<channelname>] <username>\n" );
+		}
 	} );
 	server.register_command_handler( "/last_room", [&theDB]( session_ptr session, std::string currRequest, chatserver* server )
 	{
