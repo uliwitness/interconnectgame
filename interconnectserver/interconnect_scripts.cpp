@@ -7,6 +7,7 @@
 //
 
 #include "interconnect_scripts.h"
+#include "interconnect_database.h"
 #include "eleven_users.h"
 
 extern "C" {
@@ -62,6 +63,38 @@ static int	session_write( lua_State *L )
 }
 
 
+static int	mission_add_objective( lua_State *L )
+{
+	int				numParams = lua_gettop(L);
+	if( numParams < 2 )
+	{
+		lua_pushstring(L, "Syntax is mission.add_objective( <objectiveID>, <objectiveName>[, <maxCount>] ).");
+		lua_error(L);
+		return 0;
+	}
+
+	session_ptr*	sessionPtrPtr = (session_ptr*) lua_touserdata( L, lua_upvalueindex(1) );
+	lua_Integer		missionID = lua_tointeger( L, lua_upvalueindex(2) );
+	lua_Integer		objectiveID = lua_tointeger( L, 1 );
+	lua_Integer		maxCount = (numParams > 2) ? lua_tointeger( L, 3 ) : 0;
+	size_t			len = 0;
+
+	interconnect::database*	theDB = (interconnect::database*)user_session::user_database();
+	user_session_ptr		loginInfo = (*sessionPtrPtr)->find_sessiondata<user_session>(USER_SESSION_DATA_ID);
+	if( !loginInfo )
+	{
+		lua_pushstring(L, "User is not logged in.");
+		lua_error(L);
+		return 0;
+	}
+	
+	const char*	str = lua_tolstring( L, 2, &len );
+	theDB->add_objective_to_mission_for_user( (mission_objective_id)objectiveID, std::string(str,len), (uint32_t)maxCount, "", 0, (mission_id)missionID, loginInfo->current_user() );
+	
+	return 0;
+}
+
+
 // C++ closure (lambda, block, whatever) that we register with our server that runs a Lua script:
 eleven::handler		runscript = []( session_ptr session, std::string currRequest, chatserver* server )
 {
@@ -106,6 +139,13 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	
 	// Create a C-backed Lua function, myavg():
 	lua_register( L, "myavg", foo );	// Create a global named "myavg" and stash an unnamed function with C function "foo" as its implementation in it.
+
+	lua_newtable( L );	// Create a new object & push it on the stack.
+	lua_pushlightuserdata( L, &session );	// session object in case we need it.
+	lua_pushinteger( L, 1 );	// mission ID.
+	lua_pushcclosure( L, mission_add_objective, 2 );// Create the method.
+	lua_setfield( L, -2, "add_objective" );	// Attach it to the object with a name.
+	lua_setglobal( L, "mission" );	// Register the object as name "mission".
 
 	// Load the file:
 	int s = luaL_loadfile( L, filePath.c_str() );
