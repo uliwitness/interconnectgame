@@ -4,3 +4,6 @@
 [submodule "lua"]
 	path = lua
 	url = https://github.com/LuaDist/lua.git
+[submodule "tinyxml2"]
+	path = tinyxml2
+	url = https://github.com/uliwitness/tinyxml2.git
