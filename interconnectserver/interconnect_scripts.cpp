@@ -155,6 +155,9 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 		// Run it, with 0 params, accepting an arbitrary number of return values.
 		//	Last 0 is error handler Lua function's stack index, or 0 to ignore.
 		s = lua_pcall(L, 0, LUA_MULTRET, 0);
+		
+		lua_getglobal(L,"main");	// Push the function we want to call.
+		s = lua_pcall(L, 0, LUA_MULTRET, 0);
 	}
 
 	// Was an error? Get error message off the stack and send it back:
