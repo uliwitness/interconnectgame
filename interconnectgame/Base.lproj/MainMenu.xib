@@ -799,7 +799,7 @@ Gw
             </view>
             <point key="canvasLocation" x="440.5" y="540"/>
         </window>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGGameWindow" animationBehavior="default" id="0Qs-BN-qo4">
+        <window title="The Interconnect" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGGameWindow" animationBehavior="default" id="0Qs-BN-qo4">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="121" y="123" width="480" height="270"/>
@@ -807,8 +807,22 @@ Gw
             <view key="contentView" id="bP5-1t-LxB">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="PeQ-nD-Qg7" customClass="ICGMapView">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="250"/>
+                    </customView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="PeQ-nD-Qg7" secondAttribute="bottom" id="BlN-Ys-faJ"/>
+                    <constraint firstItem="PeQ-nD-Qg7" firstAttribute="leading" secondItem="bP5-1t-LxB" secondAttribute="leading" id="JHr-TB-qH3"/>
+                    <constraint firstAttribute="trailing" secondItem="PeQ-nD-Qg7" secondAttribute="trailing" id="eOf-a9-Xtm"/>
+                    <constraint firstItem="PeQ-nD-Qg7" firstAttribute="top" secondItem="bP5-1t-LxB" secondAttribute="top" constant="20" id="jSY-q8-kx6"/>
+                </constraints>
             </view>
-            <point key="canvasLocation" x="410" y="704"/>
+            <connections>
+                <outlet property="initialFirstResponder" destination="PeQ-nD-Qg7" id="kIx-qZ-LIf"/>
+            </connections>
+            <point key="canvasLocation" x="420" y="731"/>
         </window>
         <window title="Console" allowsToolTipsWhenApplicationIsInactive="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="ICGConsoleWindow" animationBehavior="default" id="u7T-U9-QPJ" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" utility="YES" HUD="YES"/>
@@ -826,7 +840,7 @@ Gw
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView editable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" findStyle="bar" incrementalSearchingEnabled="YES" allowsDocumentBackgroundColorChange="YES" allowsUndo="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="Gbx-WA-AV0">
-                                    <rect key="frame" x="0.0" y="0.0" width="223" height="133"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="223" height="140"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -891,7 +905,7 @@ Gw
                     <constraint firstItem="e0b-XJ-p1P" firstAttribute="top" secondItem="aZd-Ls-LTJ" secondAttribute="bottom" id="wkY-8v-Ac8"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="347.5" y="403.5"/>
+            <point key="canvasLocation" x="409.5" y="455.5"/>
         </window>
     </objects>
 </document>

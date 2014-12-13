@@ -125,6 +125,8 @@ using namespace interconnect;
 		
 		[self.progressSpinner setDoubleValue: 10.0];
 		mChatClient->current_session()->printf( "/last_room\r\n" );
+		
+		[self.gameWindow makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
 	}
 	else
 	{

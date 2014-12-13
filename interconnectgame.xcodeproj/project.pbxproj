@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5533C8401A3C52EA00ADF4C3 /* interconnect_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5533C83E1A3C52EA00ADF4C3 /* interconnect_map.cpp */; };
+		5533C8461A3C536A00ADF4C3 /* ICGMapView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5533C8451A3C536A00ADF4C3 /* ICGMapView.mm */; };
 		55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* ICGAppDelegate.mm */; };
 		55CD275C1A233EC800A46761 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD275B1A233EC800A46761 /* main.m */; };
 		55CD275E1A233EC800A46761 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275D1A233EC800A46761 /* Images.xcassets */; };
@@ -56,6 +58,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5533C83E1A3C52EA00ADF4C3 /* interconnect_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interconnect_map.cpp; path = interconnectserver/interconnect_map.cpp; sourceTree = SOURCE_ROOT; };
+		5533C83F1A3C52EA00ADF4C3 /* interconnect_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = interconnect_map.h; path = interconnectserver/interconnect_map.h; sourceTree = SOURCE_ROOT; };
+		5533C8441A3C536A00ADF4C3 /* ICGMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICGMapView.h; sourceTree = "<group>"; };
+		5533C8451A3C536A00ADF4C3 /* ICGMapView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ICGMapView.mm; sourceTree = "<group>"; };
 		55CD27531A233EC800A46761 /* The Interconnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Interconnect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD27571A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55CD27581A233EC800A46761 /* ICGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICGAppDelegate.h; sourceTree = "<group>"; };
@@ -143,6 +149,10 @@
 				55CD27591A233EC800A46761 /* ICGAppDelegate.mm */,
 				55F13EF51A293192007194D0 /* ICGKeychainWrapper.h */,
 				55F13EF31A293177007194D0 /* ICGKeychainWrapper.m */,
+				5533C83E1A3C52EA00ADF4C3 /* interconnect_map.cpp */,
+				5533C83F1A3C52EA00ADF4C3 /* interconnect_map.h */,
+				5533C8441A3C536A00ADF4C3 /* ICGMapView.h */,
+				5533C8451A3C536A00ADF4C3 /* ICGMapView.mm */,
 				55CD275D1A233EC800A46761 /* Images.xcassets */,
 				55CD275F1A233EC800A46761 /* MainMenu.xib */,
 				55CD27561A233EC800A46761 /* Supporting Files */,
@@ -362,6 +372,7 @@
 				55CD275C1A233EC800A46761 /* main.m in Sources */,
 				55CD277C1A23401500A46761 /* eleven_ini_file.cpp in Sources */,
 				55CD27921A23405E00A46761 /* b64.c in Sources */,
+				5533C8461A3C536A00ADF4C3 /* ICGMapView.mm in Sources */,
 				55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */,
 				55CD27971A23405E00A46761 /* crypto-mcf.c in Sources */,
 				55CD279A1A23405E00A46761 /* slowequals.c in Sources */,
@@ -373,6 +384,7 @@
 				55CD277D1A23401500A46761 /* eleven_log.cpp in Sources */,
 				55CD27931A23405E00A46761 /* crypto_scrypt-check.c in Sources */,
 				55CD27811A23402400A46761 /* eleven_chatclient.cpp in Sources */,
+				5533C8401A3C52EA00ADF4C3 /* interconnect_map.cpp in Sources */,
 				55F13EF41A293177007194D0 /* ICGKeychainWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
