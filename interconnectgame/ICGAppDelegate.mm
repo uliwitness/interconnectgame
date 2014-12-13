@@ -11,6 +11,7 @@
 #import "eleven_asset_client.h"
 #import <WebKit/WebKit.h>
 #import "ICGKeychainWrapper.h"
+#import "ICGMapView.h"
 
 
 using namespace eleven;
@@ -32,6 +33,7 @@ using namespace interconnect;
 @property (strong) IBOutlet NSButton *logInButton;
 @property (strong) IBOutlet NSButton *quitButton;
 @property (strong) IBOutlet NSWindow *gameWindow;
+@property (strong) IBOutlet ICGMapView *gameView;
 @property (strong) IBOutlet WebView *webView;
 @property (strong) IBOutlet NSWindow	*consoleWindow;
 @property (strong) IBOutlet NSTextView	*consoleLog;
@@ -59,6 +61,12 @@ using namespace interconnect;
 	assetClient->set_file_finished_callback( [self](std::string inFilename, bool inSuccess)
 	{
 		[self logFormat: @"File %s %s.\n" color: NSColor.lightGrayColor, inFilename.c_str(), (inSuccess?"finished successfully":"failed to download")];
+		
+		size_t	suffixPos = inFilename.rfind( ".xml" );
+		if( inSuccess && suffixPos != std::string::npos && inFilename.substr(0,suffixPos).compare(mCurrentRoomName) == 0 )
+		{
+			[self.gameView performSelectorOnMainThread: @selector(loadMap:) withObject: [NSString stringWithUTF8String: inFilename.c_str()] waitUntilDone: NO];
+		}
 	} );
 	
 	ini_file	theIniFile;
@@ -205,6 +213,7 @@ using namespace interconnect;
 		size_t	currOffset = 0;
 		session::next_word(inLine, currOffset);
 		mCurrentRoomName = session::next_word(inLine, currOffset);
+		inSession->printf( "/asset_info %s.xml\r\n", mCurrentRoomName.c_str() );
 	} );
 	mChatClient->register_message_handler( "/primarymission", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{

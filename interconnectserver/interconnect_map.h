@@ -10,6 +10,7 @@
 #define __interconnectserver__interconnect_map__
 
 #include <vector>
+#include <string>
 #include <CoreGraphics/CoreGraphics.h>
 
 namespace interconnect
@@ -27,7 +28,10 @@ namespace interconnect
 		point	rotated_around_point_with_angle( point rotationCenter, radians angle ) const;
 		point	translated_by_distance_angle( double distance, radians angle ) const;
 		point	translated_by_x_y( double xdistance, double ydistance ) const;
-	
+		
+		std::string	to_string() { std::string str( std::to_string(x) ); str.append(1,','); str.append( std::to_string(y) ); return str; };
+		void		assign( std::string inString )	{ size_t separatorPos = inString.find(','); x = strtol( inString.substr(0,separatorPos).c_str(), NULL, 10 ); y = strtol( inString.substr(separatorPos+1).c_str(), NULL, 10 ); };
+		
 		operator CGPoint() const
 		{
 			return CGPointMake( x, y );
@@ -64,6 +68,42 @@ namespace interconnect
 		wall_vector	rotated_around_point_with_angle( point rotationCenter, radians angle ) const;
 		std::vector<std::pair<wall,point>>	intersections_with( wall lookLine ) const;
 		bool								closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point &outIntersectionPoint ) const;
+	};
+	
+	
+	class object
+	{
+	public:
+		object	translated_by_x_y( double xdistance, double ydistance ) const;
+		object	rotated_around_point_with_angle( point rotationCenter, radians angle ) const;
+		std::vector<std::pair<wall,point>>	intersections_with( wall lookLine ) const;
+		bool								closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point &outIntersectionPoint ) const;
+
+		wall_vector		walls;
+	};
+	
+	
+	struct object_intersection
+	{
+		std::vector<std::pair<wall,point>>	walls;
+		object								object;
+	};
+	
+	
+	class object_vector : public std::vector<object>
+	{
+	public:
+		object_vector() : vector() {};
+		explicit object_vector( size_t nitems ) : vector(nitems) {};
+		
+		bool			load_file( std::string inFilePath );
+		
+		object_vector	translated_by_x_y( double xdistance, double ydistance ) const;
+		object_vector	rotated_around_point_with_angle( point rotationCenter, radians angle ) const;
+		std::vector<object_intersection>	intersections_with( wall lookLine ) const;
+		bool								closest_intersection_with_to_point( wall lookLine, point distancePoint, object& outIntersectionRoom, wall& outIntersectionWall, point &outIntersectionPoint ) const;
+		
+		point	startLocation;
 	};
 }
 

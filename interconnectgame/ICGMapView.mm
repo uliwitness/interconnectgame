@@ -7,6 +7,7 @@
 //
 
 #import "ICGMapView.h"
+#include "eleven_asset_client.h"
 
 
 using namespace interconnect;
@@ -37,26 +38,39 @@ enum
 	self = [super initWithCoder: coder];
 	if( self )
 	{
-		currPos = (point){ 200, 200 };
 		currAngle = 0;
 		mapModeDisplay = NO;
-		self.keyRepeatTimer = [NSTimer scheduledTimerWithTimeInterval: 0.25 target: self selector: @selector(dispatchPressedKeys:) userInfo: nil repeats: YES];
+		self.keyRepeatTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05 target: self selector: @selector(dispatchPressedKeys:) userInfo: nil repeats: YES];
 	}
 	return self;
 }
 
 
-- (void)drawRect:(NSRect)dirtyRect
+-(BOOL)	loadMap: (NSString*)inFilename
 {
-	wall_vector	walls = { {100,100}, {300,100}, {300,200}, {100,200} };
-	point		viewCenter = { self.bounds.size.width / 2, self.bounds.size.height / 2 };
-	
-	if( !mapModeDisplay )
+	if( !objects.load_file( eleven::asset_client::shared_asset_client()->path_for_asset(inFilename.UTF8String) ) )
 	{
-		walls = walls.rotated_around_point_with_angle( currPos, currAngle );
+		return NO;
 	}
 	
-	walls = walls.translated_by_x_y( -currPos.x +viewCenter.x, -currPos.y +viewCenter.y );
+	currPos = objects.startLocation;
+	[self setNeedsDisplay: YES];
+	
+	return YES;
+}
+
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+	point			viewCenter = { self.bounds.size.width / 2, self.bounds.size.height / 2 };
+	object_vector	projectedObjects;
+	
+	if( !mapModeDisplay )
+		projectedObjects = objects.rotated_around_point_with_angle( currPos, currAngle );
+	else
+		projectedObjects = objects;
+	
+	projectedObjects = projectedObjects.translated_by_x_y( -currPos.x +viewCenter.x, -currPos.y +viewCenter.y );
 	
 	point	indicatorPos = viewCenter;
 	point	lookEndPos = indicatorPos.translated_by_distance_angle( LOOK_DISTANCE, M_PI );
@@ -65,7 +79,8 @@ enum
 	if( !mapModeDisplay )
 	{
 		wall	currWall;
-		if( walls.closest_intersection_with_to_point( lookLine, indicatorPos, currWall, intersectionPoint ) )
+		object	currObject;
+		if( projectedObjects.closest_intersection_with_to_point( lookLine, indicatorPos, currObject, currWall, intersectionPoint ) )
 		{
 			[NSColor.cyanColor set];
 			[NSBezierPath setDefaultLineWidth: 4];
@@ -76,13 +91,17 @@ enum
 	
 	// Draw!
 	[NSColor.grayColor set];
-	NSBezierPath	*	thePath = [NSBezierPath bezierPath];
-	[thePath moveToPoint: walls[0].start];
-	for( const wall& currWall : walls )
+	
+	for( const object& currObject : projectedObjects )
 	{
-		[thePath lineToPoint: currWall.end];
+		NSBezierPath	*	thePath = [NSBezierPath bezierPath];
+		[thePath moveToPoint: currObject.walls[0].start];
+		for( const wall& currWall : currObject.walls )
+		{
+			[thePath lineToPoint: currWall.end];
+		}
+		[thePath fill];
 	}
-	[thePath fill];
 	
 	if( !mapModeDisplay )
 	{

@@ -8,6 +8,9 @@
 
 #include "interconnect_map.h"
 #include <math.h>
+#include <string>
+#include <memory>
+#include "tinyxml2.h"
 
 
 using namespace interconnect;
@@ -109,12 +112,11 @@ wall_vector::wall_vector( std::initializer_list<point> inPoints )
 
 wall_vector	wall_vector::rotated_around_point_with_angle( point rotationCenter, radians angle ) const
 {
-	wall_vector	rotatedWalls( size() );
+	wall_vector	rotatedWalls;
 	
-	size_t		x = 0;
 	for( const wall& currWall : *this )
 	{
-		rotatedWalls[x++] = currWall.rotated_around_point_with_angle( rotationCenter, angle );
+		rotatedWalls.push_back( currWall.rotated_around_point_with_angle( rotationCenter, angle ) );
 	}
 	
 	return rotatedWalls;
@@ -123,12 +125,11 @@ wall_vector	wall_vector::rotated_around_point_with_angle( point rotationCenter, 
 
 wall_vector	wall_vector::translated_by_x_y( double xdistance, double ydistance ) const
 {
-	wall_vector	movedWalls( size() );
+	wall_vector	movedWalls;
 	
-	size_t		x = 0;
 	for( const wall& currWall : *this )
 	{
-		movedWalls[x++] = currWall.translated_by_x_y( xdistance, ydistance );
+		movedWalls.push_back( currWall.translated_by_x_y( xdistance, ydistance ) );
 	}
 	
 	return movedWalls;
@@ -171,6 +172,145 @@ bool	wall_vector::closest_intersection_with_to_point( wall lookLine, point dista
 	return intersections.size() > 0;
 }
 
+
+object	object::translated_by_x_y( double xdistance, double ydistance ) const
+{
+	object	movedObject;
+	
+	movedObject.walls = walls.translated_by_x_y( xdistance, ydistance );
+	
+	return movedObject;
+}
+
+
+object	object::rotated_around_point_with_angle( point rotationCenter, radians angle ) const
+{
+	object	rotatedObject;
+	
+	rotatedObject.walls = walls.rotated_around_point_with_angle( rotationCenter, angle );
+	
+	return rotatedObject;
+}
+
+
+std::vector<std::pair<wall,point>>	object::intersections_with( wall lookLine ) const
+{
+	return walls.intersections_with( lookLine );
+}
+
+
+bool	object::closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point &outIntersectionPoint ) const
+{
+	return walls.closest_intersection_with_to_point( lookLine, distancePoint, outIntersectionWall, outIntersectionPoint );
+}
+
+
+bool	object_vector::load_file( std::string inFilePath )
+{
+	std::unique_ptr<tinyxml2::XMLDocument>	document( new tinyxml2::XMLDocument() );
+	
+	if( tinyxml2::XML_SUCCESS != document->LoadFile( inFilePath.c_str() ) )
+		return false;
+	
+	tinyxml2::XMLElement	*	rootElem = document->RootElement();
+	tinyxml2::XMLElement	*	startLocElem = rootElem->FirstChildElement("startlocation");
+	startLocation.assign( startLocElem->GetText() );
+	
+	tinyxml2::XMLElement	*	tileElem = rootElem->FirstChildElement("tile");
+	tinyxml2::XMLElement	*	objectElem = tileElem->FirstChildElement("object");
+	while( objectElem )
+	{
+		object	newObject;
+		
+		tinyxml2::XMLElement	*	wallElem = objectElem->FirstChildElement("wall");
+		while( wallElem )
+		{
+			wall	newWall;
+			
+			tinyxml2::XMLElement	*	startElem = wallElem->FirstChildElement("start");
+			tinyxml2::XMLElement	*	endElem = wallElem->FirstChildElement("end");
+			
+			newWall.start.assign( startElem->GetText() );
+			newWall.end.assign( endElem->GetText() );
+			newObject.walls.push_back( newWall );
+			
+			wallElem = wallElem->NextSiblingElement( "wall" );
+		}
+		
+		push_back( newObject );
+		
+		objectElem = objectElem->NextSiblingElement( "object" );
+	}
+	
+	return true;
+}
+
+
+object_vector	object_vector::translated_by_x_y( double xdistance, double ydistance ) const
+{
+	object_vector	movedObjects;
+	
+	for( const object& currObject : *this )
+	{
+		movedObjects.push_back( currObject.translated_by_x_y( xdistance, ydistance ) );
+	}
+	
+	return movedObjects;
+}
+
+
+object_vector	object_vector::rotated_around_point_with_angle( point rotationCenter, radians angle ) const
+{
+	object_vector	rotatedObjects;
+	
+	for( const object& currObject : *this )
+	{
+		rotatedObjects.push_back( currObject.rotated_around_point_with_angle( rotationCenter, angle ) );
+	}
+	
+	return rotatedObjects;
+}
+
+
+std::vector<object_intersection>	object_vector::intersections_with( wall lookLine ) const
+{
+	std::vector<object_intersection>	allIntersections;
+	
+	for( const object& currObject : *this )
+	{
+		object_intersection	objectIntersection;
+		objectIntersection.object = currObject;
+		objectIntersection.walls = currObject.intersections_with( lookLine );
+		if( objectIntersection.walls.size() > 0 )
+			allIntersections.push_back( objectIntersection );
+	}
+	
+	return allIntersections;
+}
+
+
+bool	object_vector::closest_intersection_with_to_point( wall lookLine, point distancePoint, object& outIntersectionRoom, wall& outIntersectionWall, point &outIntersectionPoint ) const
+{
+	std::vector<object_intersection>	allIntersections = intersections_with(lookLine);
+	double								distance = DBL_MAX;
+	
+	for( const object_intersection& currIntersection : allIntersections )
+	{
+		for( const std::pair<wall,point> currWallIntersection : currIntersection.walls )
+		{
+			double	intersectionDistance = distancePoint.distance_to( currWallIntersection.second );
+			if( distance > intersectionDistance )
+			{
+				outIntersectionWall = currWallIntersection.first;
+				outIntersectionPoint = currWallIntersection.second;
+				outIntersectionRoom = currIntersection.object;
+				distance = intersectionDistance;
+			}
+		}
+	}
+	
+	return allIntersections.size() > 0;
+}
 
 
 

@@ -27,6 +27,7 @@
 		550EF6851A25C07F00994474 /* eleven_database_flatfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550EF6831A25C07F00994474 /* eleven_database_flatfile.cpp */; };
 		550EF6871A25C75500994474 /* eleven_database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550EF6861A25C75500994474 /* eleven_database.cpp */; };
 		5533C83A1A3BC73B00ADF4C3 /* interconnect_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5533C8381A3BC73B00ADF4C3 /* interconnect_map.cpp */; };
+		5533C84D1A3CB20600ADF4C3 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5533C84B1A3CB20600ADF4C3 /* tinyxml2.cpp */; };
 		55CBFC4D1A37CB0E0035A227 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CBFC4C1A37CB0E0035A227 /* liblua.a */; };
 		55CBFC511A37D9D30035A227 /* interconnect_scripts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CBFC4F1A37D9D30035A227 /* interconnect_scripts.cpp */; };
 		55CD27B41A23E26100A46761 /* serversettings in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55CD27A71A23E16100A46761 /* serversettings */; };
@@ -74,6 +75,8 @@
 		550EF6861A25C75500994474 /* eleven_database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_database.cpp; path = eleven_chatserver/eleven_database.cpp; sourceTree = "<group>"; };
 		5533C8381A3BC73B00ADF4C3 /* interconnect_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interconnect_map.cpp; sourceTree = "<group>"; };
 		5533C8391A3BC73B00ADF4C3 /* interconnect_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interconnect_map.h; sourceTree = "<group>"; };
+		5533C84B1A3CB20600ADF4C3 /* tinyxml2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml2.cpp; path = tinyxml2/tinyxml2.cpp; sourceTree = SOURCE_ROOT; };
+		5533C84C1A3CB20600ADF4C3 /* tinyxml2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml2.h; path = tinyxml2/tinyxml2.h; sourceTree = SOURCE_ROOT; };
 		55CBFC4C1A37CB0E0035A227 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = lua/src/liblua.a; sourceTree = SOURCE_ROOT; };
 		55CBFC4E1A37CCE10035A227 /* lualib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = lualib.h; path = lua/src/lualib.h; sourceTree = SOURCE_ROOT; };
 		55CBFC4F1A37D9D30035A227 /* interconnect_scripts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = interconnect_scripts.cpp; sourceTree = "<group>"; };
@@ -130,6 +133,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5533C84E1A3CB20D00ADF4C3 /* XML Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				5533C84B1A3CB20600ADF4C3 /* tinyxml2.cpp */,
+				5533C84C1A3CB20600ADF4C3 /* tinyxml2.h */,
+			);
+			name = "XML Parsing";
+			sourceTree = "<group>";
+		};
 		55CD274A1A233EC800A46761 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +169,7 @@
 				5533C8381A3BC73B00ADF4C3 /* interconnect_map.cpp */,
 				5533C8391A3BC73B00ADF4C3 /* interconnect_map.h */,
 				55CD27821A23402F00A46761 /* Networking */,
+				5533C84E1A3CB20D00ADF4C3 /* XML Parsing */,
 				55CD279E1A234F0000A46761 /* Resources */,
 			);
 			path = interconnectserver;
@@ -316,6 +329,7 @@
 				55CD27B61A23E29900A46761 /* main.cpp in Sources */,
 				55CD27C61A23E69E00A46761 /* crypto-mcf.c in Sources */,
 				55CD27C91A23E69E00A46761 /* slowequals.c in Sources */,
+				5533C84D1A3CB20600ADF4C3 /* tinyxml2.cpp in Sources */,
 				55CD27C31A23E69E00A46761 /* crypto_scrypt-check.c in Sources */,
 				550EF6821A25BFBC00994474 /* eleven_database_mysql.cpp in Sources */,
 				55CD27C71A23E69E00A46761 /* crypto-scrypt-saltgen.c in Sources */,
