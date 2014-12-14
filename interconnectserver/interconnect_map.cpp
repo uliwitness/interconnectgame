@@ -81,7 +81,7 @@ bool	wall::intersection_with( wall wallB, point& outIntersectionPoint ) const
 
 wall	wall::rotated_around_point_with_angle( point rotationCenter, radians angle ) const
 {
-	wall	rotatedWall;
+	wall	rotatedWall = *this;
 	rotatedWall.start = start.rotated_around_point_with_angle( rotationCenter, angle );
 	rotatedWall.end = end.rotated_around_point_with_angle( rotationCenter, angle );
 	return rotatedWall;
@@ -90,10 +90,72 @@ wall	wall::rotated_around_point_with_angle( point rotationCenter, radians angle 
 
 wall	wall::translated_by_x_y( double xdistance, double ydistance ) const
 {
-	wall	movedWall;
+	wall	movedWall = *this;
 	movedWall.start = start.translated_by_x_y( xdistance, ydistance );
 	movedWall.end = end.translated_by_x_y( xdistance, ydistance );
 	return movedWall;
+}
+
+
+radians	wall::angle() const
+{
+	double	xdiff = end.x -start.x;
+	double	ydiff = end.y -start.y;
+	double	outAngle = atan2( ydiff, xdiff );
+	return outAngle;
+}
+
+
+double	wall::distance_to_point( point pos ) const
+{
+	double absDistance = fabs( pos.x * (end.y -start.y) -pos.y * (end.x -start.x) + end.x * start.y - end.y * start.x )
+		/ sqrt( pow( (end.y - start.y), 2 ) + pow( (end.x - start.x), 2 ) );
+	
+	double	orthoAngle = angle() +(M_PI / 2.0);
+	point	orthoPos = pos.translated_by_distance_angle( absDistance, orthoAngle );
+	
+	return absDistance *((orthoPos == pos)? 1 : -1 );
+}
+
+
+bool	wall::intersected_with_wedge_of_lines( wall leftWall, wall rightWall, wall &outWall ) const
+{
+	assert( leftWall.start == rightWall.start );	// Algorithm assumes wall wedge's tip is "start" of each wall.
+	
+	outWall = *this;
+	
+	point		leftIntersection, rightIntersection;
+	bool		intersectsLeft = false,
+				intersectsRight = false;
+	if(( intersectsLeft = intersection_with( leftWall, leftIntersection ) ))
+	{
+		if( wall(leftWall.start,start).angle() >= leftWall.angle() )
+			outWall.start = leftIntersection;
+		else
+			outWall.end = leftIntersection;
+	}
+	if(( intersectsRight = intersection_with( rightWall, rightIntersection ) ))
+	{
+		if( wall(rightWall.start,end).angle() <= rightWall.angle() )
+			outWall.end = rightIntersection;
+		else
+			outWall.start = rightIntersection;
+	}
+	
+	// No intersection? Either fully inside or fully outside.
+	if( !intersectsLeft && !intersectsRight )
+	{
+		double	lineStartAngle = wall(leftWall.start,start).angle();
+		double	leftWallAngle = leftWall.angle();
+		double	rightWallAngle = rightWall.angle();
+		if( lineStartAngle >= leftWallAngle
+			|| lineStartAngle <= rightWallAngle )
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
@@ -153,6 +215,23 @@ std::vector<std::pair<wall,point>>	wall_vector::intersections_with( wall lookLin
 }
 
 
+wall_vector	wall_vector::intersected_with_wedge_of_lines( wall leftWall, wall rightWall ) const
+{
+	wall_vector	outIntersections;
+	
+	for( const wall& currWall : *this )
+	{
+		wall	intersectedWall;
+		if( currWall.intersected_with_wedge_of_lines( leftWall, rightWall, intersectedWall ) )
+		{
+			outIntersections.push_back( intersectedWall );
+		}
+	}
+	
+	return outIntersections;
+}
+
+
 bool	wall_vector::closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point& outIntersectionPoint ) const
 {
 	std::vector<std::pair<wall,point>>	intersections = intersections_with( lookLine );
@@ -199,6 +278,16 @@ std::vector<std::pair<wall,point>>	object::intersections_with( wall lookLine ) c
 }
 
 
+object	object::intersected_with_wedge_of_lines( wall leftWall, wall rightWall ) const
+{
+	object	rotatedObject;
+	
+	rotatedObject.walls = walls.intersected_with_wedge_of_lines( leftWall, rightWall );
+	
+	return rotatedObject;
+}
+
+
 bool	object::closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point &outIntersectionPoint ) const
 {
 	return walls.closest_intersection_with_to_point( lookLine, distancePoint, outIntersectionWall, outIntersectionPoint );
@@ -222,6 +311,11 @@ bool	object_vector::load_file( std::string inFilePath )
 	{
 		object	newObject;
 		
+		std::string	colorName( "grayColor" );
+		tinyxml2::XMLElement	*	colorElem = objectElem->FirstChildElement("color");
+		if( colorElem )
+			colorName = colorElem->GetText();
+		
 		tinyxml2::XMLElement	*	wallElem = objectElem->FirstChildElement("wall");
 		while( wallElem )
 		{
@@ -232,6 +326,7 @@ bool	object_vector::load_file( std::string inFilePath )
 			
 			newWall.start.assign( startElem->GetText() );
 			newWall.end.assign( endElem->GetText() );
+			newWall.colorName = colorName;
 			newObject.walls.push_back( newWall );
 			
 			wallElem = wallElem->NextSiblingElement( "wall" );
@@ -269,6 +364,19 @@ object_vector	object_vector::rotated_around_point_with_angle( point rotationCent
 	}
 	
 	return rotatedObjects;
+}
+
+
+object_vector	object_vector::intersected_with_wedge_of_lines( wall leftWall, wall rightWall ) const
+{
+	object_vector	movedObjects;
+	
+	for( const object& currObject : *this )
+	{
+		movedObjects.push_back( currObject.intersected_with_wedge_of_lines( leftWall, rightWall ) );
+	}
+	
+	return movedObjects;
 }
 
 

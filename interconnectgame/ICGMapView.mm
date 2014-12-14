@@ -15,7 +15,8 @@ using namespace interconnect;
 
 #define STEP_SIZE			10.0	// Each up/down arrow keypress moves you by 10 points. Same for sidestep with shift key.
 #define NUM_ROTATION_STEPS	36.0	// 36 steps in 360 degrees means each left/right arrow press turns you by 10 degrees.
-#define LOOK_DISTANCE		100		// How far away a point we are looking (=aiming) at may be at most, in points.
+#define LOOK_DISTANCE		1000	// How far away may points we can see be at most, in points.
+#define INTERACT_DISTANCE	100		// How far away a point we are aiming at may be at most, in points.
 
 
 // We need key codes under which to save the modifiers in our "keys pressed"
@@ -73,7 +74,7 @@ enum
 	projectedObjects = projectedObjects.translated_by_x_y( -currPos.x +viewCenter.x, -currPos.y +viewCenter.y );
 	
 	point	indicatorPos = viewCenter;
-	point	lookEndPos = indicatorPos.translated_by_distance_angle( LOOK_DISTANCE, M_PI );
+	point	lookEndPos = indicatorPos.translated_by_distance_angle( INTERACT_DISTANCE, M_PI );
 	wall	lookLine = { indicatorPos, lookEndPos };
 	point	intersectionPoint = { -10000, -10000 };
 	if( !mapModeDisplay )
@@ -90,10 +91,10 @@ enum
 	}
 	
 	// Draw!
-	[NSColor.grayColor set];
-	
 	for( const object& currObject : projectedObjects )
 	{
+		[(NSColor*)[NSColor performSelector: NSSelectorFromString([NSString stringWithUTF8String: currObject.walls[0].colorName.c_str()])] set];
+	
 		NSBezierPath	*	thePath = [NSBezierPath bezierPath];
 		[thePath moveToPoint: currObject.walls[0].start];
 		for( const wall& currWall : currObject.walls )
@@ -107,7 +108,7 @@ enum
 	{
 		[NSColor.blueColor set];
 		
-		[NSBezierPath strokeLineFromPoint: indicatorPos toPoint: indicatorPos.translated_by_distance_angle( LOOK_DISTANCE, M_PI )];
+		[NSBezierPath strokeLineFromPoint: indicatorPos toPoint: indicatorPos.translated_by_distance_angle( INTERACT_DISTANCE, M_PI )];
 		
 		[NSColor.magentaColor set];
 		[[NSBezierPath bezierPathWithOvalInRect: NSMakeRect( intersectionPoint.x -4, intersectionPoint.y-4, 8, 8)] fill];
@@ -135,6 +136,26 @@ enum
 	[playerPath lineToPoint: triC];
 	[playerPath lineToPoint: triA];
 	[playerPath fill];
+	
+	[NSColor.whiteColor set];
+	wall leftWall, rightWall;
+	leftWall.start = rightWall.start = indicatorPos;
+	leftWall.end = indicatorPos.translated_by_distance_angle( LOOK_DISTANCE, M_PI -(M_PI / 4.0) );
+	rightWall.end = indicatorPos.translated_by_distance_angle( LOOK_DISTANCE, M_PI +(M_PI / 4.0) );
+	
+	[NSBezierPath strokeLineFromPoint: leftWall.start toPoint: leftWall.end];
+	[NSBezierPath strokeLineFromPoint: rightWall.start toPoint: rightWall.end];
+
+	
+	[NSColor.blackColor set];
+	object_vector	visibleObjects = projectedObjects.intersected_with_wedge_of_lines( leftWall, rightWall );
+	for( const object& currObject : visibleObjects )
+	{
+		for( const wall& currWall : currObject.walls )
+		{
+			[NSBezierPath strokeLineFromPoint: currWall.start toPoint: currWall.end];
+		}
+	}
 }
 
 

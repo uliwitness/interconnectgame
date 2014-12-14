@@ -4,18 +4,21 @@
 	<startlocation>200,200</startlocation>
 	<tile>
 		<object>
+			<color>orangeColor</color>
 			<wall><start>100,100</start><end>300,100</end></wall>
 			<wall><start>300,100</start><end>300,200</end></wall>
 			<wall><start>300,200</start><end>100,200</end></wall>
 			<wall><start>100,200</start><end>100,100</end></wall>
 		</object>
 		<object>
+			<color>brownColor</color>
 			<wall><start>300,250</start><end>450,250</end></wall>
 			<wall><start>450,250</start><end>450,300</end></wall>
 			<wall><start>450,300</start><end>300,300</end></wall>
 			<wall><start>300,300</start><end>300,250</end></wall>
 		</object>
 		<object>
+			<color>purpleColor</color>
 			<wall><start>100,350</start><end>250,350</end></wall>
 			<wall><start>250,350</start><end>250,450</end></wall>
 			<wall><start>250,450</start><end>100,450</end></wall>
