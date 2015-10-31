@@ -54,6 +54,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions yet.
 		{
 			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
+			return;
 		}
 		else
 		{
@@ -87,14 +88,9 @@ void	database::request_current_state( eleven::user_id currentUser )
 	}
 	catch (sql::SQLException &e)
 	{
-		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions yet.
-		{
-			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
-		}
-		else
-		{
-			eleven::log( "Error finding missions: %s (code=%d state=%s)\n", e.what(), e.getErrorCode(), e.getSQLState().c_str() );
-		}
+		eleven::log( "Error finding objectives: %s (code=%d state=%s)\n", e.what(), e.getErrorCode(), e.getSQLState().c_str() );
+		mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
+		return;
 	}
 	
 	try
@@ -122,7 +118,7 @@ void	database::request_current_state( eleven::user_id currentUser )
 	{
 		if( e.getErrorCode() == 1146 )	// No such table? Nobody's had any missions with objectives yet.
 		{
-			// Just ignore.
+			mMissionsCallback( mission( NO_MISSIONS_ID, NO_MISSIONS_MISSION_NAME, NO_MISSIONS_ROOM_NAME, NO_MISSIONS_PHYSICAL_LOCATION_ID ), currentUser );
 		}
 		else
 		{

@@ -95,6 +95,64 @@ static int	mission_add_objective( lua_State *L )
 }
 
 
+static int	mission_load( lua_State *L )
+{
+	int				numParams = lua_gettop(L);
+	if( numParams < 1 )
+	{
+		lua_pushstring(L, "Syntax is mission.load( <missionFileName> ).");
+		lua_error(L);
+		return 0;
+	}
+
+	session_ptr*	sessionPtrPtr = (session_ptr*) lua_touserdata( L, lua_upvalueindex(1) );
+	size_t			len = 0;
+
+	interconnect::database*	theDB = (interconnect::database*)user_session::user_database();
+	user_session_ptr		loginInfo = (*sessionPtrPtr)->find_sessiondata<user_session>(USER_SESSION_DATA_ID);
+	if( !loginInfo )
+	{
+		lua_pushstring(L, "User is not logged in.");
+		lua_error(L);
+		return 0;
+	}
+	
+	const char*	str = lua_tolstring( L, 1, &len );
+	std::string	fileName;
+	if( str )
+		fileName = str;
+		
+	if( fileName.size() == 0 || fileName.find("..") != std::string::npos || fileName.find("/") != std::string::npos )
+	{
+		lua_pushstring(L, "Invalid mission name.");
+		lua_error(L);
+		return 0;
+	}
+	std::string	filePath( sSettingsFolderPath );
+	filePath.append( "/scripts/mission_" );
+	filePath.append( fileName );
+	filePath.append( ".ini" );
+	ini_file	sessionInfo;
+	sessionInfo.open(filePath);
+	if( !sessionInfo.valid() )
+	{
+		lua_pushstring(L, "Mission file corrupted or incomplete.");
+		lua_error(L);
+		return 0;
+	}
+	
+	mission_id missionID = sessionInfo.setting_as_uint("missionID");
+	std::string roomName = sessionInfo.setting("roomName");
+	std::string displayName = sessionInfo.setting("displayName");
+	map_object_id physicalLocation = sessionInfo.setting_as_uint("physicalLocation");
+	
+	theDB->add_mission_for_user( missionID, displayName, roomName, physicalLocation, loginInfo->current_user() );
+	theDB->set_user_state( 1, roomName, loginInfo->current_user() );
+	
+	return 0;
+}
+
+
 // C++ closure (lambda, block, whatever) that we register with our server that runs a Lua script:
 eleven::handler		runscript = []( session_ptr session, std::string currRequest, chatserver* server )
 {
@@ -123,6 +181,16 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	
 	luaL_openlibs(L);	// Load Lua standard library.
 	
+	// Load the file:
+	int s = luaL_loadfile( L, filePath.c_str() );
+
+	if( s == 0 )
+	{
+		// Run it, with 0 params, accepting an arbitrary number of return values.
+		//	Last 0 is error handler Lua function's stack index, or 0 to ignore.
+		s = lua_pcall(L, 0, LUA_MULTRET, 0);	// Create all the functions and objects.
+	}
+	
 	// Create a C-backed Lua object:
 	lua_newtable( L );	// Create a new object & push it on the stack.
 	
@@ -147,15 +215,8 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 	lua_setfield( L, -2, "add_objective" );	// Attach it to the object with a name.
 	lua_setglobal( L, "mission" );	// Register the object as name "mission".
 
-	// Load the file:
-	int s = luaL_loadfile( L, filePath.c_str() );
-
 	if( s == 0 )
 	{
-		// Run it, with 0 params, accepting an arbitrary number of return values.
-		//	Last 0 is error handler Lua function's stack index, or 0 to ignore.
-		s = lua_pcall(L, 0, LUA_MULTRET, 0);
-		
 		lua_getglobal(L,"main");	// Push the function we want to call.
 		s = lua_pcall(L, 0, LUA_MULTRET, 0);
 	}
@@ -177,6 +238,73 @@ eleven::handler		runscript = []( session_ptr session, std::string currRequest, c
 void	init_scripts( std::string inSettingsFolderPath )
 {
 	sSettingsFolderPath = inSettingsFolderPath;
+}
+
+
+void	run_script( session_ptr session, std::string fileName, mission_id inMissionID )
+{
+	user_session_ptr	loginInfo = session->find_sessiondata<user_session>(USER_SESSION_DATA_ID);		
+	if( !loginInfo || (loginInfo->my_user_flags() & USER_FLAG_SERVER_OWNER) == 0 )
+	{
+		session->printf( "/!not_permitted\r\n" );
+		return;
+	}
+	
+	if( fileName.size() == 0 || fileName.find("..") != std::string::npos )
+	{
+		session->printf( "/!no_such_file\r\n" );
+		return;
+	}
+	std::string	filePath( sSettingsFolderPath );
+	filePath.append( "/scripts/" );
+	filePath.append( fileName );
+	filePath.append( ".lua" );
+	
+	// ===== LUA CODE START: =====
+	lua_State *L = luaL_newstate();	// Create a context.
+	
+	luaL_openlibs(L);	// Load Lua standard library.
+	
+	// Load the file:
+	int s = luaL_loadfile( L, filePath.c_str() );
+
+	if( s == 0 )
+	{
+		// Run it, with 0 params, accepting an arbitrary number of return values.
+		//	Last 0 is error handler Lua function's stack index, or 0 to ignore.
+		s = lua_pcall(L, 0, LUA_MULTRET, 0);	// Create all the functions and objects.
+	}
+	
+	// Create a C-backed Lua object:
+	lua_newtable( L );	// Create a new object & push it on the stack.
+	
+	lua_newtable( L );	// Create a new 'mission' object & push it on the stack.
+	lua_pushlightuserdata( L, &session );	// session object in case we need it.
+	lua_pushinteger( L, inMissionID );	// mission ID.
+	lua_pushcclosure( L, mission_add_objective, 2 );// Create the method.
+	lua_setfield( L, -2, "add_objective" );	// Attach it to the object with a name.
+	lua_pushlightuserdata( L, &session );	// session object in case we need it.
+	lua_pushcclosure( L, mission_load, 1 );// Create the method.
+	lua_setfield( L, -2, "load" );	// Attach it to the object with a name.
+	lua_setglobal( L, "mission" );	// Register the object as name "mission".
+
+	if( s == 0 )
+	{
+		lua_getglobal(L,"main");	// Push the function we want to call.
+		s = lua_pcall(L, 0, LUA_MULTRET, 0);
+	}
+
+	// Was an error? Get error message off the stack and send it back:
+	if( s != 0 )
+	{
+		session->printf( "/!script_error %s\r\n", lua_tostring(L, -1) );
+		lua_pop(L, 1); // remove error message
+	}
+	else
+		session->printf( "/ran_script\r\n" );	// Send back indication of success.
+	lua_close(L);	// Dispose of the script context.
+	
+	// ===== LUA CODE END. =====
 }
 
 
