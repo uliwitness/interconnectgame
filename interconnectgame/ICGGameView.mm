@@ -1,13 +1,16 @@
 //
-//  MapRotationTestView.m
-//  MapRotationTest
+//  ICGGameView.m
+//  interconnectgame
 //
-//  Created by Uli Kusterer on 2014-12-12.
+//  Created by Uli Kusterer on 2014-12-16.
 //  Copyright (c) 2014 Uli Kusterer. All rights reserved.
 //
 
-#import "ICGMapView.h"
-#include "eleven_asset_client.h"
+#import "ICGGameView.h"
+#import <OpenGL/OpenGL.h>
+#import <OpenGL/gl.h>
+#import <OpenGL/glext.h>
+#import <OpenGL/glu.h>
 
 
 using namespace interconnect;
@@ -32,14 +35,13 @@ enum
 };
 
 
-@implementation ICGMapView
+@implementation ICGGameView
 
 -(id)	initWithCoder:(NSCoder *)coder
 {
 	self = [super initWithCoder: coder];
 	if( self )
 	{
-		mapModeDisplay = NO;
 		self.keyRepeatTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05 target: self selector: @selector(dispatchPressedKeys:) userInfo: nil repeats: YES];
 	}
 	return self;
@@ -51,102 +53,8 @@ enum
 	objects = inCurrentMap;
 	projectedObjects = inProjectedMap;
 	visibleObjects = inCulledMap;
+	
 	[self setNeedsDisplay: YES];
-}
-
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-	if( !objects )
-		return;
-	
-	point			viewCenter = { self.bounds.size.width / 2, self.bounds.size.height / 2 };
-	
-	objects->project( viewCenter, *projectedObjects, mapModeDisplay );
-	projectedObjects->cull_invisible( viewCenter, LOOK_DISTANCE, *visibleObjects );
-	
-	// Draw!
-	for( const object& currObject : *projectedObjects )
-	{
-		[(NSColor*)[NSColor performSelector: NSSelectorFromString([NSString stringWithUTF8String: currObject.walls[0].colorName.c_str()])] set];
-	
-		NSBezierPath	*	thePath = [NSBezierPath bezierPath];
-		[thePath moveToPoint: currObject.walls[0].start];
-		for( const wall& currWall : currObject.walls )
-		{
-			[thePath lineToPoint: currWall.end];
-		}
-		[thePath fill];
-	}
-	
-	[NSColor.redColor set];
-	point triA;
-	point triB;
-	point triC;
-	if( mapModeDisplay )
-	{
-		triA = point(viewCenter.x -10, viewCenter.y +10).rotated_around_point_with_angle( viewCenter, (2 * M_PI) -projectedObjects->currAngle );
-		triB = point(viewCenter.x +10, viewCenter.y +10).rotated_around_point_with_angle( viewCenter, (2 * M_PI) -projectedObjects->currAngle );
-		triC = point(viewCenter.x, viewCenter.y -10).rotated_around_point_with_angle( viewCenter, (2 * M_PI) -projectedObjects->currAngle );
-	}
-	else
-	{
-		triA = point(viewCenter.x -10, viewCenter.y +10);
-		triB = point(viewCenter.x +10, viewCenter.y +10);
-		triC = point(viewCenter.x, viewCenter.y -10);
-	}
-	NSBezierPath	*	playerPath = [NSBezierPath bezierPath];
-	[playerPath moveToPoint: triA];
-	[playerPath lineToPoint: triB];
-	[playerPath lineToPoint: triC];
-	[playerPath lineToPoint: triA];
-	[playerPath fill];
-	
-	[NSColor.blackColor set];
-	[NSBezierPath setDefaultLineWidth: 2.0];
-	for( const object& currObject : *visibleObjects )
-	{
-		for( const wall& currWall : currObject.walls )
-		{
-			[NSBezierPath strokeLineFromPoint: currWall.start toPoint: currWall.end];
-		}
-	}
-	[NSBezierPath setDefaultLineWidth: 1.0];
-	
-	if( trackAngle )
-	{
-		[NSColor.cyanColor set];
-		NSPoint	mousePos = [self convertPoint: [self.window convertScreenToBase: [NSEvent mouseLocation]] fromView: nil];
-		wall	mouseWall( viewCenter, point(mousePos.x,mousePos.y) );
-		[NSBezierPath strokeLineFromPoint: mouseWall.start toPoint: mouseWall.end];
-		[[NSString stringWithFormat: @"%f",mouseWall.angle()] drawAtPoint: mouseWall.start withAttributes: @{ NSForegroundColorAttributeName: [NSColor cyanColor], NSBackgroundColorAttributeName: [NSColor colorWithCalibratedWhite: 1.0 alpha: 0.7] }];
-	}
-}
-
-
--(void)	mouseDown:(NSEvent *)theEvent
-{
-	trackAngle = YES;
-	[self setNeedsDisplay: YES];
-}
-
-
--(void)	mouseDragged:(NSEvent *)theEvent
-{
-	[self setNeedsDisplay: YES];
-}
-
-
--(void)	mouseUp:(NSEvent *)theEvent
-{
-	trackAngle = NO;
-	[self setNeedsDisplay: YES];
-}
-
-
--(BOOL)	isFlipped
-{
-	return YES;
 }
 
 
@@ -159,6 +67,62 @@ enum
 -(BOOL)	becomeFirstResponder
 {
 	return YES;
+}
+
+
+-(void)	lineToProjectedPointX: (GLfloat)x Y: (GLfloat)y Z: (GLfloat)z toPath: (NSBezierPath*)bpath
+{
+	CGFloat		zFactorFudge = 3;
+	NSSize		mySize = self.bounds.size;
+	mySize.width /= 2;
+	mySize.height /= 2;
+	NSPoint		finalPoint = NSMakePoint( ((x -mySize.width) * zFactorFudge / z) +mySize.width,
+											((y -mySize.height) * zFactorFudge / z) +mySize.height );
+	
+	[bpath lineToPoint: finalPoint];
+}
+
+
+-(void)	moveToProjectedPointX: (GLfloat)x Y: (GLfloat)y Z: (GLfloat)z toPath: (NSBezierPath*)bpath
+{
+	CGFloat		zFactorFudge = 3;
+	NSSize		mySize = self.bounds.size;
+	mySize.width /= 2;
+	mySize.height /= 2;
+	NSPoint		finalPoint = NSMakePoint( ((x -mySize.width) * zFactorFudge / z) +mySize.width,
+											((y -mySize.height) * zFactorFudge / z) +mySize.height );
+	
+	[bpath moveToPoint: finalPoint];
+}
+
+
+- (void)drawRect:(NSRect)r
+{
+	if( !visibleObjects )
+		return;
+
+	size_t					numPoints = visibleObjects->count_points_for_3d();
+	std::vector<GLfloat>	points;
+	points.reserve( numPoints * 3 );
+	size_t					numWalls = visibleObjects->count_walls();
+	
+	visibleObjects->points_for_3d( points );
+	
+	if( points.size() == 0 )
+		return;
+
+	for( size_t x = 0; x < (numWalls * 3); x += 12 )
+	{
+		NSBezierPath	*	theWall = [NSBezierPath bezierPath];
+		[self moveToProjectedPointX: points[x +0] Y: points[x +1] Z: points[x +2] toPath: theWall];
+		[self lineToProjectedPointX: points[x +3] Y: points[x +4] Z: points[x +5] toPath: theWall];
+		[self lineToProjectedPointX: points[x +6] Y: points[x +7] Z: points[x +8] toPath: theWall];
+		[self lineToProjectedPointX: points[x +9] Y: points[x +10] Z: points[x +11] toPath: theWall];
+		[self lineToProjectedPointX: points[x +0] Y: points[x +1] Z: points[x +2] toPath: theWall];
+		
+		[(NSColor*)[NSColor performSelector: NSSelectorFromString(@"redColor")] set];
+		[theWall fill];
+	}
 }
 
 
@@ -346,6 +310,5 @@ enum
 	objects->walk( STEP_SIZE * (running? 2 : 1) );
 	[self setNeedsDisplay: YES];
 }
-
 
 @end

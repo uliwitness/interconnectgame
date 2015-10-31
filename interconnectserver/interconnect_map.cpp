@@ -101,7 +101,9 @@ radians	wall::angle() const
 {
 	double	xdiff = end.x -start.x;
 	double	ydiff = end.y -start.y;
-	double	outAngle = atan2( ydiff, xdiff );
+	double	outAngle = atan2( ydiff, xdiff ) - M_PI/2.0;
+	if( outAngle < 0 )
+		outAngle += M_PI * 2.0;
 	return outAngle;
 }
 
@@ -118,25 +120,47 @@ double	wall::distance_to_point( point pos ) const
 }
 
 
+void	wall::points_for_3d( std::vector<GLfloat> &outPoints ) const
+{
+	outPoints.push_back( start.x );
+	outPoints.push_back( -40 );
+	outPoints.push_back( start.y );
+
+	outPoints.push_back( start.x );
+	outPoints.push_back( 40 );
+	outPoints.push_back( start.y );
+
+	outPoints.push_back( end.x );
+	outPoints.push_back( 40 );
+	outPoints.push_back( end.y );
+
+	outPoints.push_back( end.x );
+	outPoints.push_back( -40 );
+	outPoints.push_back( end.y );
+}
+
+
 bool	wall::intersected_with_wedge_of_lines( wall leftWall, wall rightWall, wall &outWall ) const
 {
 	assert( leftWall.start == rightWall.start );	// Algorithm assumes wall wedge's tip is "start" of each wall.
 	
 	outWall = *this;
 	
+	double		leftWallAngle = leftWall.angle();
+	double		rightWallAngle = rightWall.angle();
 	point		leftIntersection, rightIntersection;
 	bool		intersectsLeft = false,
 				intersectsRight = false;
 	if(( intersectsLeft = intersection_with( leftWall, leftIntersection ) ))
 	{
-		if( wall(leftWall.start,start).angle() >= leftWall.angle() )
+		if( (wall(leftWall.start,start).angle() -rightWallAngle) >= (leftWall.angle() -rightWallAngle) )
 			outWall.start = leftIntersection;
 		else
 			outWall.end = leftIntersection;
 	}
 	if(( intersectsRight = intersection_with( rightWall, rightIntersection ) ))
 	{
-		if( wall(rightWall.start,end).angle() <= rightWall.angle() )
+		if( (wall(rightWall.start,end).angle() -leftWallAngle) < (rightWall.angle() -leftWallAngle) )
 			outWall.end = rightIntersection;
 		else
 			outWall.start = rightIntersection;
@@ -146,10 +170,8 @@ bool	wall::intersected_with_wedge_of_lines( wall leftWall, wall rightWall, wall 
 	if( !intersectsLeft && !intersectsRight )
 	{
 		double	lineStartAngle = wall(leftWall.start,start).angle();
-		double	leftWallAngle = leftWall.angle();
-		double	rightWallAngle = rightWall.angle();
 		if( lineStartAngle >= leftWallAngle
-			|| lineStartAngle <= rightWallAngle )
+			|| lineStartAngle < rightWallAngle )
 		{
 			return false;
 		}
@@ -252,6 +274,22 @@ bool	wall_vector::closest_intersection_with_to_point( wall lookLine, point dista
 }
 
 
+size_t	wall_vector::count_points_for_3d() const
+{
+	size_t		numPoints = 0;
+	for( const wall& currWall : *this )
+		numPoints += currWall.count_points_for_3d();
+	return numPoints;
+}
+
+
+void	wall_vector::points_for_3d( std::vector<GLfloat> &outPoints ) const
+{
+	for( const wall& currWall : *this )
+		currWall.points_for_3d(outPoints);
+}
+
+
 object	object::translated_by_x_y( double xdistance, double ydistance ) const
 {
 	object	movedObject;
@@ -291,6 +329,18 @@ object	object::intersected_with_wedge_of_lines( wall leftWall, wall rightWall ) 
 bool	object::closest_intersection_with_to_point( wall lookLine, point distancePoint, wall& outIntersectionWall, point &outIntersectionPoint ) const
 {
 	return walls.closest_intersection_with_to_point( lookLine, distancePoint, outIntersectionWall, outIntersectionPoint );
+}
+
+
+size_t	object::count_points_for_3d() const
+{
+	return walls.count_points_for_3d();
+}
+
+
+void	object::points_for_3d( std::vector<GLfloat> &outPoints ) const
+{
+	walls.points_for_3d( outPoints );
 }
 
 
@@ -336,6 +386,9 @@ bool	object_vector::load_file( std::string inFilePath )
 		
 		objectElem = objectElem->NextSiblingElement( "object" );
 	}
+
+	for( change_callback& cbk : changeListeners )
+		cbk(this);
 	
 	return true;
 }
@@ -419,6 +472,78 @@ bool	object_vector::closest_intersection_with_to_point( wall lookLine, point dis
 	
 	return allIntersections.size() > 0;
 }
+
+
+void	object_vector::strafe( double distance )
+{
+	currPos = currPos.translated_by_distance_angle( distance, currAngle +(M_PI / 2.0) );
+	for( change_callback& cbk : changeListeners )
+		cbk(this);
+}
+
+
+void	object_vector::walk( double distance )
+{
+	currPos = currPos.translated_by_distance_angle( distance, currAngle);
+	for( change_callback& cbk : changeListeners )
+		cbk(this);
+}
+
+
+void	object_vector::turn( double numStepsIn360 )
+{
+	currAngle += (M_PI * 2) / numStepsIn360;
+	for( change_callback& cbk : changeListeners )
+		cbk(this);
+}
+
+
+void	object_vector::project( point viewCenter, object_vector& outProjectedVector, bool mapModeDisplay ) const
+{
+	if( !mapModeDisplay )
+		outProjectedVector = rotated_around_point_with_angle( currPos, currAngle );
+	else
+		outProjectedVector = *this;
+
+	outProjectedVector = outProjectedVector.translated_by_x_y( -currPos.x +viewCenter.x, -currPos.y +viewCenter.y );
+}
+
+
+void	object_vector::cull_invisible( point viewCenter, double distance, object_vector& outProjectedVector )
+{
+	wall leftWall, rightWall;
+	leftWall.start = rightWall.start = viewCenter;
+	leftWall.end = viewCenter.translated_by_distance_angle( distance, M_PI -(M_PI / 4.0) );
+	rightWall.end = viewCenter.translated_by_distance_angle( distance, M_PI +(M_PI / 4.0) );
+	
+	outProjectedVector = intersected_with_wedge_of_lines( leftWall, rightWall );
+}
+
+
+size_t	object_vector::count_points_for_3d() const
+{
+	size_t		numPoints = 0;
+	for( const object& currObject : *this )
+		numPoints += currObject.count_points_for_3d();
+	return numPoints;
+}
+
+
+size_t	object_vector::count_walls() const
+{
+	size_t		numPoints = 0;
+	for( const object& currObject : *this )
+		numPoints += currObject.count_walls();
+	return numPoints;
+}
+
+
+void	object_vector::points_for_3d( std::vector<GLfloat> &outPoints ) const
+{
+	for( const object& currObject : *this )
+		currObject.points_for_3d( outPoints );
+}
+
 
 
 

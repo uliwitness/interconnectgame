@@ -12,6 +12,7 @@
 #import <WebKit/WebKit.h>
 #import "ICGKeychainWrapper.h"
 #import "ICGMapView.h"
+#import "ICGGameView.h"
 
 
 using namespace eleven;
@@ -24,6 +25,9 @@ using namespace interconnect;
 	std::string							mCurrentRoomName;
 	uint32_t							mPrimaryMissionID;
 	std::map<uint32_t,mission_entry>	mMissions;
+	object_vector						mCurrentMap;
+	object_vector						mProjectedMap;
+	object_vector						mCulledMap;
 }
 
 @property (strong) IBOutlet NSWindow *loginWindow;
@@ -32,8 +36,8 @@ using namespace interconnect;
 @property (strong) IBOutlet NSProgressIndicator *progressSpinner;
 @property (strong) IBOutlet NSButton *logInButton;
 @property (strong) IBOutlet NSButton *quitButton;
-@property (strong) IBOutlet NSWindow *gameWindow;
-@property (strong) IBOutlet ICGMapView *gameView;
+@property (strong) IBOutlet ICGMapView *mapView;
+@property (strong) IBOutlet ICGGameView *gameView;
 @property (strong) IBOutlet WebView *webView;
 @property (strong) IBOutlet NSWindow	*consoleWindow;
 @property (strong) IBOutlet NSTextView	*consoleLog;
@@ -56,6 +60,7 @@ using namespace interconnect;
 {
 	NSString		*assetsFolderPath = NSSearchPathForDirectoriesInDomains( NSCachesDirectory, NSUserDomainMask, YES)[0];
 	assetsFolderPath = [assetsFolderPath stringByAppendingPathComponent: @"/com.thevoidsoftware.interconnectgame/assets/"];
+	[[NSFileManager defaultManager] createDirectoryAtPath: assetsFolderPath withIntermediateDirectories: YES attributes: @{} error: NULL];
 
 	asset_client*	assetClient = new asset_client( assetsFolderPath.UTF8String );
 	assetClient->set_file_finished_callback( [self](std::string inFilename, bool inSuccess)
@@ -65,7 +70,10 @@ using namespace interconnect;
 		size_t	suffixPos = inFilename.rfind( ".xml" );
 		if( inSuccess && suffixPos != std::string::npos && inFilename.substr(0,suffixPos).compare(mCurrentRoomName) == 0 )
 		{
-			[self.gameView performSelectorOnMainThread: @selector(loadMap:) withObject: [NSString stringWithUTF8String: inFilename.c_str()] waitUntilDone: NO];
+			mCurrentMap.load_file( eleven::asset_client::shared_asset_client()->path_for_asset(inFilename) );
+			mCurrentMap.currPos = mCurrentMap.startLocation;
+			
+			[self performSelectorOnMainThread: @selector(loadMap) withObject: nil waitUntilDone: NO];
 		}
 	} );
 	
@@ -75,6 +83,7 @@ using namespace interconnect;
 		[self logString: @"The settings file could not be found. Please re-download this application." color: NSColor.redColor];
 		return;
 	}
+	self.webView.drawsBackground = NO;
 	NSString	*	urlString = [NSString stringWithUTF8String: theIniFile.setting("welcomeurl").c_str()];
 	[self.webView.mainFrame loadRequest: [NSURLRequest requestWithURL: [NSURL URLWithString: urlString]]];
 	NSString	*	userName = [[NSUserDefaults standardUserDefaults] stringForKey: @"ICGUserName"];
@@ -87,6 +96,22 @@ using namespace interconnect;
 	[self.passwordField setStringValue: password];
 	
 	[self.loginWindow makeKeyAndOrderFront: self];
+}
+
+
+-(void)	loadMap
+{
+	mCurrentMap.add_change_listener( [=]( object_vector* sender )
+	{
+		[self.gameView setNeedsDisplay: YES];
+		[self.mapView setNeedsDisplay: YES];
+	} );
+	
+	[self.gameView setGameMap: &mCurrentMap projectedMap: &mProjectedMap culledMap: &mCulledMap];
+	[self.mapView setGameMap: &mCurrentMap projectedMap: &mProjectedMap culledMap: &mCulledMap];
+
+	[self.gameView setNeedsDisplay: YES];
+	[self.mapView setNeedsDisplay: YES];
 }
 
 
@@ -109,7 +134,14 @@ using namespace interconnect;
 		[missionsString appendFormat: @"%@ (in %s/%d)\n", [NSString stringWithUTF8String: currMission.second.mDisplayName.c_str()], currMission.second.mRoomName.c_str(), currMission.second.mPhysicalLocation];
 		for( auto currObjective : currMission.second.mObjectives )
 		{
-			[missionsString appendFormat: @"\t%@ (%d/%d) in %s/%d\n", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation];
+			if( currObjective.second.mMaxCount > 0 )
+			{
+				[missionsString appendFormat: @"\t%@ (%d/%d) in %s/%d\n", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mCurrentCount, currObjective.second.mMaxCount, currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation];
+			}
+			else
+			{
+				[missionsString appendFormat: @"\t%@ in %s/%d\n", [NSString stringWithUTF8String: currObjective.second.mDisplayName.c_str()], currObjective.second.mRoomName.c_str(), currObjective.second.mPhysicalLocation];
+			}
 		}
 	}
 	[self logString: missionsString color: NSColor.cyanColor];
@@ -134,7 +166,8 @@ using namespace interconnect;
 		[self.progressSpinner setDoubleValue: 10.0];
 		mChatClient->current_session()->printf( "/last_room\r\n" );
 		
-		[self.gameWindow makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
+		[self.gameView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
+		[self.mapView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
 	}
 	else
 	{
