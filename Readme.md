@@ -2,7 +2,7 @@ Setup
 -----
 
 Apart from what's needed to build the 'eleven' library's dependencies,
-you will also need the MySQL connector. You can get it from Homebrew:
+you will also need the MySQL connector. You can get it all from Homebrew:
 
 	brew install mysql-connector-c++
 
@@ -10,7 +10,7 @@ It will be linked in statically.
 
 Then you need to set up the included Lua submodule: Duplicate the lua/src/luaconf.h.orig file as "luaconf.h" and run
 
-	make macosx test
+	make macosx
 	
 in that folder to build the Lua static library.
 
