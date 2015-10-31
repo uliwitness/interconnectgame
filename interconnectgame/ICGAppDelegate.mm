@@ -112,6 +112,10 @@ using namespace interconnect;
 
 	[self.gameView setNeedsDisplay: YES];
 	[self.mapView setNeedsDisplay: YES];
+	
+	[self.gameView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
+	[self.mapView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
+	[self.loginWindow orderOut: self];	// +++ wait with this until full game has loaded & hide login window then.
 }
 
 
@@ -154,20 +158,13 @@ using namespace interconnect;
 	{
 		[self.progressSpinner setDoubleValue: 8.0];
 		[[NSUserDefaults standardUserDefaults] setObject: self.userNameField.stringValue forKey: @"ICGUserName"];
-		//[self.loginWindow orderOut: self];
-	}
 	
-	if( didWork.boolValue )
-	{
 		[self logString: @"Logged in.\n" color: NSColor.whiteColor];
 		if( ![ICGKeychainWrapper updateKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"] )
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
 		[self.progressSpinner setDoubleValue: 10.0];
 		mChatClient->current_session()->printf( "/last_room\r\n" );
-		
-		[self.gameView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
-		[self.mapView.window makeKeyAndOrderFront: nil];	// +++ wait with this until full game has loaded & hide login window then.
 	}
 	else
 	{
