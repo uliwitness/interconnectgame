@@ -26,7 +26,6 @@
 		5533C8491A3C991F00ADF4C3 /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5533C8471A3C991F00ADF4C3 /* tinyxml2.cpp */; };
 		55CD275A1A233EC800A46761 /* ICGAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27591A233EC800A46761 /* ICGAppDelegate.mm */; };
 		55CD275C1A233EC800A46761 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD275B1A233EC800A46761 /* main.m */; };
-		55CD275E1A233EC800A46761 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275D1A233EC800A46761 /* Images.xcassets */; };
 		55CD27611A233EC800A46761 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55CD275F1A233EC800A46761 /* MainMenu.xib */; };
 		55CD276D1A233EC800A46761 /* interconnectgameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55CD276C1A233EC800A46761 /* interconnectgameTests.m */; };
 		55CD277C1A23401500A46761 /* eleven_ini_file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55CD27761A23401500A46761 /* eleven_ini_file.cpp */; };
@@ -44,6 +43,7 @@
 		55CD279A1A23405E00A46761 /* slowequals.c in Sources */ = {isa = PBXBuildFile; fileRef = 55CD278F1A23405E00A46761 /* slowequals.c */; };
 		55CD279D1A234EF900A46761 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = 55CD279C1A234EF900A46761 /* settings */; };
 		55CD27A51A23D4C100A46761 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CD27A41A23D4C100A46761 /* WebKit.framework */; };
+		55D5FFEA1A4A0DBD0029E22A /* Adair.icns in Resources */ = {isa = PBXBuildFile; fileRef = 55D5FFE91A4A0DBD0029E22A /* Adair.icns */; };
 		55DBCBF11A2BCCE2005242F6 /* eleven_asset_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 55DBCBEF1A2BCCE2005242F6 /* eleven_asset_client.cpp */; };
 		55F13EF41A293177007194D0 /* ICGKeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F13EF31A293177007194D0 /* ICGKeychainWrapper.m */; };
 /* End PBXBuildFile section */
@@ -70,7 +70,6 @@
 		55CD27581A233EC800A46761 /* ICGAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICGAppDelegate.h; sourceTree = "<group>"; };
 		55CD27591A233EC800A46761 /* ICGAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ICGAppDelegate.mm; sourceTree = "<group>"; };
 		55CD275B1A233EC800A46761 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		55CD275D1A233EC800A46761 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		55CD27601A233EC800A46761 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		55CD27661A233EC800A46761 /* interconnectgameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = interconnectgameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55CD276B1A233EC800A46761 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,6 +99,7 @@
 		55CD27911A23405E00A46761 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sysendian.h; path = ../eleven/libscrypt/sysendian.h; sourceTree = "<group>"; };
 		55CD279C1A234EF900A46761 /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; path = settings; sourceTree = SOURCE_ROOT; };
 		55CD27A41A23D4C100A46761 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		55D5FFE91A4A0DBD0029E22A /* Adair.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Adair.icns; sourceTree = "<group>"; };
 		55DAEBA61A2E8A0A00E5EE54 /* eleven_concurrent_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_concurrent_queue.h; path = eleven/eleven_concurrent_queue.h; sourceTree = SOURCE_ROOT; };
 		55DAEBA71A2E8A0A00E5EE54 /* eleven_semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eleven_semaphore.h; path = eleven/eleven_semaphore.h; sourceTree = SOURCE_ROOT; };
 		55DBCBEF1A2BCCE2005242F6 /* eleven_asset_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = eleven_asset_client.cpp; path = eleven/eleven_chatclient/eleven_asset_client.cpp; sourceTree = SOURCE_ROOT; };
@@ -165,7 +165,6 @@
 				5533C83F1A3C52EA00ADF4C3 /* interconnect_map.h */,
 				5533C8441A3C536A00ADF4C3 /* ICGMapView.h */,
 				5533C8451A3C536A00ADF4C3 /* ICGMapView.mm */,
-				55CD275D1A233EC800A46761 /* Images.xcassets */,
 				55CD275F1A233EC800A46761 /* MainMenu.xib */,
 				55CD27561A233EC800A46761 /* Supporting Files */,
 				55CD27821A23402F00A46761 /* Networking */,
@@ -247,6 +246,7 @@
 		55CD279E1A234F0000A46761 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				55D5FFE91A4A0DBD0029E22A /* Adair.icns */,
 				55CD279C1A234EF900A46761 /* settings */,
 			);
 			name = Resources;
@@ -344,9 +344,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55CD275E1A233EC800A46761 /* Images.xcassets in Resources */,
 				55CD27611A233EC800A46761 /* MainMenu.xib in Resources */,
 				55CD279D1A234EF900A46761 /* settings in Resources */,
+				55D5FFEA1A4A0DBD0029E22A /* Adair.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,7 +512,6 @@
 		55CD27711A233EC800A46761 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -533,7 +532,6 @@
 		55CD27721A233EC800A46761 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
