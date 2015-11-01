@@ -65,7 +65,7 @@ using namespace interconnect;
 	asset_client*	assetClient = new asset_client( assetsFolderPath.UTF8String );
 	assetClient->set_file_finished_callback( [self](std::string inFilename, bool inSuccess)
 	{
-		[self logFormat: @"File %s %s.\n" color: NSColor.lightGrayColor, inFilename.c_str(), (inSuccess?"finished successfully":"failed to download")];
+		[self logFormat: @"File %s %s.\n" color: NSColor.lightGrayColor bold: NO, inFilename.c_str(), (inSuccess?"finished successfully":"failed to download")];
 		
 		size_t	suffixPos = inFilename.rfind( ".xml" );
 		if( inSuccess && suffixPos != std::string::npos && inFilename.substr(0,suffixPos).compare(mCurrentRoomName) == 0 )
@@ -80,7 +80,7 @@ using namespace interconnect;
 	ini_file	theIniFile;
 	if( !theIniFile.open( [[NSBundle mainBundle] pathForResource: @"settings/settings.ini" ofType:@""].fileSystemRepresentation ) )
 	{
-		[self logString: @"The settings file could not be found. Please re-download this application." color: NSColor.redColor];
+		[self logString: @"The settings file could not be found. Please re-download this application." color: NSColor.redColor bold: NO];
 		return;
 	}
 	self.webView.drawsBackground = NO;
@@ -132,7 +132,8 @@ using namespace interconnect;
 
 -(void)	updateObjectivesDisplay
 {
-	NSMutableString	*	missionsString = [[NSMutableString alloc] initWithString: @"==== Missions: ====\n"];
+	[self logString: @"Missions:\n" color: NSColor.cyanColor bold: YES];
+	NSMutableString	*	missionsString = [[NSMutableString alloc] init];
 	for( auto currMission : mMissions )
 	{
 		[missionsString appendFormat: @"%@ (in %s/%d)\n", [NSString stringWithUTF8String: currMission.second.mDisplayName.c_str()], currMission.second.mRoomName.c_str(), currMission.second.mPhysicalLocation];
@@ -148,7 +149,7 @@ using namespace interconnect;
 			}
 		}
 	}
-	[self logString: missionsString color: NSColor.cyanColor];
+	[self logString: missionsString color: NSColor.cyanColor bold: NO];
 }
 
 
@@ -159,7 +160,7 @@ using namespace interconnect;
 		[self.progressSpinner setDoubleValue: 8.0];
 		[[NSUserDefaults standardUserDefaults] setObject: self.userNameField.stringValue forKey: @"ICGUserName"];
 	
-		[self logString: @"Logged in.\n" color: NSColor.whiteColor];
+		[self logString: @"Logged in.\n" color: NSColor.whiteColor bold: NO];
 		if( ![ICGKeychainWrapper updateKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"] )
 			[ICGKeychainWrapper createKeychainValue: self.passwordField.stringValue forIdentifier: @"interconnectGamePassword"];
 		
@@ -168,7 +169,7 @@ using namespace interconnect;
 	}
 	else
 	{
-		[self logString: @"Error logging in.\n" color: NSColor.redColor];
+		[self logString: @"Error logging in.\n" color: NSColor.redColor bold: NO];
 		[self.progressSpinner stopAnimation: self];
 		self.logInButton.enabled = YES;
 		[self.progressSpinner setDoubleValue: 0.0];
@@ -180,18 +181,34 @@ using namespace interconnect;
 }
 
 
--(void)	logString: (NSString*)inString color: (NSColor*)theColor
+-(void)	logString: (NSString*)inString color: (NSColor*)theColor bold: (BOOL)makeBold
 {
-	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: inString attributes:@{ NSFontAttributeName: [NSFont fontWithName: @"Menlo" size: 10], NSForegroundColorAttributeName: theColor }];
+	NSFont						*originalFont = [NSFont fontWithName: @"Helvetica" size: 12];
+	NSFont						*theFont = originalFont;
+	if( makeBold )
+	{
+		theFont = [[NSFontManager sharedFontManager] convertWeight: YES ofFont: theFont];
+		if( !theFont )
+			theFont = originalFont;
+	}
+	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: inString attributes:@{ NSFontAttributeName: theFont, NSForegroundColorAttributeName: theColor }];
 	[self.consoleLog.textStorage performSelectorOnMainThread: @selector(appendAttributedString:) withObject: attrStr waitUntilDone: NO];
 }
 
 
--(void)	logFormat: (NSString*)inString color: (NSColor*)theColor, ...
+-(void)	logFormat: (NSString*)inString color: (NSColor*)theColor bold: (BOOL)makeBold, ...
 {
 	va_list		vargs;
-	va_start(vargs, theColor);
-	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc] initWithFormat: inString arguments: vargs] attributes:@{ NSFontAttributeName: [NSFont fontWithName: @"Menlo" size: 10], NSForegroundColorAttributeName: theColor }];
+	va_start(vargs, makeBold);
+	NSFont						*originalFont = [NSFont fontWithName: @"Helvetica" size: 12];
+	NSFont						*theFont = originalFont;
+	if( makeBold )
+	{
+		theFont = [[NSFontManager sharedFontManager] convertWeight: YES ofFont: theFont];
+		if( !theFont )
+			theFont = originalFont;
+	}
+	NSMutableAttributedString	*attrStr = [[NSMutableAttributedString alloc] initWithString: [[NSString alloc] initWithFormat: inString arguments: vargs] attributes:@{ NSFontAttributeName: theFont, NSForegroundColorAttributeName: theColor }];
 	va_end(vargs);
 	[self performSelectorOnMainThread: @selector(doLoggingMainThread:) withObject: attrStr waitUntilDone: NO];
 }
@@ -318,11 +335,11 @@ using namespace interconnect;
 	} );
 	mChatClient->register_message_handler( "/log", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
-		[self logString: [[NSString stringWithUTF8String: inLine.c_str() +5] stringByAppendingString: @"\n"] color: NSColor.grayColor];
+		[self logString: [[NSString stringWithUTF8String: inLine.c_str() +5] stringByAppendingString: @"\n"] color: NSColor.grayColor bold: NO];
 	} );
 	mChatClient->register_message_handler( "*", [self]( session_ptr inSession, std::string inLine, chatclient* inSender)
 	{
-		[self logString: [[NSString stringWithUTF8String: inLine.c_str()] stringByAppendingString: @"\n"] color: NSColor.whiteColor];
+		[self logString: [[NSString stringWithUTF8String: inLine.c_str()] stringByAppendingString: @"\n"] color: NSColor.whiteColor bold: NO];
 	} );
 	
 	if( mChatClient->connect() )
@@ -334,7 +351,7 @@ using namespace interconnect;
 	}
 	else
 	{
-		[self logString: @"Couldn't connect to server.\n" color: NSColor.redColor];
+		[self logString: @"Couldn't connect to server.\n" color: NSColor.redColor bold: NO];
 
 		[self.progressSpinner setDoubleValue: 0.0];
 		[self.progressSpinner stopAnimation: self];
@@ -351,10 +368,10 @@ using namespace interconnect;
 	if( theSession )
 	{
 		theSession->sendln( commandStr.UTF8String );
-		[self logString: [commandStr stringByAppendingString: @"\n"] color: NSColor.lightGrayColor];
+		[self logString: [commandStr stringByAppendingString: @"\n"] color: NSColor.lightGrayColor bold: NO];
 	}
 	else
-		[self logString: @"Connection lost\n" color: NSColor.redColor];
+		[self logString: @"Connection lost\n" color: NSColor.redColor bold: NO];
 }
 
 @end
